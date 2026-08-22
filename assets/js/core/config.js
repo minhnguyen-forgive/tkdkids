@@ -38,7 +38,7 @@ export const BRANCHES = [
     address: 'Tầng 1, Toà 21B5, Chung cư GreenStar, 234 Phạm Văn Đồng, Phú Diễn, Hà Nội',
     shortAddress: 'Tầng 1 · Toà 21B5 GreenStar, 234 Phạm Văn Đồng, Phú Diễn',
     mapLink: 'https://maps.app.goo.gl/TWiB4funW3Tcwyxu7',
-    image: 'green.JPG', since: 2018,
+    image: 'green.jpg', since: 2018,
   },
   {
     id: 'NghiaDo', code: 'ND', name: 'Cơ sở Nghĩa Đô', region: 'Hà Nội',

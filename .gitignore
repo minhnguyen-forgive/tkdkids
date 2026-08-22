@@ -15,3 +15,8 @@ test-*.html
 
 # Ảnh gốc chưa tối ưu (nếu có)
 /anh-goc/
+
+# Ảnh gốc chưa tối ưu — giữ ở máy làm bản gốc, không đưa lên repo
+/ảnh/
+/images/
+*.zip
