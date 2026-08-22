@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống quản trị | Taekwondo Kids Việt Nam</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="db-topbar">
+    <div class="db-topbar-brand">
+      <img src="logo.png" alt="" onerror="this.onerror=null;this.src='LOGO.png';this.onerror=function(){this.style.display='none'}">
+      <div>
+        <div class="db-topbar-title" id="appTitle">Hệ thống quản trị</div>
+        <div class="db-topbar-sub" id="appSubtitle">Taekwondo Kids Việt Nam</div>
+      </div>
+    </div>
+    <div class="db-topbar-right">
+      <div class="db-user-chip" id="userChip"></div>
+      <a href="index.html" class="btn-cancel" style="text-decoration:none" title="Về trang chủ">
+        <i class="fa-solid fa-house" aria-hidden="true"></i>
+      </a>
+      <button type="button" class="btn-logout" id="btnLogout">Đăng xuất</button>
+    </div>
+  </header>
+
+  <main class="db-content" id="appContent">
+    <div class="empty-note"><i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> Đang tải hệ thống...</div>
+  </main>
+</div>
+
+<!-- ═══════════ 1. SỬA HỒ SƠ ═══════════ -->
+<div id="editProfileModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Sửa thông tin cá nhân</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-tabs">
+      <button class="m-tab-btn active" type="button" data-mtab="info" data-scope="editProfileModal">Thông tin</button>
+      <button class="m-tab-btn" type="button" data-mtab="pass" data-scope="editProfileModal">Mật khẩu</button>
+    </div>
+    <form id="editProfileForm" novalidate>
+      <div class="modal-body m-tab-panel active" data-mpanel="info">
+        <div class="form-group"><label for="epFullName">Họ và tên *</label><input type="text" id="epFullName" required></div>
+        <div class="form-row">
+          <div class="form-group"><label for="epPhone">Số điện thoại *</label><input type="tel" id="epPhone" required></div>
+          <div class="form-group"><label for="epEmail">Email *</label><input type="email" id="epEmail" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="epDob">Ngày sinh *</label><input type="date" id="epDob" required></div>
+          <div class="form-group"><label for="epRole">Vị trí công tác</label><input type="text" id="epRole"></div>
+        </div>
+      </div>
+      <div class="modal-body m-tab-panel" data-mpanel="pass">
+        <div class="form-group">
+          <label for="epNewPass">Mật khẩu mới</label>
+          <input type="password" id="epNewPass" placeholder="Bỏ trống nếu không muốn đổi" autocomplete="new-password">
+          <div id="passErr" class="validation-msg">Mật khẩu tối thiểu 6 ký tự, chỉ gồm chữ và số, có ít nhất 1 chữ hoa và 1 chữ số.</div>
+        </div>
+        <div class="form-group">
+          <label for="epConfirmPass">Xác nhận mật khẩu mới</label>
+          <input type="password" id="epConfirmPass" placeholder="Nhập lại mật khẩu mới" autocomplete="new-password">
+          <div id="passMatchErr" class="validation-msg">Mật khẩu xác nhận không khớp.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" data-close>Huỷ bỏ</button>
+        <button type="submit" id="epSaveBtn" class="btn-save">Lưu thay đổi</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════ 2. ĐĂNG KÝ LỊCH DẠY ═══════════ -->
+<div id="scheduleModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:800px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Đăng ký lịch dạy (theo tuần)</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="week-nav-bar">
+        <button type="button" class="cal-nav-btn" id="schPrevWeek" aria-label="Tuần trước"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="week-nav-label" id="weekNavLabel">Tuần: —</div>
+        <button type="button" class="cal-nav-btn" id="schNextWeek" aria-label="Tuần sau"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="form-group">
+        <label for="schBranchSelect">Chọn cơ sở giảng dạy</label>
+        <select id="schBranchSelect"></select>
+      </div>
+      <div id="conflictWarning" class="conflict-warning">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        <strong>Trùng lịch:</strong> Ca này bạn đã chọn dạy tại <span id="conflictBranchName"></span>. Hãy bỏ chọn bên kia trước.
+      </div>
+      <div id="scheduleGridContainer"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" id="schCancel">Huỷ bỏ</button>
+      <button type="button" class="btn-save" id="schSave">Lưu lịch dạy</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 3. SỰ KIỆN LỊCH ═══════════ -->
+<div id="eventModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:420px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Sự kiện ngày <span id="evModalDateLabel"></span></div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="eventForm" novalidate>
+      <input type="hidden" id="evDateHidden"><input type="hidden" id="evIdHidden">
+      <div class="modal-body">
+        <div id="evExisting"></div>
+        <div class="form-group">
+          <label for="evType">Loại sự kiện</label>
+          <select id="evType" required>
+            <option value="working">Làm việc / Khác (Xanh)</option>
+            <option value="leave">Nghỉ phép (Vàng)</option>
+            <option value="teaching">Lịch dạy thay (Đỏ)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="evTitle">Nội dung</label>
+          <input type="text" id="evTitle" required placeholder="VD: Khai giảng khoá mới">
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between">
+        <button type="button" class="btn-danger" id="evDeleteBtn" style="display:none">Xoá sự kiện</button>
+        <div style="display:flex;gap:12px;margin-left:auto">
+          <button type="button" class="btn-cancel" data-close>Huỷ</button>
+          <button type="submit" class="btn-save">Lưu sự kiện</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════ 4. NGHỈ PHÉP ═══════════ -->
+<div id="leaveModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Đăng ký nghỉ phép</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label for="lvFrom">Từ ngày *</label><input type="date" id="lvFrom" required></div>
+        <div class="form-group"><label for="lvTo">Đến ngày *</label><input type="date" id="lvTo" required></div>
+      </div>
+      <div class="form-group"><label for="lvReason">Lý do *</label><input type="text" id="lvReason" required placeholder="VD: Việc gia đình"></div>
+      <div id="lvErr" class="validation-msg">Vui lòng điền đầy đủ và kiểm tra lại khoảng ngày.</div>
+      <div style="margin-top:26px">
+        <div class="ops-title" style="font-size:14px;margin-bottom:10px">Lịch sử đơn đã gửi</div>
+        <div id="lvHistory"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" data-close>Đóng</button>
+      <button type="button" id="lvSubmitBtn" class="btn-save">Gửi đơn</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 5. DUYỆT NGHỈ PHÉP ═══════════ -->
+<div id="approvalModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:660px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Duyệt đơn nghỉ phép</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="approvalListBox"></div>
+    <div class="modal-footer"><button type="button" class="btn-cancel" data-close>Đóng</button></div>
+  </div>
+</div>
+
+<!-- ═══════════ 6. LỊCH CHUNG ═══════════ -->
+<div id="commonEventModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Thêm lịch chung</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="commonEventForm" novalidate>
+      <div class="modal-body">
+        <div class="form-group"><label for="ceDate">Ngày *</label><input type="date" id="ceDate" required></div>
+        <div class="form-group"><label for="ceType">Loại hiển thị</label>
+          <select id="ceType">
+            <option value="working">Sự kiện chung (Xanh)</option>
+            <option value="leave">Thông báo (Vàng)</option>
+            <option value="teaching">Quan trọng (Đỏ)</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="ceTitle">Nội dung *</label><input type="text" id="ceTitle" required placeholder="VD: Giải đấu toàn quốc"></div>
+        <p class="form-hint" id="ceScopeNote"></p>
+        <div class="ops-title" style="font-size:14px;margin-top:22px">Lịch chung đã tạo</div>
+        <div id="ceList"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" data-close>Đóng</button>
+        <button type="submit" class="btn-save">Thêm lịch</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════ 7. NHẬN XÉT HỌC VIÊN ═══════════ -->
+<div id="reviewModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:620px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Nhận xét học viên</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="rvMaHV">Mã học viên *</label>
+        <input type="text" id="rvMaHV" placeholder="VD: HP260012" autocomplete="off">
+      </div>
+      <div id="rvStudentInfo" style="display:none;background:var(--bg-body);border:1px solid var(--border-light);padding:16px;margin-bottom:20px;border-radius:var(--r-md)">
+        <div class="db-info-grid" style="margin-bottom:0">
+          <div><div class="db-info-label">Họ tên</div><div class="db-info-value" id="rvStName">—</div></div>
+          <div><div class="db-info-label">Cơ sở</div><div class="db-info-value" id="rvStBranch">—</div></div>
+          <div><div class="db-info-label">Cấp đai</div><div class="db-info-value" id="rvStBelt">—</div></div>
+        </div>
+      </div>
+      <div id="rvNotFound" style="display:none;color:var(--red);font-size:13px;margin-bottom:16px">Không tìm thấy học viên với mã này.</div>
+      <div class="form-row">
+        <div class="form-group"><label for="rvThang">Tháng *</label><select id="rvThang"></select></div>
+        <div class="form-group"><label for="rvNam">Năm *</label><select id="rvNam"></select></div>
+      </div>
+      <div class="form-group">
+        <label for="rvNoiDung">Nội dung nhận xét *</label>
+        <textarea id="rvNoiDung" rows="4" placeholder="Nhận xét về tinh thần, kỹ thuật, tiến bộ của học viên..."></textarea>
+      </div>
+      <div id="rvErr" class="validation-msg">Vui lòng nhập đúng mã học viên và điền đầy đủ nhận xét.</div>
+      <div style="margin-top:22px">
+        <div class="ops-title" style="font-size:14px">Lịch sử nhận xét</div>
+        <div id="rvHistory"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" data-close>Đóng</button>
+      <button type="button" id="rvSaveBtn" class="btn-save">Lưu nhận xét</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 8. CHẤM CÔNG & LƯƠNG CỦA TÔI ═══════════ -->
+<div id="myAttendancePayrollModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:660px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Chấm công &amp; Lương của tôi</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-tabs">
+      <button class="m-tab-btn active" type="button" data-aptab="att">Điểm danh hôm nay</button>
+      <button class="m-tab-btn" type="button" data-aptab="pay">Bảng lương</button>
+    </div>
+    <div class="modal-body">
+      <div class="ap-month-nav" id="apMonthNav" style="display:none">
+        <button type="button" class="cal-nav-btn" id="apPrevMonth" aria-label="Tháng trước"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="ap-month-label" id="apMonthLabel">—</div>
+        <button type="button" class="cal-nav-btn" id="apNextMonth" aria-label="Tháng sau"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="m-tab-panel active" data-appanel="att"><div id="atmList"></div></div>
+      <div class="m-tab-panel" data-appanel="pay"><div id="apPayrollBox"></div></div>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn-cancel" data-close>Đóng</button></div>
+  </div>
+</div>
+
+<!-- ═══════════ 9. DUYỆT CHẤM CÔNG & LƯƠNG ═══════════ -->
+<div id="approveAttendancePayrollModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:700px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Duyệt chấm công &amp; lương</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-tabs">
+      <button class="m-tab-btn active" type="button" data-apatab="att">Duyệt điểm danh</button>
+      <button class="m-tab-btn" type="button" data-apatab="pay">Duyệt lương</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-tab-panel active" data-apapanel="att"><div id="apaAttendanceList"></div></div>
+      <div class="m-tab-panel" data-apapanel="pay">
+        <div class="ap-month-nav">
+          <button type="button" class="cal-nav-btn" id="apaPrevMonth" aria-label="Tháng trước"><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="ap-month-label" id="approvalMonthLabel">—</div>
+          <button type="button" class="cal-nav-btn" id="apaNextMonth" aria-label="Tháng sau"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div id="apaPayrollList"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn-cancel" data-close>Đóng</button></div>
+  </div>
+</div>
+
+<!-- ═══════════ 10. ĐIỂM DANH (CAMERA + GPS) ═══════════ -->
+<div id="checkinModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" style="max-width:500px" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Điểm danh buổi dạy</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <p id="ckInfo" style="font-weight:700;color:var(--primary-blue);margin-bottom:16px;font-size:14px"></p>
+      <div id="ckStep1">
+        <div class="empty-note" id="ckLocStatus" style="text-align:left"></div>
+        <video id="ckVideo" autoplay playsinline muted style="width:100%;border-radius:var(--r-md);background:#000;display:none;margin-top:12px"></video>
+        <canvas id="ckCanvas" style="display:none"></canvas>
+        <button type="button" class="btn-save" style="width:100%;margin-top:16px" id="ckOpenCamBtn">
+          <i class="fa-solid fa-camera" aria-hidden="true"></i> Mở camera chụp ảnh selfie
+        </button>
+        <button type="button" class="btn-save" style="width:100%;margin-top:12px;display:none" id="ckCaptureBtn">
+          <i class="fa-solid fa-circle-dot" aria-hidden="true"></i> Chụp ảnh
+        </button>
+      </div>
+      <div id="ckStep2" style="display:none">
+        <img id="ckPreviewImg" alt="Ảnh xác thực điểm danh" style="width:100%;border-radius:var(--r-md);margin-bottom:16px;border:1px solid var(--border-light)">
+        <div class="form-group">
+          <label for="ckSoHocVien">Sĩ số buổi học (có thể bỏ trống)</label>
+          <input type="number" id="ckSoHocVien" min="0" placeholder="VD: 12">
+        </div>
+        <p id="ckLocationDisplay" class="form-hint" style="margin-bottom:16px"></p>
+        <div style="display:flex;gap:12px">
+          <button type="button" class="btn-cancel" style="flex:1" id="ckRetakeBtn">Chụp lại</button>
+          <button type="button" class="btn-save" style="flex:1" id="ckSaveBtn">Lưu điểm danh</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="assets/js/app/main.js"></script>
+</body>
+</html>
