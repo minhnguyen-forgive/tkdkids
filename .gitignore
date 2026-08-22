@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Trình soạn thảo
+.vscode/
+.idea/
+*.swp
+
+# Tệp tạm khi kiểm thử
+test-*.html
+*.log
+
+# Ảnh gốc chưa tối ưu (nếu có)
+/anh-goc/

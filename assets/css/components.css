@@ -1,0 +1,237 @@
+/* =============================================================
+   THÀNH PHẦN DÙNG CHUNG — nút, form, modal, badge, toast, thẻ
+   ============================================================= */
+
+/* ---------------- NÚT ---------------- */
+.btn-primary, .btn-ghost, .btn-nav, .btn-register, .btn-save, .btn-cancel,
+.btn-danger, .btn-approve, .btn-reject, .btn-warning, .btn-edit, .btn-logout,
+.btn-login-parent, .btn-login-staff {
+  font-family: var(--font-body); cursor: pointer; transition: all 0.25s;
+  border: none; text-decoration: none; display: inline-flex;
+  align-items: center; justify-content: center; gap: 8px;
+}
+button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+  background: var(--yellow); color: var(--primary-blue);
+  font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  padding: 16px 36px; border-radius: var(--r-pill);
+  box-shadow: 0 10px 25px rgba(255, 214, 0, 0.3);
+}
+.btn-primary:hover { background: #FFF; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 255, 255, 0.4); }
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.1); color: var(--white);
+  font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 16px 36px; border-radius: var(--r-pill);
+  border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px);
+}
+.btn-ghost:hover { background: var(--white); color: var(--primary-blue); border-color: var(--white); }
+
+.btn-nav {
+  background: var(--red); color: var(--white);
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 12px 24px; border-radius: var(--r-pill);
+  box-shadow: 0 4px 15px rgba(232, 35, 42, 0.3);
+}
+.btn-nav:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232, 35, 42, 0.4); }
+
+.btn-register {
+  width: 100%; margin-top: 10px; background: var(--red); color: var(--white);
+  padding: 16px; font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  border-radius: var(--r-md); box-shadow: 0 10px 20px rgba(232, 35, 42, 0.2);
+}
+.btn-register:hover { background: var(--red-dark); transform: translateY(-2px); }
+
+.btn-save {
+  background: var(--primary-blue); color: var(--white); padding: 12px 28px;
+  border-radius: var(--r-md); font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 71, 171, 0.2);
+}
+.btn-save:hover { background: var(--primary-blue-dark); transform: translateY(-1px); }
+
+.btn-cancel {
+  background: var(--bg-section); border: 1px solid var(--border-light); color: var(--text-main);
+  padding: 12px 24px; border-radius: var(--r-md); font-weight: 600;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.btn-cancel:hover { background: var(--bg-body); }
+
+.btn-danger {
+  background: rgba(232, 35, 42, 0.1); color: var(--red); padding: 12px 24px;
+  border-radius: var(--r-md); font-weight: 600; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-right: auto;
+}
+.btn-danger:hover { background: var(--red); color: var(--white); }
+
+.btn-approve {
+  background: var(--green); color: var(--white); padding: 10px 20px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; border-radius: var(--r-sm);
+}
+.btn-approve:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+.btn-reject {
+  background: rgba(232, 35, 42, 0.1); color: var(--red); padding: 10px 20px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; border-radius: var(--r-sm);
+}
+.btn-reject:hover { background: var(--red); color: var(--white); }
+
+.btn-warning {
+  background: var(--yellow); color: var(--text-main); padding: 8px 16px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+  border-radius: var(--r-sm); box-shadow: 0 4px 10px rgba(255, 214, 0, 0.2);
+}
+.btn-warning:hover { background: #E6C200; transform: translateY(-1px); }
+
+.btn-edit {
+  background: var(--bg-body); border: 1px solid var(--border-light); color: var(--text-main);
+  padding: 12px 24px; border-radius: var(--r-md); font-weight: 600;
+}
+.btn-edit:hover { border-color: var(--primary-blue); color: var(--primary-blue); }
+
+.btn-logout {
+  background: rgba(232, 35, 42, 0.1); color: var(--red);
+  padding: 8px 20px; font-weight: 700; border-radius: var(--r-pill);
+}
+.btn-logout:hover { background: var(--red); color: var(--white); }
+
+.btn-login-parent, .btn-login-staff {
+  width: 100%; color: var(--white); padding: 16px; font-weight: 700; border-radius: var(--r-md);
+}
+.btn-login-parent { background: var(--primary-blue); }
+.btn-login-parent:hover { background: var(--primary-blue-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 71, 171, 0.2); }
+.btn-login-staff { background: var(--text-main); }
+.btn-login-staff:hover { background: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+
+/* Nút phụ dạng chữ */
+.btn-link {
+  background: none; border: none; color: var(--primary-blue);
+  font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline;
+  text-underline-offset: 3px; padding: 4px;
+}
+.btn-link:hover { color: var(--primary-blue-dark); }
+
+/* ---------------- FORM ---------------- */
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; font-size: 12px; font-weight: 700; color: var(--text-main);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.form-group input, .form-group select, .form-group textarea,
+.login-form input, .reg-form-group input {
+  width: 100%; background: var(--bg-body); border: 1px solid var(--border-light);
+  padding: 12px 16px; border-radius: var(--r-md); font-size: 14px;
+  font-family: var(--font-body); color: var(--text-main); outline: none; transition: all 0.25s;
+}
+.form-group textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus,
+.login-form input:focus, .reg-form-group input:focus {
+  border-color: var(--primary-blue); background: #FFF; box-shadow: 0 0 0 4px rgba(0, 71, 171, 0.1);
+}
+.form-group input[aria-invalid="true"], .form-group select[aria-invalid="true"] {
+  border-color: var(--red); box-shadow: 0 0 0 4px rgba(232, 35, 42, 0.08);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
+
+.form-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; line-height: 1.5; }
+.validation-msg { color: var(--red); font-size: 12px; margin-top: 6px; display: none; }
+.validation-msg.visible { display: block; }
+
+.reg-form-group { margin-bottom: 20px; text-align: left; }
+.reg-form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+.login-form { display: flex; flex-direction: column; gap: 16px; }
+
+/* ---------------- MODAL ---------------- */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: var(--z-modal); opacity: 0; pointer-events: none;
+  transition: opacity 0.3s; padding: 20px; overflow-y: auto;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-content {
+  background: var(--bg-section); width: 100%; max-width: 500px; border-radius: var(--r-xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateY(20px); transition: transform 0.3s;
+  display: flex; flex-direction: column; overflow: hidden; margin: auto;
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+
+.modal-header {
+  padding: 20px 28px; border-bottom: 1px solid var(--border-light);
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; background: var(--bg-subtle);
+}
+.modal-title { font-size: 16px; font-weight: 800; color: var(--text-main); text-transform: uppercase; line-height: 1.3; }
+.modal-close {
+  background: none; border: none; color: var(--text-muted); font-size: 20px;
+  cursor: pointer; transition: color 0.2s; line-height: 1; padding: 4px 8px; flex-shrink: 0;
+}
+.modal-close:hover { color: var(--red); }
+
+.modal-tabs { display: flex; border-bottom: 1px solid var(--border-light); background: var(--bg-subtle); }
+.m-tab-btn {
+  flex: 1; background: none; border: none; padding: 16px;
+  color: var(--text-muted); font-size: 12px; font-weight: 700; text-transform: uppercase;
+  cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; font-family: var(--font-body);
+}
+.m-tab-btn.active { color: var(--primary-blue); border-bottom-color: var(--primary-blue); background: var(--bg-section); }
+
+.modal-body { padding: 28px; max-height: 65vh; overflow-y: auto; }
+.m-tab-panel { display: none; }
+.m-tab-panel.active { display: block; animation: fadeUp 0.3s ease forwards; }
+
+.modal-footer {
+  padding: 18px 28px; border-top: 1px solid var(--border-light); background: var(--bg-subtle);
+  display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .modal-header, .modal-body, .modal-footer { padding-left: 20px; padding-right: 20px; }
+  .modal-footer > button { flex: 1; }
+}
+
+/* ---------------- BADGE TRẠNG THÁI ---------------- */
+.status-badge {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: var(--r-pill); white-space: nowrap; display: inline-block;
+}
+.status-badge.pending  { background: rgba(255, 214, 0, 0.2); color: var(--yellow-dark); }
+.status-badge.approved { background: rgba(0, 176, 80, 0.1);  color: var(--green); }
+.status-badge.rejected { background: rgba(232, 35, 42, 0.1); color: var(--red); }
+.status-badge.info     { background: rgba(0, 71, 171, 0.1);  color: var(--primary-blue); }
+.status-badge.neutral  { background: rgba(100, 116, 139, 0.12); color: var(--text-muted); }
+
+/* ---------------- TRẠNG THÁI RỖNG ---------------- */
+.empty-note { font-size: 13px; color: var(--text-muted); text-align: center; padding: 24px 0; font-weight: 500; line-height: 1.6; }
+
+/* ---------------- TOAST ---------------- */
+.toast-host {
+  position: fixed; top: calc(var(--nav-h) + 12px); right: 16px;
+  z-index: var(--z-toast); display: flex; flex-direction: column; gap: 10px;
+  max-width: min(380px, calc(100vw - 32px)); pointer-events: none;
+}
+.toast {
+  pointer-events: auto; display: flex; align-items: flex-start; gap: 12px;
+  background: var(--bg-section); color: var(--text-main);
+  border: 1px solid var(--border-light); border-left: 4px solid var(--primary-blue);
+  padding: 14px 18px; border-radius: var(--r-md);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+  font-size: 14px; line-height: 1.5; cursor: pointer;
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast i { font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+.toast-out { animation: slideOutRight 0.25s forwards; }
+.toast-success { border-left-color: var(--green); }
+.toast-success i { color: var(--green); }
+.toast-error   { border-left-color: var(--red); }
+.toast-error i { color: var(--red); }
+.toast-warning { border-left-color: var(--yellow); }
+.toast-warning i { color: var(--yellow-dark); }
+.toast-info i  { color: var(--primary-blue); }
+
+@media (max-width: 600px) {
+  .toast-host { top: auto; bottom: 88px; left: 16px; right: 16px; max-width: none; }
+}
