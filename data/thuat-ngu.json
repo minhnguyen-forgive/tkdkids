@@ -1,0 +1,333 @@
+{
+  "updated": "2026-08-22",
+  "groups": [
+    {
+      "name": "Khẩu lệnh & nghi thức",
+      "terms": [
+        {
+          "roman": "Charyeot",
+          "hangul": "차렷",
+          "vi": "Nghiêm",
+          "note": "Khẩu lệnh mở đầu và kết thúc buổi tập. Đứng thẳng, hai tay khép sát thân."
+        },
+        {
+          "roman": "Kyeongnye",
+          "hangul": "경례",
+          "vi": "Chào",
+          "note": "Cúi người khoảng 30 độ. Chào võ đường, chào thầy và chào bạn tập."
+        },
+        {
+          "roman": "Junbi",
+          "hangul": "준비",
+          "vi": "Chuẩn bị",
+          "note": "Vào tư thế sẵn sàng trước khi thực hiện bài."
+        },
+        {
+          "roman": "Sijak",
+          "hangul": "시작",
+          "vi": "Bắt đầu",
+          "note": ""
+        },
+        {
+          "roman": "Geuman",
+          "hangul": "그만",
+          "vi": "Dừng lại",
+          "note": ""
+        },
+        {
+          "roman": "Baro",
+          "hangul": "바로",
+          "vi": "Trở về tư thế ban đầu",
+          "note": ""
+        },
+        {
+          "roman": "Swieo",
+          "hangul": "쉬어",
+          "vi": "Nghỉ",
+          "note": ""
+        },
+        {
+          "roman": "Kihap",
+          "hangul": "기합",
+          "vi": "Tiếng hét dồn khí",
+          "note": "Hét đúng lúc giúp siết cơ bụng, dồn lực vào đòn và giữ nhịp thở. Trong bài thi có quy định hét ở đòn nào."
+        },
+        {
+          "roman": "Dwiro dora",
+          "hangul": "뒤로 돌아",
+          "vi": "Quay sau",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "name": "Tấn (Seogi)",
+      "terms": [
+        {
+          "roman": "Seogi",
+          "hangul": "서기",
+          "vi": "Tấn",
+          "note": "Tên gọi chung cho các thế đứng. Tấn vững thì đòn mới có lực."
+        },
+        {
+          "roman": "Juchum-seogi",
+          "hangul": "주춤서기",
+          "vi": "Tấn trung bình (tấn ngựa)",
+          "note": "Hai chân dang rộng bằng hai vai rưỡi, gối khuỵu, lưng thẳng. Xuất hiện ở phần Nguyên tắc phát lực của mọi cấp đai."
+        },
+        {
+          "roman": "Ap-seogi",
+          "hangul": "앞서기",
+          "vi": "Tấn trước ngắn",
+          "note": "Bước tự nhiên, trọng tâm chia đều."
+        },
+        {
+          "roman": "Ap-kubi",
+          "hangul": "앞굽이",
+          "vi": "Tấn trước dài (tấn cung tên)",
+          "note": "Chân trước khuỵu, chân sau duỗi thẳng, trọng tâm dồn về trước."
+        },
+        {
+          "roman": "Dwit-kubi",
+          "hangul": "뒷굽이",
+          "vi": "Tấn sau",
+          "note": "Trọng tâm dồn về chân sau, dùng nhiều khi đỡ."
+        },
+        {
+          "roman": "Beom-seogi",
+          "hangul": "범서기",
+          "vi": "Tấn hổ",
+          "note": "Gần như toàn bộ trọng tâm ở chân sau, chân trước chạm nhẹ mũi bàn chân."
+        },
+        {
+          "roman": "Moa-seogi",
+          "hangul": "모아서기",
+          "vi": "Tấn chụm",
+          "note": "Hai bàn chân chụm sát nhau."
+        },
+        {
+          "roman": "Bal-chagi junbi",
+          "hangul": "발차기 준비",
+          "vi": "Tấn thủ chiến đấu (chuẩn bị đá)",
+          "note": "Trong giáo trình của trung tâm ghi là \"Pal-chagi Junbi\" — cùng một thế, chỉ khác cách phiên âm."
+        }
+      ]
+    },
+    {
+      "name": "Đòn chân (Chagi)",
+      "terms": [
+        {
+          "roman": "Chagi",
+          "hangul": "차기",
+          "vi": "Đá",
+          "note": "Tên gọi chung của các đòn chân."
+        },
+        {
+          "roman": "Ap-chagi",
+          "hangul": "앞차기",
+          "vi": "Đá trước",
+          "note": "Nâng gối rồi bật cẳng chân về trước, tiếp xúc bằng ức bàn chân. Đòn cơ bản nhất, có ở bài thi cấp 7."
+        },
+        {
+          "roman": "Yeop-chagi",
+          "hangul": "옆차기",
+          "vi": "Đá ngang (đá tống ngang)",
+          "note": "Đá thẳng sang ngang bằng cạnh ngoài bàn chân. Giáo trình trung tâm ghi là \"Yop-chagi\"."
+        },
+        {
+          "roman": "Dollyo-chagi",
+          "hangul": "돌려차기",
+          "vi": "Đá vòng cầu",
+          "note": "Xoay hông đưa chân vòng ngang vào mục tiêu. Đòn ghi điểm nhiều nhất khi thi đấu."
+        },
+        {
+          "roman": "Dwit-chagi",
+          "hangul": "뒷차기",
+          "vi": "Đá tống sau",
+          "note": "Quay lưng lại rồi tống gót về sau."
+        },
+        {
+          "roman": "Naeryeo-chagi",
+          "hangul": "내려차기",
+          "vi": "Đá chẻ",
+          "note": "Đưa chân lên cao rồi chém gót từ trên xuống."
+        },
+        {
+          "roman": "Bandal-chagi",
+          "hangul": "반달차기",
+          "vi": "Đá bán nguyệt",
+          "note": "Quỹ đạo hình nửa vầng trăng, nhanh và gọn hơn đá vòng cầu."
+        },
+        {
+          "roman": "Miteu-chagi / Miro-chagi",
+          "hangul": "밀어차기",
+          "vi": "Đá đẩy",
+          "note": "Dùng lòng bàn chân đẩy đối phương ra xa, thường để giữ khoảng cách."
+        }
+      ]
+    },
+    {
+      "name": "Đòn tay",
+      "terms": [
+        {
+          "roman": "Jireugi",
+          "hangul": "지르기",
+          "vi": "Đấm",
+          "note": "Nắm đấm xoay 180 độ khi chạm mục tiêu, tiếp xúc bằng hai khớp ngón trỏ và giữa."
+        },
+        {
+          "roman": "Makgi",
+          "hangul": "막기",
+          "vi": "Đỡ, gạt",
+          "note": ""
+        },
+        {
+          "roman": "Arae-makgi",
+          "hangul": "아래막기",
+          "vi": "Gạt hạ đẳng",
+          "note": "Gạt đòn đánh vào phần dưới thắt lưng."
+        },
+        {
+          "roman": "Momtong-makgi",
+          "hangul": "몸통막기",
+          "vi": "Gạt trung đẳng",
+          "note": "Gạt đòn đánh vào thân."
+        },
+        {
+          "roman": "Eolgul-makgi",
+          "hangul": "얼굴막기",
+          "vi": "Gạt thượng đẳng",
+          "note": "Gạt đòn đánh vào mặt và đầu."
+        },
+        {
+          "roman": "Sonnal",
+          "hangul": "손날",
+          "vi": "Cạnh bàn tay",
+          "note": "Dùng để chém hoặc đỡ."
+        },
+        {
+          "roman": "Chigi",
+          "hangul": "치기",
+          "vi": "Đánh, chém",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "name": "Vùng đánh",
+      "terms": [
+        {
+          "roman": "Eolgul",
+          "hangul": "얼굴",
+          "vi": "Thượng đẳng",
+          "note": "Từ xương đòn trở lên: mặt và đầu."
+        },
+        {
+          "roman": "Momtong",
+          "hangul": "몸통",
+          "vi": "Trung đẳng",
+          "note": "Phần thân, từ xương đòn tới thắt lưng."
+        },
+        {
+          "roman": "Arae",
+          "hangul": "아래",
+          "vi": "Hạ đẳng",
+          "note": "Từ thắt lưng trở xuống."
+        }
+      ]
+    },
+    {
+      "name": "Quyền & thi đấu",
+      "terms": [
+        {
+          "roman": "Poomsae",
+          "hangul": "품새",
+          "vi": "Quyền, bài quyền",
+          "note": "Chuỗi động tác quy định sẵn, mô phỏng một trận đấu với nhiều đối thủ tưởng tượng."
+        },
+        {
+          "roman": "Taegeuk",
+          "hangul": "태극",
+          "vi": "Hệ 8 bài quyền của đai màu",
+          "note": "Từ Taegeuk Il-jang tới Pal-jang, mỗi bài ứng với một cấp đai. Bài thi thăng đai của trung tâm dùng bài 1 tới bài 7."
+        },
+        {
+          "roman": "Jang",
+          "hangul": "장",
+          "vi": "Chương, bài",
+          "note": "Il-jang = bài 1, E-jang = bài 2, Sam-jang = 3, Sa-jang = 4, Oh-jang = 5, Yook-jang = 6, Chil-jang = 7, Pal-jang = 8."
+        },
+        {
+          "roman": "Kyorugi",
+          "hangul": "겨루기",
+          "vi": "Đối kháng, thi đấu",
+          "note": "Nội dung thi đấu trực tiếp, có ở Olympic."
+        },
+        {
+          "roman": "Gyeokpa",
+          "hangul": "격파",
+          "vi": "Công phá",
+          "note": "Đấm hoặc đá vỡ ván gỗ, gạch — biểu diễn sức mạnh và độ chính xác."
+        }
+      ]
+    },
+    {
+      "name": "Đai & cấp bậc",
+      "terms": [
+        {
+          "roman": "Geup (Kup)",
+          "hangul": "급",
+          "vi": "Cấp",
+          "note": "Bậc của đai màu, đếm ngược: cấp 7 là bậc đầu tiên, càng lên cao số càng nhỏ. Cấp 1 là bậc cuối trước khi lên đai đen."
+        },
+        {
+          "roman": "Dan",
+          "hangul": "단",
+          "vi": "Đẳng",
+          "note": "Bậc của đai đen, đếm xuôi từ 1 đẳng trở lên."
+        },
+        {
+          "roman": "Poom",
+          "hangul": "품",
+          "vi": "Phẩm",
+          "note": "Bậc đai đen dành cho võ sinh dưới 15 tuổi. Đủ tuổi sẽ được chuyển đổi sang Dan."
+        },
+        {
+          "roman": "Ti",
+          "hangul": "띠",
+          "vi": "Đai",
+          "note": "Thắt bằng nút vuông, hai đầu dài bằng nhau."
+        }
+      ]
+    },
+    {
+      "name": "Võ phục & võ đường",
+      "terms": [
+        {
+          "roman": "Dobok",
+          "hangul": "도복",
+          "vi": "Võ phục",
+          "note": ""
+        },
+        {
+          "roman": "Dojang",
+          "hangul": "도장",
+          "vi": "Võ đường",
+          "note": "Nơi tập luyện. Vào và ra đều phải cúi chào."
+        },
+        {
+          "roman": "Sabeomnim",
+          "hangul": "사범님",
+          "vi": "Thầy, huấn luyện viên",
+          "note": "Cách gọi tôn kính dành cho người dạy."
+        },
+        {
+          "roman": "Taekwondo",
+          "hangul": "태권도",
+          "vi": "Đạo dùng chân và tay",
+          "note": "Tae = chân, Kwon = tay, Do = đạo, con đường rèn luyện."
+        }
+      ]
+    }
+  ]
+}

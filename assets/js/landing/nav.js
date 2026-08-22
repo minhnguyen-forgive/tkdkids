@@ -12,6 +12,8 @@ import { $ } from '../core/dom.js';
 const LINKS = [
   { href: '#about',           icon: 'fa-clock-rotate-left', label: 'Về chúng tôi' },
   { href: '#locations',       icon: 'fa-location-dot',      label: 'Hệ thống cơ sở' },
+  { href: 'thi-len-dai.html', icon: 'fa-medal',             label: 'Chương trình thi lên đai' },
+  { href: 'thuat-ngu-taekwondo.html', icon: 'fa-book',      label: 'Thuật ngữ Taekwondo' },
   { href: 'tin-tuc.html',     icon: 'fa-newspaper',         label: 'Tin tức & sự kiện' },
   { href: 'thu-vien.html',    icon: 'fa-images',            label: 'Thư viện ảnh' },
   { href: '#pricing',         icon: 'fa-tags',              label: 'Ưu đãi' },

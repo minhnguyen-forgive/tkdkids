@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/landing.css">
 <link rel="stylesheet" href="assets/css/content.css">
+<link rel="stylesheet" href="assets/css/knowledge.css">
 </head>
 <body>
 
@@ -37,15 +38,31 @@
 <!-- ═══════════ ĐIỀU HƯỚNG ═══════════ -->
 <nav class="site-nav" aria-label="Điều hướng chính">
   <a href="index.html" class="nav-logo">
-    <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="44" height="44"
+    <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="81" height="44"
          onerror="this.onerror=null;this.src='LOGO.png';this.onerror=function(){this.style.display='none'}">
     <span class="nav-logo-text">Taekwondo Kids Việt Nam</span>
   </a>
   <ul class="nav-links">
     <li><a href="index.html#about">Về chúng tôi</a></li>
     <li><a href="index.html#locations">Cơ sở</a></li>
-    <li><a href="tin-tuc.html">Tin tức</a></li>
-    <li><a href="thu-vien.html">Thư viện</a></li>
+    <li class="has-sub">
+      <a href="kien-thuc.html">Kiến thức <i class="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i></a>
+      <ul class="nav-sub">
+        <li><a href="thi-len-dai.html">Chương trình thi lên đai
+          <span class="sub-desc">7 cấp đai · video &amp; giáo trình</span></a></li>
+        <li><a href="thuat-ngu-taekwondo.html">Thuật ngữ Taekwondo
+          <span class="sub-desc">Tra cứu tên đòn, tấn, khẩu lệnh</span></a></li>
+        <li><a href="tin-tuc.html?chuyen-muc=Ki%E1%BA%BFn%20th%E1%BB%A9c">Bài viết chuyên môn
+          <span class="sub-desc">Kỹ thuật, luật thi đấu, dinh dưỡng</span></a></li>
+      </ul>
+    </li>
+    <li class="has-sub">
+      <a href="tin-tuc.html">Tin tức <i class="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i></a>
+      <ul class="nav-sub">
+        <li><a href="tin-tuc.html">Tin tức &amp; sự kiện</a></li>
+        <li><a href="thu-vien.html">Thư viện ảnh</a></li>
+      </ul>
+    </li>
     <li><a href="index.html#pricing">Ưu đãi</a></li>
     <li><a href="index.html#portal">Tra cứu</a></li>
   </ul>
@@ -83,7 +100,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="40" height="40" loading="lazy"
+          <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="73" height="40" loading="lazy"
                onerror="this.onerror=null;this.src='LOGO.png';this.onerror=function(){this.style.display='none'}">
         </div>
         <p class="footer-col-title" style="margin-bottom:8px">Trung tâm Taekwondo Kids Việt Nam</p>

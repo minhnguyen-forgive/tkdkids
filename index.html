@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/landing.css">
 <link rel="stylesheet" href="assets/css/content.css">
+<link rel="stylesheet" href="assets/css/knowledge.css">
 
 <script type="application/ld+json">
 {
@@ -63,15 +64,31 @@
 <!-- ═══════════ ĐIỀU HƯỚNG ═══════════ -->
 <nav class="site-nav" aria-label="Điều hướng chính">
   <a href="#hero" class="nav-logo">
-    <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="44" height="44"
+    <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="81" height="44"
          onerror="this.onerror=null;this.src='LOGO.png';this.onerror=function(){this.style.display='none'}">
     <span class="nav-logo-text">Taekwondo Kids Việt Nam</span>
   </a>
   <ul class="nav-links">
     <li><a href="#about">Về chúng tôi</a></li>
     <li><a href="#locations">Cơ sở</a></li>
-    <li><a href="tin-tuc.html">Tin tức</a></li>
-    <li><a href="thu-vien.html">Thư viện</a></li>
+    <li class="has-sub">
+      <a href="kien-thuc.html">Kiến thức <i class="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i></a>
+      <ul class="nav-sub">
+        <li><a href="thi-len-dai.html">Chương trình thi lên đai
+          <span class="sub-desc">7 cấp đai · video &amp; giáo trình</span></a></li>
+        <li><a href="thuat-ngu-taekwondo.html">Thuật ngữ Taekwondo
+          <span class="sub-desc">Tra cứu tên đòn, tấn, khẩu lệnh</span></a></li>
+        <li><a href="tin-tuc.html?chuyen-muc=Ki%E1%BA%BFn%20th%E1%BB%A9c">Bài viết chuyên môn
+          <span class="sub-desc">Kỹ thuật, luật thi đấu, dinh dưỡng</span></a></li>
+      </ul>
+    </li>
+    <li class="has-sub">
+      <a href="tin-tuc.html">Tin tức <i class="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i></a>
+      <ul class="nav-sub">
+        <li><a href="tin-tuc.html">Tin tức &amp; sự kiện</a></li>
+        <li><a href="thu-vien.html">Thư viện ảnh</a></li>
+      </ul>
+    </li>
     <li><a href="#pricing">Ưu đãi</a></li>
     <li><a href="#portal">Tra cứu</a></li>
   </ul>
@@ -105,7 +122,7 @@
       </div>
     </div>
     <div class="hero-right reveal delay-2">
-      <img src="embe1.png" alt="Võ sinh Taekwondo Kids trong tư thế chào" width="500" height="600"
+      <img src="embe1.png" alt="Võ sinh Taekwondo Kids trong tư thế chào" width="500" height="409"
            fetchpriority="high" decoding="async"
            onerror="this.onerror=null;this.src='assets/img/placeholder-branch.svg'">
     </div>
@@ -214,7 +231,7 @@
     <div class="partners-grid">
       <a href="https://www.facebook.com/share/p/1DX4qCHEpv/" target="_blank" rel="noopener" class="partner-card reveal">
         <div class="partner-img-wrap">
-          <img src="tirak.jpg" alt="Tirak Taekwondo Thái Lan" loading="lazy" decoding="async" width="400" height="300"
+          <img src="tirak.jpg" alt="Tirak Taekwondo Thái Lan" loading="lazy" decoding="async" width="400" height="320"
                onerror="this.onerror=null;this.src='assets/img/placeholder-branch.svg'">
           <span class="partner-overlay"><i class="fa-brands fa-facebook" aria-hidden="true"></i></span>
         </div>
@@ -222,7 +239,7 @@
       </a>
       <a href="https://www.facebook.com/share/p/1DwRiJRaY1/" target="_blank" rel="noopener" class="partner-card reveal delay-1">
         <div class="partner-img-wrap">
-          <img src="blackbelt.jpg" alt="Korea Black Belt Hàn Quốc" loading="lazy" decoding="async" width="400" height="300"
+          <img src="blackbelt.jpg" alt="Korea Black Belt Hàn Quốc" loading="lazy" decoding="async" width="400" height="320"
                onerror="this.onerror=null;this.src='assets/img/placeholder-branch.svg'">
           <span class="partner-overlay"><i class="fa-brands fa-facebook" aria-hidden="true"></i></span>
         </div>
@@ -230,7 +247,7 @@
       </a>
       <a href="https://www.facebook.com/share/p/1BSx3VEQX7/" target="_blank" rel="noopener" class="partner-card reveal delay-2">
         <div class="partner-img-wrap">
-          <img src="canada.jpg" alt="Whitecourt Taekwondo Canada" loading="lazy" decoding="async" width="400" height="300"
+          <img src="canada.jpg" alt="Whitecourt Taekwondo Canada" loading="lazy" decoding="async" width="400" height="320"
                onerror="this.onerror=null;this.src='assets/img/placeholder-branch.svg'">
           <span class="partner-overlay"><i class="fa-brands fa-facebook" aria-hidden="true"></i></span>
         </div>
@@ -238,7 +255,7 @@
       </a>
       <a href="https://www.facebook.com/share/p/1BejzXfdFL/" target="_blank" rel="noopener" class="partner-card reveal delay-3">
         <div class="partner-img-wrap">
-          <img src="jaeil.jpg" alt="Jaeil Sport Center Hàn Quốc" loading="lazy" decoding="async" width="400" height="300"
+          <img src="jaeil.jpg" alt="Jaeil Sport Center Hàn Quốc" loading="lazy" decoding="async" width="400" height="320"
                onerror="this.onerror=null;this.src='assets/img/placeholder-branch.svg'">
           <span class="partner-overlay"><i class="fa-brands fa-facebook" aria-hidden="true"></i></span>
         </div>
@@ -257,6 +274,88 @@
       <p class="sec-desc">Bấm <strong>Chỉ đường</strong> để mở Google Maps dẫn tới tận nơi, hoặc bấm <strong>Đăng ký</strong> để nhận lịch học và học phí của riêng cơ sở đó.</p>
     </div>
     <div id="locationsBody"></div>
+  </div>
+</section>
+
+<!-- ═══════════ KIẾN THỨC TAEKWONDO ═══════════ -->
+<section id="knowledge" aria-labelledby="knowledgeTitle">
+  <div class="container">
+    <div class="portal-header reveal">
+      <p class="sec-tag">Chuyên môn</p>
+      <h2 class="sec-title" id="knowledgeTitle">Kiến thức <span class="accent">Taekwondo</span></h2>
+      <p class="sec-desc">Chương trình thi thăng đai công khai từ cấp 7 đến cấp 1, mỗi cấp một video
+         hướng dẫn và giáo trình đầy đủ. Võ sinh và phụ huynh xem trước ở nhà để chuẩn bị cho kỳ thi.</p>
+    </div>
+
+    <div class="belt-ladder" style="margin-bottom:32px">
+        <a class="belt-step" href="thi-len-dai-cap-7-dai-vang.html">
+          <span class="belt-bar" style="background:#FFD600"></span>
+          <span class="lv">Cấp 7</span>
+          <span class="nm">Đai Vàng</span>
+          <span class="pm">Taegeuk Il-jang</span>
+        </a>
+        <a class="belt-step" href="thi-len-dai-cap-6-dai-xanh-la.html">
+          <span class="belt-bar" style="background:#00B050"></span>
+          <span class="lv">Cấp 6</span>
+          <span class="nm">Đai Xanh Lá</span>
+          <span class="pm">Taegeuk E-jang</span>
+        </a>
+        <a class="belt-step" href="thi-len-dai-cap-5-dai-xanh-duong.html">
+          <span class="belt-bar" style="background:#0047AB"></span>
+          <span class="lv">Cấp 5</span>
+          <span class="nm">Đai Xanh Dương</span>
+          <span class="pm">Taegeuk Sam-jang</span>
+        </a>
+        <a class="belt-step" href="thi-len-dai-cap-4-dai-do.html">
+          <span class="belt-bar" style="background:#E8232A"></span>
+          <span class="lv">Cấp 4</span>
+          <span class="nm">Đai Đỏ</span>
+          <span class="pm">Taegeuk Sa-jang</span>
+        </a>
+        <a class="belt-step" href="thi-len-dai-cap-3-dai-do.html">
+          <span class="belt-bar" style="background:#E8232A"></span>
+          <span class="lv">Cấp 3</span>
+          <span class="nm">Đai Đỏ</span>
+          <span class="pm">Taegeuk Oh-jang</span>
+        </a>
+        <a class="belt-step" href="thi-len-dai-cap-2-dai-do.html">
+          <span class="belt-bar" style="background:#E8232A"></span>
+          <span class="lv">Cấp 2</span>
+          <span class="nm">Đai Đỏ</span>
+          <span class="pm">Taegeuk Yook-jang</span>
+        </a>
+        <a class="belt-step" href="thi-len-dai-cap-1-dai-do.html">
+          <span class="belt-bar" style="background:#E8232A"></span>
+          <span class="lv">Cấp 1</span>
+          <span class="nm">Đai Đỏ</span>
+          <span class="pm">Taegeuk Chil-jang</span>
+        </a>
+    </div>
+
+    <div class="hub-grid">
+      <a class="hub-card is-red" href="thi-len-dai.html">
+        <span class="hub-icon"><i class="fa-solid fa-medal" aria-hidden="true"></i></span>
+        <h2>Chương trình thi lên đai</h2>
+        <p>Bảy cấp đai, mỗi cấp một video hướng dẫn và giáo trình năm phần:
+           nguyên tắc phát lực, kỹ thuật chân, quyền, đá nhanh và thể lực.</p>
+        <span class="hub-meta">
+          <span><i class="fa-solid fa-layer-group" aria-hidden="true"></i> 7 cấp đai</span>
+          <span><i class="fa-brands fa-youtube" aria-hidden="true"></i> 7 video</span>
+        </span>
+        <span class="hub-go">Xem chương trình <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
+      <a class="hub-card" href="thuat-ngu-taekwondo.html">
+        <span class="hub-icon"><i class="fa-solid fa-book" aria-hidden="true"></i></span>
+        <h2>Thuật ngữ Taekwondo</h2>
+        <p>Bảng tra 48 từ hay gặp trong buổi tập và đề thi — tên đòn đá, thế tấn,
+           khẩu lệnh, cấp đai — có chữ Hàn và nghĩa tiếng Việt.</p>
+        <span class="hub-meta">
+          <span><i class="fa-solid fa-list" aria-hidden="true"></i> 48 thuật ngữ</span>
+          <span><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Tra cứu nhanh</span>
+        </span>
+        <span class="hub-go">Mở bảng tra <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -417,7 +516,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="40" height="40" loading="lazy"
+          <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="73" height="40" loading="lazy"
                onerror="this.onerror=null;this.src='LOGO.png';this.onerror=function(){this.style.display='none'}">
         </div>
         <p class="footer-col-title" style="margin-bottom:8px">Trung tâm Taekwondo Kids Việt Nam</p>

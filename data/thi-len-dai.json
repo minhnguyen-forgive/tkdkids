@@ -1,0 +1,363 @@
+{
+  "updated": "2026-08-22",
+  "note": "Giáo trình do trung tâm cập nhật theo hướng dẫn của Liên đoàn Taekwondo Việt Nam.",
+  "levels": [
+    {
+      "cap": 7,
+      "id": "thi-len-dai-cap-7-dai-vang",
+      "title": "Bài thi lên cấp đai 7 – Đai Vàng",
+      "shortTitle": "Cấp 7 · Đai Vàng",
+      "beltName": "Đai Vàng",
+      "beltColor": "#FFD600",
+      "beltColorDark": "#B29500",
+      "fromBelt": "Đai Trắng",
+      "poomsae": "Taegeuk Il-jang",
+      "poomsaeVi": "Bài quyền 1",
+      "youtube": "EQ3_peyBYwY",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi) thực hiện 2 lượt"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 1 (Taegeuk Il-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 20 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 10 lần",
+          "items": []
+        }
+      ]
+    },
+    {
+      "cap": 6,
+      "id": "thi-len-dai-cap-6-dai-xanh-la",
+      "title": "Bài thi lên cấp đai 6 – Đai Xanh Lá",
+      "shortTitle": "Cấp 6 · Đai Xanh Lá",
+      "beltName": "Đai Xanh Lá",
+      "beltColor": "#00B050",
+      "beltColorDark": "#00753A",
+      "fromBelt": "Đai Vàng",
+      "poomsae": "Taegeuk E-jang",
+      "poomsaeVi": "Bài quyền 2",
+      "youtube": "QbAqyVU95iQ",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": [
+            "Nguyên tắc phát lực bình thường (Kang-yeok): 10 lần"
+          ]
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi) thực hiện 2 lượt"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 2 (Taegeuk E-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 20 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 10 lần",
+          "items": []
+        }
+      ]
+    },
+    {
+      "cap": 5,
+      "id": "thi-len-dai-cap-5-dai-xanh-duong",
+      "title": "Bài thi lên cấp đai 5 – Đai Xanh Dương",
+      "shortTitle": "Cấp 5 · Đai Xanh Dương",
+      "beltName": "Đai Xanh Dương",
+      "beltColor": "#0047AB",
+      "beltColorDark": "#002E6E",
+      "fromBelt": "Đai Xanh Lá",
+      "poomsae": "Taegeuk Sam-jang",
+      "poomsaeVi": "Bài quyền 3",
+      "youtube": "LtQ7fGwganM",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": [
+            "Nguyên tắc phát lực bình thường (Kang-yeok): 7 lần",
+            "Nguyên tắc liên tục: 3 lần"
+          ]
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi) thực hiện 2 lượt",
+            "Đá ngang (Yop-chagi) thực hiện 2 lượt"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 3 (Taegeuk Sam-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 20 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 15 lần",
+          "items": []
+        }
+      ]
+    },
+    {
+      "cap": 4,
+      "id": "thi-len-dai-cap-4-dai-do",
+      "title": "Bài thi lên cấp đai 4 – Đai Đỏ",
+      "shortTitle": "Cấp 4 · Đai Đỏ",
+      "beltName": "Đai Đỏ",
+      "beltColor": "#E8232A",
+      "beltColorDark": "#9C1219",
+      "fromBelt": "Đai Xanh Dương",
+      "poomsae": "Taegeuk Sa-jang",
+      "poomsaeVi": "Bài quyền 4",
+      "youtube": "T06_Bv_KK7Y",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": [
+            "Nguyên tắc phát lực bình thường (Kang-yeok): 7 lần",
+            "Nguyên tắc liên tục: 3 lần"
+          ]
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi) thực hiện 2 lượt",
+            "Đá ngang (Yop-chagi) thực hiện 2 lượt"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 4 (Taegeuk Sa-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 20 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 15 lần",
+          "items": []
+        }
+      ]
+    },
+    {
+      "cap": 3,
+      "id": "thi-len-dai-cap-3-dai-do",
+      "title": "Bài thi lên cấp đai 3 – Đai Đỏ",
+      "shortTitle": "Cấp 3 · Đai Đỏ",
+      "beltName": "Đai Đỏ",
+      "beltColor": "#E8232A",
+      "beltColorDark": "#9C1219",
+      "fromBelt": "Đai Đỏ",
+      "poomsae": "Taegeuk Oh-jang",
+      "poomsaeVi": "Bài quyền 5",
+      "youtube": "RB4e1ed3Cng",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": [
+            "Nguyên tắc phát lực bình thường (Kang-yeok): 4 lần",
+            "Nguyên tắc liên tục: 3 lần",
+            "Nguyên tắc phát lực nhanh: thực hiện 2 đấm nhanh - 3 đấm nhanh - 4 đấm nhanh (hét cuối mỗi lần)"
+          ]
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi)",
+            "Đá ngang (Yop-chagi)",
+            "Đá vòng cầu (Dollyo-chagi)"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 5 (Taegeuk Oh-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 30 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 20 lần",
+          "items": []
+        }
+      ]
+    },
+    {
+      "cap": 2,
+      "id": "thi-len-dai-cap-2-dai-do",
+      "title": "Bài thi lên cấp đai 2 – Đai Đỏ",
+      "shortTitle": "Cấp 2 · Đai Đỏ",
+      "beltName": "Đai Đỏ",
+      "beltColor": "#E8232A",
+      "beltColorDark": "#9C1219",
+      "fromBelt": "Đai Đỏ",
+      "poomsae": "Taegeuk Yook-jang",
+      "poomsaeVi": "Bài quyền 6",
+      "youtube": "FZiFIoPA0-8",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": [
+            "Nguyên tắc phát lực bình thường (Kang-yeok): 4 lần",
+            "Nguyên tắc liên tục: 3 lần",
+            "Nguyên tắc phát lực nhanh: thực hiện 2 đấm nhanh - 3 đấm nhanh - 4 đấm nhanh (hét cuối mỗi lần)"
+          ]
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi)",
+            "Đá ngang (Yop-chagi)",
+            "Đá vòng cầu (Dollyo-chagi)"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 6 (Taegeuk Yook-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 30 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 20 lần",
+          "items": []
+        }
+      ]
+    },
+    {
+      "cap": 1,
+      "id": "thi-len-dai-cap-1-dai-do",
+      "title": "Bài thi lên cấp đai 1 – Đai Đỏ",
+      "shortTitle": "Cấp 1 · Đai Đỏ",
+      "beltName": "Đai Đỏ",
+      "beltColor": "#E8232A",
+      "beltColorDark": "#9C1219",
+      "fromBelt": "Đai Đỏ",
+      "poomsae": "Taegeuk Chil-jang",
+      "poomsaeVi": "Bài quyền 7",
+      "youtube": "32CVJ25YRus",
+      "blocks": [
+        {
+          "title": "Nguyên tắc phát lực",
+          "icon": "fa-hand-fist",
+          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "items": [
+            "Nguyên tắc phát lực bình thường (Kang-yeok): 4 lần",
+            "Nguyên tắc liên tục: 3 lần",
+            "Nguyên tắc phát lực nhanh: thực hiện 2 đấm nhanh - 3 đấm nhanh - 4 đấm nhanh (hét cuối mỗi lần)"
+          ]
+        },
+        {
+          "title": "Kỹ thuật chân",
+          "icon": "fa-shoe-prints",
+          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "items": [
+            "Đá trước (Ap-chagi)",
+            "Đá ngang (Yop-chagi)",
+            "Đá vòng cầu (Dollyo-chagi)"
+          ]
+        },
+        {
+          "title": "Quyền",
+          "icon": "fa-scroll",
+          "text": "Bài quyền 7 (Taegeuk Chil-jang)",
+          "items": []
+        },
+        {
+          "title": "Đá nhanh",
+          "icon": "fa-bolt",
+          "text": "Đá tự do liên tục trong 30 giây",
+          "items": []
+        },
+        {
+          "title": "Thể lực",
+          "icon": "fa-dumbbell",
+          "text": "Chống đẩy 20 lần",
+          "items": []
+        }
+      ]
+    }
+  ]
+}

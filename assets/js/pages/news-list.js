@@ -10,7 +10,9 @@ import { cardHTML, featuredHTML } from './news-view.js';
 const PAGE_SIZE = 6;   // số bài hiện thêm mỗi lần bấm "Xem thêm"
 
 let ALL = [];
-let cat = 'all';
+/* Địa chỉ dạng tin-tuc.html?chuyen-muc=Kiến thức mở thẳng vào chuyên mục đó,
+   để menu Kiến thức trỏ được tới đúng nhóm bài. */
+let cat = new URLSearchParams(location.search).get('chuyen-muc') || 'all';
 let shown = PAGE_SIZE;
 
 function render() {
@@ -48,6 +50,8 @@ function render() {
 function renderFilter() {
   const cats = [...new Set(ALL.map(a => a.category))];
   const box = $('#catFilter');
+  // Chuyên mục lấy từ địa chỉ mà không có bài nào thì quay về xem tất cả
+  if (cat !== 'all' && !cats.includes(cat)) cat = 'all';
   // Chỉ có một chuyên mục thì "Tất cả" và chuyên mục đó là một — bỏ hẳn bộ lọc đi
   if (cats.length < 2) { box.remove(); return; }
   box.innerHTML = [['all', 'Tất cả'], ...cats.map(c => [c, c])]

@@ -71,7 +71,7 @@ và để hệ quản trị mở rộng thoải mái mà không phình trang ch�
 - [ ] Danh sách võ sinh theo cơ sở, lọc theo trạng thái/công nợ
 - [ ] Nhập kết quả thi thăng cấp, cập nhật chỉ số sức khoẻ
 
-### GIAI ĐOẠN 6 — Tin tức & Thư viện ảnh  ✅ PHẦN GIAO DIỆN ĐÃ XONG (22/08/2026)
+### GIAI ĐOẠN 6 — Nội dung: Tin tức, Thư viện ảnh, Kiến thức  ✅ PHẦN GIAO DIỆN ĐÃ XONG (22/08/2026)
 Quyết định (22/08/2026): **làm bản đơn giản trước, thiết kế sẵn để nâng cấp SEO sau**.
 Hosting hiện tại: cPanel/FTP → tải file thủ công.
 
@@ -84,6 +84,19 @@ Hosting hiện tại: cPanel/FTP → tải file thủ công.
 - [x] Chuyển **9 bài viết thật** từ WordPress cũ sang, kèm 18 ảnh đã nén (11MB → 3,6MB)
 - [x] `tools/nhap-tu-facebook.mjs` — nhập bài và ảnh từ fanpage qua Graph API
 - [x] `docs/TIN-TUC-VA-ALBUM.md` — hướng dẫn thêm/sửa nội dung
+
+Phần Kiến thức Taekwondo:
+- [x] `kien-thuc.html` — trang tổng của chuyên mục
+- [x] `thi-len-dai.html` + **7 trang HTML tĩnh** cho 7 cấp đai (mỗi cấp một địa chỉ riêng,
+      có video, giáo trình 5 phần, JSON-LD `Course`) — chuyển từ khối tab của web cũ
+- [x] `thuat-ngu-taekwondo.html` — bảng tra 48 thuật ngữ, tìm được cả khi gõ không dấu
+- [x] Khung video chỉ nạp YouTube khi người xem bấm (nhanh hơn, không đặt cookie sớm)
+- [x] Thanh điều hướng có menu con; khu vực Kiến thức trên trang chủ
+- [x] `docs/NOI-DUNG-CHUYEN-MON.md` — chiến lược nội dung 4 trụ + kế hoạch 90 ngày
+- [x] `tools/kiem-tra.mjs` — kiểm tra thẻ HTML, ngoặc CSS, tệp thiếu, nav lệch, tỉ lệ ảnh
+- [ ] Trang hồ sơ huấn luyện viên *(việc có sức bật SEO lớn nhất — xem mục 3 của NOI-DUNG-CHUYEN-MON.md)*
+- [ ] 8 trang bài quyền Taegeuk + 6–8 trang đòn cơ bản
+- [ ] Huấn luyện viên trưởng duyệt bảng thuật ngữ và bổ sung mục "Kang-yeok"
 
 Còn lại:
 - [ ] Sửa `date` của 3 bài bị sai ngày đăng từ WordPress cũ (xem mục 7 của `TIN-TUC-VA-ALBUM.md`)

@@ -25,6 +25,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 
 const TOKEN = process.env.FB_TOKEN || '';
@@ -35,7 +36,8 @@ const args   = process.argv.slice(2);
 const DRYRUN = args.includes('--thu');
 const LIMIT  = Number(args[args.indexOf('--so-bai') + 1]) || 20;
 
-const ROOT   = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+// fileURLToPath chứ không phải .pathname — đường dẫn dự án có dấu cách
+const ROOT   = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const IMGDIR = path.join(ROOT, 'assets/img/tin-tuc');
 const THUMB  = path.join(ROOT, 'assets/img/tin-tuc-thumb');
 const NEWS   = path.join(ROOT, 'data/tin-tuc.json');
