@@ -83,10 +83,15 @@ nav {
 }
 .hero-content {
   position: relative; z-index: 2; max-width: 1200px; margin: 0 auto;
-  padding: 60px 24px; display: grid; grid-template-columns: 1.2fr 0.8fr;
+  /* Đệm dưới 140px = 60px phần dải thông tin đè lên + 80px khoảng hở thật.
+     Không để 60px như trước: khi màn hình thấp, nội dung căn giữa bị dồn
+     xuống và cụm nút dính vào thẻ trắng bên dưới. */
+  padding: 60px 24px 140px; display: grid; grid-template-columns: 1.2fr 0.8fr;
   gap: 40px; align-items: center; width: 100%;
 }
-@media (max-width: 900px) { .hero-content { grid-template-columns: 1fr; text-align: center; } }
+@media (max-width: 900px) {
+  .hero-content { grid-template-columns: 1fr; text-align: center; padding-bottom: 72px; }
+}
 
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
@@ -109,7 +114,9 @@ nav {
 
 .hero-right { position: relative; display: flex; justify-content: center; align-items: center; }
 .hero-right img {
-  max-height: 600px; object-fit: contain; position: relative; z-index: 2;
+  /* min() để ảnh co lại trên màn hình thấp thay vì bị #hero overflow:hidden cắt mất */
+  max-height: min(600px, 58vh); width: auto; object-fit: contain;
+  position: relative; z-index: 2;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
 }
 .hero-glass-card {
