@@ -160,8 +160,55 @@ nav {
 .feat-title { font-weight: 700; font-size: 15px; color: var(--text-main); }
 .feat-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
+/* ═══════════ NỀN TRANG TRÍ CHO SECTION ═══════════
+   Trước đây các section chỉ luân phiên #FFFFFF và #F4F7F9 — chênh nhau
+   khoảng 3% độ sáng nên mắt gần như không phân biệt được, nhìn phẳng lì.
+
+   Class .sec-tinted dựng nền ba lớp:
+     1. chuyển sắc dọc từ trắng xuống xanh rất nhạt  → tạo chiều sâu
+     2. quầng màu thương hiệu ở hai góc đối nhau      → tạo điểm nhìn
+     3. vân chấm mảnh mờ dần xuống dưới               → tạo kết cấu
+   Các section ở giữa vẫn để trắng sạch, tạo nhịp và cho mắt nghỉ.
+
+   Cách dùng: <section id="..." class="sec-tinted">  (thêm sec-tinted-flip
+   để đảo hướng quầng màu, tránh các section nhìn giống hệt nhau).       */
+
+.sec-tinted {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F2F7FB 48%, #EAF2F9 100%);
+}
+
+/* Lớp quầng màu */
+.sec-tinted::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(620px 480px at  8%  6%, rgba(0, 174, 239, 0.22), transparent 62%),
+    radial-gradient(520px 440px at 96% 88%, rgba(255, 214, 0,  0.20), transparent 62%),
+    radial-gradient(420px 340px at 78% 22%, rgba(232, 35,  42, 0.06), transparent 65%);
+}
+.sec-tinted-flip::before { transform: scaleX(-1); }
+
+/* Lớp vân chấm — mask cho mờ dần về cuối section */
+.sec-tinted::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(0, 71, 171, 0.13) 1.1px, transparent 1.1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.5) 45%, transparent 88%);
+          mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.5) 45%, transparent 88%);
+}
+
+/* Nội dung phải nằm trên hai lớp trang trí */
+.sec-tinted > .container { position: relative; z-index: 1; }
+
+/* Màn hình nhỏ: giảm cường độ để chữ luôn dễ đọc và đỡ tốn công vẽ */
+@media (max-width: 600px) {
+  .sec-tinted::before { opacity: 0.75; }
+  .sec-tinted::after  { background-size: 20px 20px; opacity: 0.7; }
+}
+
 /* ---------------- LỊCH SỬ / TIMELINE ---------------- */
-#about { padding: 120px 0; background: var(--bg-body); position: relative; overflow: hidden; }
+#about { padding: 120px 0; }
 .about-header { text-align: center; margin-bottom: 60px; }
 .timeline { position: relative; max-width: 800px; margin: 0 auto; }
 .timeline::before {
@@ -218,7 +265,7 @@ nav {
 .partner-name { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-main); line-height: 1.4; }
 
 /* ---------------- HỆ THỐNG CƠ SỞ ---------------- */
-#locations { padding: 120px 0; background: var(--bg-body); }
+#locations { padding: 120px 0; }
 .locations-header { text-align: center; margin-bottom: 48px; }
 
 .region-title {
@@ -355,7 +402,7 @@ nav {
 .reg-form-title { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--text-main); text-align: center; margin-bottom: 24px; text-transform: uppercase; }
 
 /* ---------------- CỔNG TRA CỨU ---------------- */
-#portal { padding: 120px 0; background: var(--bg-body); }
+#portal { padding: 120px 0; }
 .portal-header { text-align: center; margin-bottom: 40px; }
 .portal-box {
   max-width: 500px; margin: 0 auto; background: var(--bg-section);

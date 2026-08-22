@@ -21,7 +21,10 @@
   --bg-section: #FFFFFF;
   --bg-subtle: #F8FAFC;
   --text-main: #0F172A;
-  --text-muted: #64748B;
+  /* #64748B cũ chỉ đạt 4.21:1 trên nền .sec-tinted — dưới chuẩn WCAG AA (4.5).
+     #5B6879 đạt 5.02:1 mà vẫn giữ sắc xám-xanh, chưa đậm tới mức
+     lẫn với --text-main nên thứ bậc chữ chính/phụ vẫn rõ. */
+  --text-muted: #5B6879;
   --white: #FFFFFF;
 
   /* Đường viền & bóng đổ */
