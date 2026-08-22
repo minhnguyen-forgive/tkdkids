@@ -34,6 +34,7 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/landing.css">
+<link rel="stylesheet" href="assets/css/content.css">
 
 <script type="application/ld+json">
 {
@@ -60,7 +61,7 @@
 <a href="#main" class="sr-only">Bỏ qua điều hướng, tới nội dung chính</a>
 
 <!-- ═══════════ ĐIỀU HƯỚNG ═══════════ -->
-<nav aria-label="Điều hướng chính">
+<nav class="site-nav" aria-label="Điều hướng chính">
   <a href="#hero" class="nav-logo">
     <img src="logo.png" alt="Logo Taekwondo Kids Việt Nam" width="44" height="44"
          onerror="this.onerror=null;this.src='LOGO.png';this.onerror=function(){this.style.display='none'}">
@@ -69,6 +70,8 @@
   <ul class="nav-links">
     <li><a href="#about">Về chúng tôi</a></li>
     <li><a href="#locations">Cơ sở</a></li>
+    <li><a href="tin-tuc.html">Tin tức</a></li>
+    <li><a href="thu-vien.html">Thư viện</a></li>
     <li><a href="#pricing">Ưu đãi</a></li>
     <li><a href="#portal">Tra cứu</a></li>
   </ul>
@@ -257,6 +260,40 @@
   </div>
 </section>
 
+<!-- ═══════════ TIN TỨC & SỰ KIỆN ═══════════ -->
+<section id="news" aria-labelledby="newsTitle">
+  <div class="container">
+    <div class="portal-header reveal">
+      <p class="sec-tag">Hoạt động của trung tâm</p>
+      <h2 class="sec-title" id="newsTitle">Tin tức &amp; <span class="accent">sự kiện</span></h2>
+      <p class="sec-desc">Giải đấu, kỳ thi thăng đai và hành trình của võ sinh Taekwondo Kids.</p>
+    </div>
+    <div id="homeNews" class="news-grid" aria-live="polite"></div>
+    <div class="load-more">
+      <a href="tin-tuc.html" class="btn-secondary">
+        Xem tất cả bài viết <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ THƯ VIỆN ẢNH ═══════════ -->
+<section id="gallery" class="sec-tinted" aria-labelledby="galleryTitle">
+  <div class="container">
+    <div class="portal-header reveal">
+      <p class="sec-tag">Khoảnh khắc đáng nhớ</p>
+      <h2 class="sec-title" id="galleryTitle">Thư viện <span class="accent">ảnh</span></h2>
+      <p class="sec-desc">Album ảnh các sự kiện của trung tâm, sắp xếp theo từng năm.</p>
+    </div>
+    <div id="homeAlbums" class="album-grid" aria-live="polite"></div>
+    <div class="load-more">
+      <a href="thu-vien.html" class="btn-secondary">
+        Xem toàn bộ thư viện <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ ƯU ĐÃI ═══════════ -->
 <section id="pricing" aria-labelledby="pricingTitle">
   <div class="container">
@@ -308,7 +345,7 @@
           <div class="form-row">
             <div class="reg-form-group">
               <label for="rfDob">Ngày sinh võ sinh</label>
-              <input type="date" id="rfDob" name="childDob">
+              <div class="field-date"><input type="date" id="rfDob" name="childDob" min="2005-01-01" max="2026-12-31"></div>
             </div>
             <div class="reg-form-group">
               <label for="rfPhone">Số điện thoại *</label>

@@ -3,7 +3,7 @@
    ============================================================= */
 
 /* ---------------- NÚT ---------------- */
-.btn-primary, .btn-ghost, .btn-nav, .btn-register, .btn-save, .btn-cancel,
+.btn-primary, .btn-secondary, .btn-ghost, .btn-nav, .btn-register, .btn-save, .btn-cancel,
 .btn-danger, .btn-approve, .btn-reject, .btn-warning, .btn-edit, .btn-logout,
 .btn-login-parent, .btn-login-staff {
   font-family: var(--font-body); cursor: pointer; transition: all 0.25s;
@@ -19,6 +19,19 @@ button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important;
   box-shadow: 0 10px 25px rgba(255, 214, 0, 0.3);
 }
 .btn-primary:hover { background: #FFF; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 255, 255, 0.4); }
+
+/* Nút phụ dùng trên nền sáng — .btn-primary màu vàng vốn thiết kế cho nền xanh đậm
+   của hero, đặt lên nền trắng thì chói và mất tương phản. */
+.btn-secondary {
+  background: var(--white); color: var(--primary-blue);
+  border: 1.5px solid rgba(0, 71, 171, 0.25);
+  font-size: 13px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+  padding: 14px 30px; border-radius: var(--r-pill);
+}
+.btn-secondary:hover {
+  background: var(--primary-blue); color: var(--white); border-color: var(--primary-blue);
+  transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0, 71, 171, 0.22);
+}
 
 .btn-ghost {
   background: rgba(255, 255, 255, 0.1); color: var(--white);
@@ -118,20 +131,90 @@ button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important;
   display: block; font-size: 12px; font-weight: 700; color: var(--text-main);
   margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
 }
+/* Trước đây nhóm selector này chỉ bắt `.reg-form-group input`, nên ô <select>
+   trong form đăng ký rơi hẳn về kiểu mặc định của hệ điều hành — khác hoàn toàn
+   các ô bên cạnh. Gom mọi loại ô nhập của cả ba form về một khai báo duy nhất.
+   Dùng background-color (không phải background) vì phía dưới còn vẽ mũi tên
+   cho <select> bằng background-image — dạng rút gọn sẽ xoá mất mũi tên đó. */
 .form-group input, .form-group select, .form-group textarea,
-.login-form input, .reg-form-group input {
-  width: 100%; background: var(--bg-body); border: 1px solid var(--border-light);
+.login-form input, .login-form select,
+.reg-form-group input, .reg-form-group select, .reg-form-group textarea {
+  width: 100%; background-color: var(--bg-body); border: 1px solid var(--border-light);
   padding: 12px 16px; border-radius: var(--r-md); font-size: 14px;
-  font-family: var(--font-body); color: var(--text-main); outline: none; transition: all 0.25s;
+  font-family: var(--font-body); color: var(--text-main); outline: none;
+  transition: border-color 0.25s, background-color 0.25s, box-shadow 0.25s;
+  min-height: 48px; /* input, select và date cao bằng nhau tuyệt đối */
 }
-.form-group textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.form-group textarea, .reg-form-group textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus,
-.login-form input:focus, .reg-form-group input:focus {
-  border-color: var(--primary-blue); background: #FFF; box-shadow: 0 0 0 4px rgba(0, 71, 171, 0.1);
+.login-form input:focus, .login-form select:focus,
+.reg-form-group input:focus, .reg-form-group select:focus, .reg-form-group textarea:focus {
+  border-color: var(--primary-blue); background-color: #FFF; box-shadow: 0 0 0 4px rgba(0, 71, 171, 0.1);
 }
-.form-group input[aria-invalid="true"], .form-group select[aria-invalid="true"] {
+.form-group input[aria-invalid="true"], .form-group select[aria-invalid="true"],
+.reg-form-group input[aria-invalid="true"], .reg-form-group select[aria-invalid="true"] {
   border-color: var(--red); box-shadow: 0 0 0 4px rgba(232, 35, 42, 0.08);
 }
+
+/* ---- Ô CHỌN (combobox) ----
+   Tắt giao diện mặc định của hệ điều hành và tự vẽ mũi tên, để ô chọn
+   trên Windows, macOS, Android, iOS trông giống hệt nhau và giống ô nhập chữ. */
+.form-group select, .login-form select, .reg-form-group select {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  cursor: pointer; padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%235B6879' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center; background-size: 12px 8px;
+}
+.form-group select:hover, .login-form select:hover, .reg-form-group select:hover { border-color: rgba(0, 71, 171, 0.35); }
+/* Khi chưa chọn gì thì chữ gợi ý để màu nhạt, chọn rồi mới đậm lên */
+.form-group select:has(option[value=""]:checked),
+.reg-form-group select:has(option[value=""]:checked) { color: var(--text-muted); }
+.form-group select option, .reg-form-group select option { color: var(--text-main); }
+
+/* ---- Ô NGÀY ----
+   Safari/Chrome cho input[type=date] chiều cao và phông chữ nội tại riêng nên nó
+   vẫn lệch dù đã cùng khai báo với các ô khác. Ép về đúng hệ chữ, khoá chiều cao,
+   và thay nút mở lịch mặc định (Chrome ghim nó ngay sau dòng chữ, không đẩy sang
+   phải được vì nằm trong shadow DOM) bằng biểu tượng tự vẽ ở mép phải — thẳng
+   hàng với mũi tên của ô chọn. Bọc ô ngày trong <div class="field-date">.
+   Nếu quên bọc thì ô vẫn dùng được, chỉ là hiện nút lịch mặc định của trình duyệt. */
+.form-group input[type="date"], .reg-form-group input[type="date"] {
+  appearance: none; -webkit-appearance: none;
+  font-family: var(--font-body); font-size: 14px; cursor: pointer;
+  /* align-items canh chữ theo chiều dọc — Safari đẩy chữ lên sát mép trên nếu thiếu.
+     Khoá height và bỏ đệm dọc vì nút lịch cao hơn dòng chữ, để nguyên thì ô cao hơn 4px. */
+  display: flex; align-items: center;
+  height: 48px; padding-top: 0; padding-bottom: 0;
+}
+input[type="date"]::-webkit-datetime-edit { padding: 0; line-height: 1.2; }
+input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button { display: none; -webkit-appearance: none; }
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.45; cursor: pointer; margin: 0; padding: 6px;
+  border-radius: 6px; transition: opacity 0.2s, background-color 0.2s;
+}
+input[type="date"]:hover::-webkit-calendar-picker-indicator { opacity: 0.75; }
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1; background-color: rgba(0, 71, 171, 0.1);
+}
+
+.field-date { position: relative; }
+.field-date input[type="date"] { padding-right: 44px; }
+/* Nút thật vẫn ở đó nhưng trong suốt và trải rộng vùng bên phải: bấm vào biểu
+   tượng là mở lịch, còn phần bên trái vẫn gõ ngày bằng bàn phím được. */
+.field-date input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute; inset: 0 0 0 auto; width: 44px; height: 100%;
+  opacity: 0; padding: 0; margin: 0; background: none;
+}
+.field-date::after {
+  content: ''; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+  width: 17px; height: 17px; pointer-events: none; opacity: 0.75;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 17' fill='none' stroke='%235B6879' stroke-width='1.4' stroke-linecap='round'%3E%3Crect x='1.7' y='3' width='13.6' height='12.3' rx='2.2'/%3E%3Cpath d='M1.7 6.9h13.6M5.2 1.4v2.9M11.8 1.4v2.9'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+.field-date:hover::after { opacity: 1; }
+
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
 

@@ -71,15 +71,25 @@ và để hệ quản trị mở rộng thoải mái mà không phình trang ch�
 - [ ] Danh sách võ sinh theo cơ sở, lọc theo trạng thái/công nợ
 - [ ] Nhập kết quả thi thăng cấp, cập nhật chỉ số sức khoẻ
 
-### GIAI ĐOẠN 6 — Tin tức & CMS
+### GIAI ĐOẠN 6 — Tin tức & Thư viện ảnh  ✅ PHẦN GIAO DIỆN ĐÃ XONG (22/08/2026)
 Quyết định (22/08/2026): **làm bản đơn giản trước, thiết kế sẵn để nâng cấp SEO sau**.
 Hosting hiện tại: cPanel/FTP → tải file thủ công.
 
-- [ ] Sheet `BaiViet` + thư mục Drive `AnhBaiViet`
-- [ ] Soạn bài trong **Google Docs**, `app.html` quản lý thông tin bài + xuất bản
-- [ ] Chuyển Docs → HTML sạch (chỉ giữ thẻ ngữ nghĩa, chặn mã độc)
-- [ ] Trang `tin-tuc.html` (danh sách + chi tiết), dựng phía trình duyệt
-- [ ] Khối "Tin mới nhất" trên trang chủ
+Đã làm:
+- [x] `tin-tuc.html` — bài nổi bật + lưới tin + lọc chuyên mục + xem thêm
+- [x] `bai-viet.html` — bố cục đọc kiểu báo, thanh tiến độ đọc, chia sẻ, khối đăng ký, **tin liên quan**
+- [x] `thu-vien.html` — album gom **theo năm**, thanh chọn năm dính theo màn hình
+- [x] `album.html` — lưới ảnh kiểu gạch xây + khung phóng to (bàn phím, vuốt)
+- [x] Khối "Tin tức" và "Thư viện ảnh" trên trang chủ
+- [x] Chuyển **9 bài viết thật** từ WordPress cũ sang, kèm 18 ảnh đã nén (11MB → 3,6MB)
+- [x] `tools/nhap-tu-facebook.mjs` — nhập bài và ảnh từ fanpage qua Graph API
+- [x] `docs/TIN-TUC-VA-ALBUM.md` — hướng dẫn thêm/sửa nội dung
+
+Còn lại:
+- [ ] Sửa `date` của 3 bài bị sai ngày đăng từ WordPress cũ (xem mục 7 của `TIN-TUC-VA-ALBUM.md`)
+- [ ] Bổ sung ảnh cho 4 bài năm 2024 (ảnh cũ nhúng từ Facebook đã hết hạn)
+- [ ] Chuyển nguồn dữ liệu sang Sheet `BaiViet` khi cần lễ tân tự đăng bài
+      (chỉ phải sửa hàm `loadJson()` trong `assets/js/core/content.js`)
 
 **Nâng cấp SEO (làm sau, khi cần chạy tuyển sinh):**
 - [ ] Apps Script sinh file HTML tĩnh cho từng bài (có sẵn thẻ meta + Open Graph riêng)

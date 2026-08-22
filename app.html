@@ -58,7 +58,7 @@
           <div class="form-group"><label for="epEmail">Email *</label><input type="email" id="epEmail" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label for="epDob">Ngày sinh *</label><input type="date" id="epDob" required></div>
+          <div class="form-group"><label for="epDob">Ngày sinh *</label><div class="field-date"><input type="date" id="epDob" required></div></div>
           <div class="form-group"><label for="epRole">Vị trí công tác</label><input type="text" id="epRole"></div>
         </div>
       </div>
@@ -156,8 +156,8 @@
     </div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-group"><label for="lvFrom">Từ ngày *</label><input type="date" id="lvFrom" required></div>
-        <div class="form-group"><label for="lvTo">Đến ngày *</label><input type="date" id="lvTo" required></div>
+        <div class="form-group"><label for="lvFrom">Từ ngày *</label><div class="field-date"><input type="date" id="lvFrom" required></div></div>
+        <div class="form-group"><label for="lvTo">Đến ngày *</label><div class="field-date"><input type="date" id="lvTo" required></div></div>
       </div>
       <div class="form-group"><label for="lvReason">Lý do *</label><input type="text" id="lvReason" required placeholder="VD: Việc gia đình"></div>
       <div id="lvErr" class="validation-msg">Vui lòng điền đầy đủ và kiểm tra lại khoảng ngày.</div>
@@ -194,7 +194,7 @@
     </div>
     <form id="commonEventForm" novalidate>
       <div class="modal-body">
-        <div class="form-group"><label for="ceDate">Ngày *</label><input type="date" id="ceDate" required></div>
+        <div class="form-group"><label for="ceDate">Ngày *</label><div class="field-date"><input type="date" id="ceDate" required></div></div>
         <div class="form-group"><label for="ceType">Loại hiển thị</label>
           <select id="ceType">
             <option value="working">Sự kiện chung (Xanh)</option>

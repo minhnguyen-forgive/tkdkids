@@ -6,25 +6,34 @@
 
 import { $ } from '../core/dom.js';
 
+/* href bắt đầu bằng '#' là mục nằm trên trang chủ. Ở các trang con
+   (tin-tuc, bai-viet, thu-vien, album) phải gắn thêm index.html vào trước,
+   nếu không bấm vào chỉ đổi dấu thăng trên thanh địa chỉ mà không đi đâu cả. */
 const LINKS = [
-  { href: '#about',     icon: 'fa-clock-rotate-left', label: 'Về chúng tôi' },
-  { href: '#locations', icon: 'fa-location-dot',      label: 'Hệ thống cơ sở' },
-  { href: '#pricing',   icon: 'fa-tags',              label: 'Ưu đãi' },
-  { href: '#partners',  icon: 'fa-handshake',         label: 'Đối tác' },
-  { href: '#portal',    icon: 'fa-right-to-bracket',  label: 'Tra cứu / Đăng nhập' },
+  { href: '#about',           icon: 'fa-clock-rotate-left', label: 'Về chúng tôi' },
+  { href: '#locations',       icon: 'fa-location-dot',      label: 'Hệ thống cơ sở' },
+  { href: 'tin-tuc.html',     icon: 'fa-newspaper',         label: 'Tin tức & sự kiện' },
+  { href: 'thu-vien.html',    icon: 'fa-images',            label: 'Thư viện ảnh' },
+  { href: '#pricing',         icon: 'fa-tags',              label: 'Ưu đãi' },
+  { href: '#partners',        icon: 'fa-handshake',         label: 'Đối tác' },
+  { href: '#portal',          icon: 'fa-right-to-bracket',  label: 'Tra cứu / Đăng nhập' },
 ];
+
+const onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
+const resolve = href => (href.startsWith('#') && !onHome ? 'index.html' + href : href);
 
 export function initNav() {
   const toggle = $('#navToggle');
   const menu = $('#mobileMenu');
   if (!toggle || !menu) return;
 
+  const here = location.pathname.split('/').pop();
   menu.innerHTML = `
     <ul>${LINKS.map(l => `
-      <li><a href="${l.href}"><i class="fa-solid ${l.icon}" aria-hidden="true"></i>${l.label}</a></li>`).join('')}
+      <li><a href="${resolve(l.href)}"${l.href === here ? ' aria-current="page"' : ''}><i class="fa-solid ${l.icon}" aria-hidden="true"></i>${l.label}</a></li>`).join('')}
     </ul>
     <div class="mobile-menu-cta">
-      <a href="#register" class="btn-nav">Đăng ký học thử</a>
+      <a href="${resolve('#register')}" class="btn-nav">Đăng ký học thử</a>
       <a href="tel:0978931747" class="btn-cancel">
         <i class="fa-solid fa-phone" aria-hidden="true"></i> Gọi 097 893 1747
       </a>

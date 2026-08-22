@@ -182,7 +182,7 @@ function addStudentRow(focus = true) {
       </div>
       <div class="form-group">
         <label for="stDob${idx}">Ngày sinh *</label>
-        <input type="date" id="stDob${idx}" data-field="ngaySinh" max="${today}" min="${minDob}" required>
+        <div class="field-date"><input type="date" id="stDob${idx}" data-field="ngaySinh" max="${today}" min="${minDob}" required></div>
         <div class="validation-msg" data-err="ngaySinh">Vui lòng chọn ngày sinh hợp lệ.</div>
       </div>
     </div>`;

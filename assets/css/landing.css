@@ -3,7 +3,10 @@
    ============================================================= */
 
 /* ---------------- ĐIỀU HƯỚNG ---------------- */
-nav {
+/* Phải chỉ đích danh .site-nav chứ không dùng chọn lọc trần `nav`: breadcrumb
+   trên các trang con cũng là thẻ <nav>, nếu để `nav` trần thì breadcrumb bị
+   ghim cố định lên trên và đè mất thanh điều hướng chính. */
+.site-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-nav);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 clamp(16px, 3vw, 36px); height: var(--nav-h);

@@ -6,6 +6,7 @@ import { initReveal } from './reveal.js';
 import { initBranches } from './branches.js';
 import { initTrialForm } from './trial-form.js';
 import { initLogin } from './login.js';
+import { initHomeContent } from './home-content.js';
 import { BRANCHES } from '../core/config.js';
 import { $, esc } from '../core/dom.js';
 
@@ -25,6 +26,7 @@ function boot() {
   fillBranchSelect();
   initTrialForm();
   initLogin();
+  initHomeContent();   // tin tức + album nạp sau, không chặn phần còn lại của trang
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
