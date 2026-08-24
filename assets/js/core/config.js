@@ -3,6 +3,13 @@
    Sửa thông tin cơ sở, ca học, vai trò... chỉ ở file này.
    ============================================================= */
 
+/* CHÚ Ý — đây vẫn là URL Apps Script CŨ (của bên khác).
+
+   Backend mới của trung tâm đã viết xong trong thư mục backend/ nhưng chưa
+   deploy. Sau khi deploy (xem docs/TRIEN-KHAI.md phần D) phải dán URL /exec
+   mới vào đây, nếu không website vẫn nói chuyện với hệ thống của bên kia.
+
+   Đổi một dòng này là xong, không phải sửa chỗ nào khác. */
 export const API_URL =
   'https://script.google.com/macros/s/AKfycbz7YuEDaXJf5HSo996smVje3jsZyNeb_s1FKWWgJjwiiDmYA1hYrHNtH2biBIfSnzkQ/exec';
 
@@ -165,13 +172,23 @@ export const ROLE_LABELS = {
   admin: 'Quản trị viên',
 };
 
-/** Chuẩn hoá vai trò từ dữ liệu cũ (cột `role` đang là text tự do tiếng Việt). */
+/** Chuẩn hoá vai trò về một trong các mã trong ROLES.
+
+    Nhận cả mã hệ thống (`le_tan`, `phu_huynh`) lẫn chữ người gõ tay
+    ("Lễ tân", "Phụ huynh"). Phải bỏ dấu VÀ bỏ dấu gạch dưới trước khi so:
+    trước đây `le_tan` không khớp nhánh nào nên rơi xuống mặc định HLV — lễ
+    tân hiện nhầm thành huấn luyện viên, còn tài khoản phụ huynh thì vào
+    thẳng giao diện nhân viên. */
 export function normalizeRole(raw) {
-  const r = String(raw || '').toLowerCase().trim();
-  if (r.includes('admin') || r.includes('quản trị')) return ROLES.ADMIN;
-  if (r.includes('lễ tân') || r.includes('le tan') || r.includes('letan')) return ROLES.LE_TAN;
-  if (r.includes('trưởng') || r.includes('truong')) return ROLES.HLV_TRUONG;
-  if (r.includes('phụ huynh') || r.includes('phu huynh')) return ROLES.PHU_HUYNH;
+  const r = String(raw || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!r) return ROLES.HLV;
+  if (r.includes('admin') || r.includes('quantri')) return ROLES.ADMIN;
+  if (r.includes('letan')) return ROLES.LE_TAN;
+  if (r.includes('truong')) return ROLES.HLV_TRUONG;
+  if (r.includes('phuhuynh')) return ROLES.PHU_HUYNH;
   return ROLES.HLV;
 }
 

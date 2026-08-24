@@ -191,6 +191,70 @@
 </div>
 
 <!-- ═══════════ 6. LỊCH CHUNG ═══════════ -->
+<!-- ═══════════ QUẢN LÝ TÀI KHOẢN (chỉ admin) ═══════════ -->
+<div id="accountsModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Quản lý tài khoản</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-tabs" role="tablist">
+      <button class="m-tab-btn active" type="button" data-mtab="list" role="tab">Danh sách</button>
+      <button class="m-tab-btn" type="button" data-mtab="new" role="tab">Tạo tài khoản</button>
+    </div>
+
+    <div class="modal-body m-tab-panel active" data-mpanel="list">
+      <div class="form-group">
+        <label for="acFilterBranch">Lọc theo cơ sở</label>
+        <select id="acFilterBranch"></select>
+      </div>
+      <div id="acList"></div>
+    </div>
+
+    <div class="modal-body m-tab-panel" data-mpanel="new">
+      <form id="acNewForm" novalidate>
+        <div class="form-row">
+          <div class="form-group"><label for="acHoTen">Họ và tên *</label>
+            <input type="text" id="acHoTen" required placeholder="VD: Nguyễn Văn An"></div>
+          <div class="form-group"><label for="acSdt">Số điện thoại *</label>
+            <input type="tel" id="acSdt" required placeholder="0xxxxxxxxx" inputmode="numeric"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="acVaiTro">Vai trò *</label>
+            <select id="acVaiTro" required>
+              <option value="hlv">Huấn luyện viên</option>
+              <option value="hlv_truong">HLV Trưởng</option>
+              <option value="le_tan">Lễ tân</option>
+              <option value="admin">Quản trị viên</option>
+              <option value="phu_huynh">Phụ huynh</option>
+            </select></div>
+          <div class="form-group"><label for="acCoSo">Cơ sở phụ trách</label>
+            <select id="acCoSo"></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="acMaNV">Mã nhân viên</label>
+            <input type="text" id="acMaNV" placeholder="VD: TKD08"></div>
+          <div class="form-group"><label for="acEmail">Email</label>
+            <input type="email" id="acEmail" placeholder="Không bắt buộc"></div>
+        </div>
+        <div class="form-group" id="acMaPHGroup" style="display:none">
+          <label for="acMaPH">Mã phụ huynh *</label>
+          <input type="text" id="acMaPH" placeholder="VD: PH001 — dùng để gắn với hồ sơ võ sinh">
+          <p class="form-hint">Mã này phải trùng cột <strong>maPH</strong> trong sheet VoSinh của các con,
+             nếu không phụ huynh đăng nhập sẽ không thấy hồ sơ nào.</p>
+        </div>
+        <div id="acErr" class="validation-msg">Điền đủ họ tên và số điện thoại hợp lệ.</div>
+        <div id="acNewResult"></div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" data-close>Đóng</button>
+      <button type="button" class="btn-save" id="acCreateBtn">Tạo tài khoản</button>
+    </div>
+  </div>
+</div>
+
 <div id="commonEventModal" class="modal-overlay" aria-hidden="true">
   <div class="modal-content" role="dialog" aria-modal="true">
     <div class="modal-header">

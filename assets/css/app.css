@@ -144,6 +144,13 @@
 .slot-toggle:focus-visible + .slot-label { outline: 3px solid var(--light-blue); outline-offset: 2px; }
 .slot-toggle:disabled + .slot-label { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; border-color: transparent; background: transparent; }
 
+/* Khung nhắc việc trong modal — VD mật khẩu tạm chỉ hiện một lần */
+.note-box {
+  padding: 14px 16px; background: rgba(0, 71, 171, 0.06);
+  border-left: 4px solid var(--primary-blue); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-size: 13px; line-height: 1.7; color: var(--text-main);
+}
+
 .conflict-warning {
   padding: 12px 16px; background: rgba(255, 214, 0, 0.1); border-left: 4px solid var(--yellow);
   font-size: 12px; color: var(--text-main); margin-bottom: 20px; display: none; border-radius: 0 var(--r-sm) var(--r-sm) 0;

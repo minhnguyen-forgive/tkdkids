@@ -22,6 +22,7 @@ import {
   toISODate, fromISODate, MONTH_NAMES, isValidPassword, isValidPhone, isValidEmail,
 } from '../core/format.js';
 import { initAttendance, openMyAttendancePayroll, openApproveAttendancePayroll } from './attendance.js';
+import { initAccounts, openAccountsModal } from './accounts.js';
 
 let user = null;
 let calendarDate = new Date();
@@ -71,6 +72,8 @@ export function renderStaffDashboard(u) {
       <button class="ops-btn" data-op="approval"><span class="ops-icon">✅</span><span>Duyệt đơn nghỉ phép</span></button>
       <button class="ops-btn" data-op="commonevent"><span class="ops-icon">📢</span><span>Thêm lịch chung</span></button>
       <button class="ops-btn" data-op="approveattendance"><span class="ops-icon">📊</span><span>Duyệt chấm công &amp; lương</span></button>` : ''}
+      ${user.role === 'admin' ? `
+      <button class="ops-btn" data-op="accounts"><span class="ops-icon">👥</span><span>Quản lý tài khoản</span></button>` : ''}
     </div>
 
     <section class="calendar-wrapper">
@@ -98,6 +101,7 @@ export function renderStaffDashboard(u) {
   fillProfile();
   bindOps();
   initAttendance(user);
+  if (user.role === 'admin') initAccounts(user);
 
   $('#calPrev').addEventListener('click', () => { calendarDate.setMonth(calendarDate.getMonth() - 1); renderCalendar(); });
   $('#calNext').addEventListener('click', () => { calendarDate.setMonth(calendarDate.getMonth() + 1); renderCalendar(); });
@@ -130,6 +134,7 @@ function bindOps() {
     approval: openApprovalModal,
     commonevent: openCommonEventModal,
     approveattendance: openApproveAttendancePayroll,
+    accounts: openAccountsModal,
   };
   $$('[data-op]').forEach(btn => btn.addEventListener('click', () => handlers[btn.dataset.op]?.()));
   $('#btnEditProfile').addEventListener('click', openEditProfile);

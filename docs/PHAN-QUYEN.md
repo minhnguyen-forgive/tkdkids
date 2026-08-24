@@ -22,7 +22,7 @@ hai mã vì HLV trưởng có thêm quyền duyệt.
 |---|---|
 | Xem/làm được mọi việc của nhóm 3 và 4, không giới hạn cơ sở | Có (vai trò `admin` đã được `isApprover` cho qua) |
 | Duyệt nghỉ phép, duyệt chấm công & lương, thêm lịch chung | Có |
-| **Tạo / khoá tài khoản, đổi vai trò người khác** | Backend đã có (`taoTaiKhoan`, `datLaiMatKhau`, `doiVaiTro`, `khoaTaiKhoan`, `danhSachTaiKhoan` trong `Auth.gs`) — **còn thiếu màn hình** trong app |
+| **Tạo / khoá tài khoản, đổi vai trò, đặt lại mật khẩu** | **Xong** — nút "Quản lý tài khoản" trong app, xem [`accounts.js`](../assets/js/app/accounts.js) |
 | Xem toàn bộ học viên của cả 7 cơ sở | Chưa có (chưa có màn hình danh sách học viên) |
 | Xem danh sách đăng ký học thử từ trang chủ | Backend đã có (`listDangKyTuVan`) — còn thiếu màn hình |
 
@@ -64,10 +64,10 @@ chứa ảnh đã có, chỉ còn phần tải lên và gắn vào hồ sơ.
 
 ## Việc phải làm, theo thứ tự phụ thuộc
 
-1. ~~**Quản lý tài khoản**: bảng tài khoản riêng, mật khẩu băm, chuyển tài khoản
-   cũ sang.~~ **Xong phần backend** — `backend/Auth.gs`, triển khai theo bước 6
-   của [TRIEN-KHAI.md](TRIEN-KHAI.md). Còn thiếu màn hình quản lý tài khoản cho
-   admin trong app (nay admin gọi được API nhưng chưa có giao diện).
+1. ~~**Quản lý tài khoản**: bảng tài khoản riêng, mật khẩu băm, màn hình cho
+   admin.~~ **Xong cả backend và giao diện** — `backend/Auth.gs` +
+   `assets/js/app/accounts.js`. Admin tạo tài khoản, đặt lại mật khẩu, đổi vai
+   trò, khoá/mở ngay trong app; mật khẩu tạm hiện đúng một lần.
 2. ~~**Kiểm quyền phía máy chủ ở mọi action**~~ **Xong** — cổng `xacThuc_` đứng
    trước mọi action: bắt buộc có token, ghi đè mã nhân viên theo chủ token,
    chặn phụ huynh gọi lệnh nội bộ, chặn người không phải quản lý gọi lệnh

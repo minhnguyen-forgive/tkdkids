@@ -96,10 +96,14 @@ thống mới không cần, đặt `bat_buoc` ngay.
 Đăng nhập `0934641039` / `admin` → hệ thống mở sẵn ô đổi mật khẩu → **đổi ngay**.
 Mật khẩu mới từ 6 ký tự, chỉ chữ và số, có ít nhất 1 chữ hoa và 1 chữ số.
 
-Tạo tài khoản cho nhân sự 7 cơ sở: chưa có màn hình quản lý nên tạm dùng hàm
+Tạo tài khoản cho nhân sự 7 cơ sở: đăng nhập admin → nút **Quản lý tài khoản**
+→ tab **Tạo tài khoản**. Điền tên, số điện thoại, vai trò, cơ sở; hệ thống sinh
+mật khẩu tạm và hiện **đúng một lần** để gửi cho người dùng. Cùng chỗ đó đặt lại
+được mật khẩu, đổi vai trò, khoá/mở tài khoản.
+
+Không vào được app (VD quên mật khẩu admin) thì còn đường dự phòng: hàm
 **`taoNhanhMotTaiKhoan`** trong file `Auth` — sửa 4 biến ở đầu hàm rồi ▶ Run,
-mật khẩu tạm in ra Execution log, gửi riêng cho từng người. Vai trò nhận một
-trong: `admin`, `hlv_truong`, `hlv`, `le_tan`, `phu_huynh`.
+mật khẩu tạm in ra Execution log.
 
 Cấu trúc cột của 3 tab trong Sheet tài khoản — script tự tạo, **đừng đổi tên
 cột**, và **đừng bao giờ gõ mật khẩu chữ thô vào cột `matKhau`** (cột đó chỉ
@@ -141,6 +145,6 @@ huynh chỉ thấy **con mình** và bị chặn khỏi mọi lệnh nội bộ.
 token ra người thật rồi ghi đè mã nhân viên trong tham số, nên sửa dữ liệu gửi
 lên từ trình duyệt cũng không mạo danh được ai.
 
-Còn thiếu (xem [PHAN-QUYEN.md](PHAN-QUYEN.md)): màn hình quản lý tài khoản, lễ
-tân tạo hồ sơ võ sinh sinh mã tự động, lịch sử thi lên đai, ảnh theo học viên,
-chỉ số phát triển.
+Còn thiếu (xem [PHAN-QUYEN.md](PHAN-QUYEN.md)): lễ tân tạo hồ sơ võ sinh sinh
+mã tự động, danh sách học viên theo cơ sở, lịch sử thi lên đai, ảnh theo học
+viên, chỉ số phát triển.
