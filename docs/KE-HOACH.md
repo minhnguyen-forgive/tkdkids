@@ -114,8 +114,8 @@ Còn lại:
 
 ### BỐ CỤC TRANG CHỦ  ✅ SẮP XẾP LẠI (24/08/2026)
 
-Thứ tự mới: Banner → Tin tức → Hệ thống cơ sở → **Huấn luyện viên** → Lịch sử →
-Đối tác → Ưu đãi → Kiến thức → Album ảnh.
+Thứ tự mới: Banner → Tin tức → Hệ thống cơ sở → **Huấn luyện viên** → Ưu đãi →
+Kiến thức → Album ảnh → Đối tác → Lịch sử hình thành.
 
 - [x] Section **Huấn luyện viên** tự chuyển slide 5 giây/người, có hiệu ứng xoay
       thẻ theo trục dọc và xếp chồng chiều sâu (`docs/HUAN-LUYEN-VIEN.md`)
