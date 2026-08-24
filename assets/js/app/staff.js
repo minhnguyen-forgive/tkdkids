@@ -157,26 +157,10 @@ function openEditProfile() {
   openModal('editProfileModal');
 }
 
-/** Đổi mật khẩu qua action `doiMatKhau` của Auth.gs — mật khẩu được băm và
-    lưu ở Sheet tài khoản riêng, nên phải đi đường này chứ không gửi kèm
-    updateProfile như trước (updateProfile ghi vào bảng cũ, chỗ đó đã bỏ).
-
-    Backend chưa deploy Auth.gs thì rơi về đường cũ, bỏ đoạn dự phòng sau khi
-    đã deploy. */
+/** Đổi mật khẩu — mật khẩu được băm và lưu ở Sheet tài khoản riêng, nên phải
+    đi qua action doiMatKhau chứ không gửi kèm updateProfile. */
 async function doiMatKhau(matKhauCu, matKhauMoi) {
-  try {
-    await callApi('doiMatKhau', { matKhauCu, matKhauMoi });
-  } catch (err) {
-    if (err.kind === 'business' && /Action không hợp lệ/i.test(err.message || '')) {
-      await callApi('updateProfile', {
-        maNV: user.maNV, fullName: $('#epFullName').value.trim(),
-        phone: $('#epPhone').value.trim(), email: $('#epEmail').value.trim(),
-        dob: $('#epDob').value, role: $('#epRole').value, newPassword: matKhauMoi,
-      });
-      return;
-    }
-    throw err;
-  }
+  await callApi('doiMatKhau', { matKhauCu, matKhauMoi });
   sessionStorage.removeItem('tkd.phaiDoiMatKhau');
 }
 

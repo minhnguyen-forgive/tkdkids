@@ -1,31 +1,21 @@
 /* =============================================================
    ĐĂNG NHẬP AN TOÀN — Auth.gs
-   Dán vào Apps Script như một FILE MỚI. Không sửa code cũ.
+   Một trong năm file backend của trung tâm. Xem docs/TRIEN-KHAI.md.
 
-   Sửa ba lỗ hổng của hệ thống đăng nhập hiện tại:
+   Tài khoản KHÔNG nằm cùng Sheet dữ liệu mà ở một Sheet riêng, không share
+   cho ai. Web app chạy bằng quyền chủ sở hữu nên script vẫn đọc được, còn
+   nhân viên thì không mở được file đó.
 
-   1. Mật khẩu nằm cùng Sheet dữ liệu, có thể đang là chữ đọc được.
-      -> Chuyển sang một Sheet RIÊNG (chỉ chủ sở hữu mở được), và không lưu
-         mật khẩu mà lưu chuỗi băm: sha256$1000$muối$hash. Mỗi tài khoản một
-         muối riêng nên hai người trùng mật khẩu vẫn ra hai chuỗi khác nhau,
-         và băm 1000 vòng để máy dò mật khẩu phải trả giá gấp 1000 lần.
+   Mật khẩu không lưu thô, lưu chuỗi sha256$1000$muối$hash. Mỗi tài khoản
+   một muối riêng nên hai người trùng mật khẩu vẫn ra hai chuỗi khác nhau;
+   băm 1000 vòng để máy dò mật khẩu phải trả giá gấp 1000 lần.
 
-   2. Máy chủ tin vào mã nhân viên do trình duyệt gửi lên, nên sửa một dòng
-      trong DevTools là tự phong thành admin.
-      -> Đăng nhập xong máy chủ phát một token ngẫu nhiên, mọi lệnh sau đó
-         phải kèm token. Cổng xacThuc_ tra token ra chủ nhân thật rồi GHI ĐÈ
-         maNV / maPH / vai trò trong tham số, nên trình duyệt gửi gì cũng vô
-         nghĩa. Token thô không được lưu ở đâu cả — Sheet chỉ giữ bản băm.
+   Đăng nhập xong máy chủ phát token, mọi lệnh sau đó phải kèm token. Cổng
+   xacThuc_ tra token ra chủ nhân thật rồi GHI ĐÈ maNV / maPH / vai trò
+   trong tham số, nên trình duyệt gửi mã của người khác cũng vô nghĩa. Token
+   thô không lưu ở đâu cả — Sheet chỉ giữ bản băm, đăng xuất là thu hồi.
 
-   3. Các lệnh đọc không kiểm gì: gọi getSchedule với mã bịa vẫn ra lịch thật.
-      -> Cổng xacThuc_ đứng trước TOÀN BỘ action, kể cả action của script cũ,
-         nên không phải sửa code cũ vẫn khoá được.
-
-   CÁCH TRIỂN KHAI — xem docs/TRIEN-KHAI.md bước 6. Ba việc:
-     a) Chạy hàm khoiTaoBangTaiKhoan (một lần)
-     b) Thêm cổng xacThuc_ vào doPost
-     c) Khi mọi người đăng nhập được bằng đường mới thì bật CHE_DO_TOKEN =
-        'bat_buoc' để chặn hẳn lệnh không có token
+   Chạy MỘT LẦN hàm khoiTaoBangTaiKhoan để dựng bảng và tạo admin tổng.
    ============================================================= */
 
 /* Sheet quản lý tài khoản — TÁCH RIÊNG khỏi Sheet dữ liệu.
@@ -38,9 +28,9 @@ var AUTH_SHEET_TK     = 'TaiKhoan';
 var AUTH_SHEET_PHIEN  = 'Phien';
 var AUTH_SHEET_NHATKY = 'NhatKyDangNhap';
 
-var AUTH_COT_TK = ['id', 'maNV', 'maPH', 'hoTen', 'soDienThoai', 'email', 'vaiTro', 'coSo',
-                   'capDai', 'matKhau', 'phaiDoiMatKhau', 'trangThai', 'soLanSai',
-                   'khoaDenLuc', 'ngayTao', 'lanDangNhapCuoi'];
+var AUTH_COT_TK = ['id', 'maNV', 'maPH', 'hoTen', 'soDienThoai', 'email', 'ngaySinh',
+                   'vaiTro', 'coSo', 'capDai', 'chucVu', 'matKhau', 'phaiDoiMatKhau',
+                   'trangThai', 'soLanSai', 'khoaDenLuc', 'ngayTao', 'lanDangNhapCuoi'];
 var AUTH_COT_PHIEN  = ['tokenHash', 'soDienThoai', 'maNV', 'maPH', 'vaiTro', 'coSo',
                        'taoLuc', 'hetHan', 'thuHoiLuc'];
 var AUTH_COT_NHATKY = ['thoiGian', 'soDienThoai', 'action', 'ketQua', 'ghiChu'];
@@ -51,23 +41,7 @@ var AUTH_SAI_TOI_DA   = 5;                 // sai 5 lần thì khoá tạm
 var AUTH_KHOA_PHUT    = 15;                // khoá tạm 15 phút
 
 /* Action ai cũng gọi được, không cần token */
-var AUTH_ACTION_CONG_KHAI = ['dangNhap', 'dangKyTuVan', 'login_hlv', 'login_parent'];
-
-/* LỖ CÒN LẠI, CÓ CHỦ Ý — đóng ở giai đoạn 2.
-
-   Tài khoản phụ huynh vẫn đăng nhập bằng đường cũ (login_parent), vì danh
-   sách con của phụ huynh nằm trong bảng cũ mà đường mới chưa đọc được. Phụ
-   huynh do đó không có token, nên hai action họ cần phải tạm mở, kể cả khi
-   đã bật CHE_DO_TOKEN=bat_buoc — nếu không thì bảng điều khiển phụ huynh
-   trắng trơn ngay sau khi deploy.
-
-   Mở hai action này KHÔNG ảnh hưởng dữ liệu nhân sự: lịch dạy, chấm công,
-   lương, duyệt đơn đều đã đóng. Chỗ hở là ai biết mã học viên thì đọc được
-   nhận xét của em đó — đúng bằng mức hở hôm nay, không tệ hơn.
-
-   Giai đoạn 2 chuyển hồ sơ võ sinh sang bảng VoSinh (có cột maPH) thì
-   dangNhap trả được danh sách con, phụ huynh có token, và xoá hẳn mảng này. */
-var AUTH_ACTION_TAM_MO = ['listStudentReviews'];
+var AUTH_ACTION_CONG_KHAI = ['dangNhap', 'dangKyTuVan'];
 
 /* Action chỉ admin và HLV trưởng được gọi. Script cũ đã kiểm một phần, đây là
    lớp chặn thứ hai đặt trước, không phụ thuộc code cũ. */
@@ -76,6 +50,16 @@ var AUTH_ACTION_CAP_QUAN_LY = ['listPendingApprovals', 'decideLeaveRequest',
   'addCommonEvent', 'deleteCommonEvent', 'taoTaiKhoan', 'datLaiMatKhau',
   'doiVaiTro', 'khoaTaiKhoan', 'danhSachTaiKhoan', 'listDangKyTuVan',
   'capNhatTrangThaiDangKy'];
+
+/* Action mà maNV / maPH trong tham số là ĐỐI TƯỢNG được tác động, không phải
+   người gọi: admin tạo tài khoản cho người khác, HLV trưởng duyệt lương của
+   một HLV... Với mấy action này cổng KHÔNG ghi đè maNV, nếu ghi đè thì admin
+   tạo tài khoản nào cũng thành mã của chính admin.
+
+   Danh tính người gọi vẫn luôn có ở p._maNV / p._vaiTro / p._coSo, và quyền
+   vẫn bị kiểm bằng AUTH_ACTION_CAP_QUAN_LY bên dưới. */
+var AUTH_ACTION_MANV_LA_DOI_TUONG = ['taoTaiKhoan', 'datLaiMatKhau', 'doiVaiTro',
+  'khoaTaiKhoan', 'decidePayroll'];
 
 /* Tài khoản phụ huynh/học viên CHỈ được gọi mấy việc này — danh sách trắng,
    thêm action mới cũng không tự động mở cho họ. */
@@ -305,7 +289,6 @@ function xacThuc_(e) {
   var action = String(p.action || '');
   if (!action) return null;
   if (AUTH_ACTION_CONG_KHAI.indexOf(action) !== -1) return null;
-  if (AUTH_ACTION_TAM_MO.indexOf(action) !== -1 && !p.token) return null;
 
   var batBuoc = String(PropertiesService.getScriptProperties()
                        .getProperty('CHE_DO_TOKEN') || 'canh_bao') === 'bat_buoc';
@@ -337,10 +320,14 @@ function xacThuc_(e) {
     return auth_fail_('Bạn không có quyền thực hiện việc này.', 'KHONG_DU_QUYEN');
   }
 
-  /* Ghi đè danh tính: từ đây code cũ đọc p.maNV là đọc người thật, không phải
-     chuỗi do trình duyệt gửi lên. Đây là chỗ bịt lỗ tự phong vai trò. */
-  p.maNV = phien.maNV;
-  p.maPH = phien.maPH;
+  /* Ghi đè danh tính: từ đây p.maNV là người thật, không phải chuỗi do trình
+     duyệt gửi lên. Đây là chỗ bịt lỗ tự phong vai trò. */
+  if (AUTH_ACTION_MANV_LA_DOI_TUONG.indexOf(action) === -1) {
+    p.maNV = phien.maNV;
+    p.maPH = phien.maPH;
+  }
+  p._maNV = phien.maNV;
+  p._maPH = phien.maPH;
   p._vaiTro = phien.vaiTro;
   p._coSo = phien.coSo;
   p._sdt = phien.sdt;
@@ -367,14 +354,90 @@ function routeAuthActions_(e) {
 }
 
 function auth_hoSo_(tk) {
-  return {
+  var ho = {
     maNV: String(tk.maNV || ''), maPH: String(tk.maPH || ''),
-    hoTen: String(tk.hoTen || ''), soDienThoai: auth_chuanSdt_(tk.soDienThoai),
-    email: String(tk.email || ''), role: String(tk.vaiTro || ''),
-    vaiTro: String(tk.vaiTro || ''), coSo: String(tk.coSo || ''),
-    capDai: String(tk.capDai || ''),
+    hoTen: String(tk.hoTen || ''), full_name: String(tk.hoTen || ''),
+    soDienThoai: auth_chuanSdt_(tk.soDienThoai), phone: auth_chuanSdt_(tk.soDienThoai),
+    email: String(tk.email || ''),
+    ngaySinh: auth_ngayStr_(tk.ngaySinh), dob: auth_ngayStr_(tk.ngaySinh),
+    role: String(tk.vaiTro || ''), vaiTro: String(tk.vaiTro || ''),
+    coSo: String(tk.coSo || ''), branch: String(tk.coSo || ''),
+    capDai: String(tk.capDai || ''), belt_level: String(tk.capDai || ''),
+    chucVu: String(tk.chucVu || ''),
     phaiDoiMatKhau: String(tk.phaiDoiMatKhau) === 'true' || tk.phaiDoiMatKhau === true
   };
+
+  /* Tài khoản phụ huynh cần kèm danh sách con, vì bảng điều khiển phụ huynh
+     dựng hồ sơ từng võ sinh ngay khi vào. Hàm đọc bảng VoSinh nằm ở
+     Api_HeThong.gs — kiểm tra typeof để Auth.gs vẫn chạy được một mình. */
+  var v = String(tk.vaiTro || '').toLowerCase();
+  if ((v.indexOf('phu_huynh') !== -1 || v.indexOf('phụ huynh') !== -1) &&
+      typeof hs_dsVoSinhTheoPhuHuynh_ === 'function') {
+    ho.students = hs_dsVoSinhTheoPhuHuynh_(String(tk.maPH || ''));
+  }
+  return ho;
+}
+
+function auth_ngayStr_(v) {
+  if (!v) return '';
+  if (v instanceof Date) return Utilities.formatDate(v, 'Asia/Ho_Chi_Minh', 'yyyy-MM-dd');
+  return String(v).substring(0, 10);
+}
+
+/* ---------- Hàm cho Api_HeThong.gs dùng lại bảng tài khoản ---------- */
+
+/** Một tài khoản theo số điện thoại. Trả cả _row/_sheet để sửa được. */
+function authTaiKhoanTheoSdt_(sdt) {
+  return auth_timTaiKhoan_(auth_chuanSdt_(sdt));
+}
+
+/** Một tài khoản theo mã nhân viên. */
+function authTaiKhoanTheoMaNV_(maNV) {
+  var sh = auth_sheet_(AUTH_SHEET_TK, AUTH_COT_TK);
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return null;
+  var m = auth_map_(sh);
+  var vals = sh.getRange(2, 1, lastRow - 1, sh.getLastColumn()).getValues();
+  for (var i = 0; i < vals.length; i++) {
+    if (String(vals[i][m['maNV']]).trim() !== String(maNV).trim()) continue;
+    return {
+      maNV: String(vals[i][m['maNV']]), hoTen: String(vals[i][m['hoTen']]),
+      coSo: String(vals[i][m['coSo']]), vaiTro: String(vals[i][m['vaiTro']]),
+      soDienThoai: auth_chuanSdt_(vals[i][m['soDienThoai']])
+    };
+  }
+  return null;
+}
+
+/** Toàn bộ nhân sự (không gồm phụ huynh) — dùng để dựng bảng lương. */
+function authDanhSachNhanSu_() {
+  var sh = auth_sheet_(AUTH_SHEET_TK, AUTH_COT_TK);
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return [];
+  var m = auth_map_(sh);
+  var vals = sh.getRange(2, 1, lastRow - 1, sh.getLastColumn()).getValues();
+  var out = [];
+  for (var i = 0; i < vals.length; i++) {
+    var vaiTro = String(vals[i][m['vaiTro']] || '').toLowerCase();
+    if (vaiTro.indexOf('phu_huynh') !== -1 || vaiTro.indexOf('phụ huynh') !== -1) continue;
+    if (String(vals[i][m['trangThai']] || '').toLowerCase().indexOf('kho') === 0) continue;
+    out.push({
+      maNV: String(vals[i][m['maNV']] || ''), hoTen: String(vals[i][m['hoTen']] || ''),
+      coSo: String(vals[i][m['coSo']] || ''), vaiTro: String(vals[i][m['vaiTro']] || '')
+    });
+  }
+  return out;
+}
+
+/** Sửa hồ sơ (không đụng mật khẩu, vai trò, cơ sở). */
+function authSuaHoSo_(tk, patch) {
+  var cho = {};
+  var duocSua = ['hoTen', 'soDienThoai', 'email', 'ngaySinh', 'chucVu', 'capDai'];
+  for (var i = 0; i < duocSua.length; i++) {
+    if (patch[duocSua[i]] !== undefined) cho[duocSua[i]] = patch[duocSua[i]];
+  }
+  auth_capNhat_(tk, cho);
+  return true;
 }
 
 function authDangNhap_(p) {
@@ -557,10 +620,7 @@ function khoiTaoBangTaiKhoan() {
   Logger.log('Đã dựng 3 sheet trong file tài khoản: ' + auth_ss_().getName());
   Logger.log('  ' + auth_ss_().getUrl());
 
-  var ket = chuyenTaiKhoanCu_();
-  Logger.log('Chuyển tài khoản cũ: ' + ket.thongBao);
-
-  /* Admin tổng theo yêu cầu — mật khẩu tạm, bắt đổi ngay lần đăng nhập đầu */
+  /* Admin tổng. Mật khẩu tạm, có cờ bắt đổi ngay lần đăng nhập đầu. */
   var SDT_ADMIN = '0934641039';
   var tk = auth_timTaiKhoan_(SDT_ADMIN);
   if (tk) {
@@ -571,88 +631,38 @@ function khoiTaoBangTaiKhoan() {
   } else {
     auth_them_(AUTH_SHEET_TK, AUTH_COT_TK, {
       id: Utilities.getUuid(), maNV: 'ADMIN', maPH: '', hoTen: 'Quản trị hệ thống',
-      soDienThoai: SDT_ADMIN, email: '', vaiTro: 'admin', coSo: '', capDai: '',
+      soDienThoai: SDT_ADMIN, email: '', ngaySinh: '', vaiTro: 'admin', coSo: '',
+      capDai: '', chucVu: 'Quản trị hệ thống',
       matKhau: auth_taoChuoiBam_('admin'), phaiDoiMatKhau: true, trangThai: 'Hoạt động',
       soLanSai: 0, khoaDenLuc: '', ngayTao: new Date(), lanDangNhapCuoi: ''
     });
     Logger.log('Admin tổng ' + SDT_ADMIN + ': đã tạo, mật khẩu tạm "admin".');
   }
+
   Logger.log('');
   Logger.log('VIỆC TIẾP THEO:');
-  Logger.log('  1. Thêm cổng xacThuc_ vào doPost (xem docs/TRIEN-KHAI.md bước 6).');
-  Logger.log('  2. Deploy version mới.');
-  Logger.log('  3. Đăng nhập bằng ' + SDT_ADMIN + ' / admin rồi đổi mật khẩu ngay.');
-  Logger.log('  4. Khi mọi người đăng nhập được, đặt Script Property CHE_DO_TOKEN = bat_buoc.');
+  Logger.log('  1. Chạy taoToanBoCauTruc (file Setup) để dựng Sheet dữ liệu.');
+  Logger.log('  2. Deploy: Deploy > New deployment > Web app,');
+  Logger.log('     Execute as = Me, Who has access = Anyone.');
+  Logger.log('  3. Copy URL /exec dán vào API_URL trong assets/js/core/config.js.');
+  Logger.log('  4. Đăng nhập ' + SDT_ADMIN + ' / admin rồi đổi mật khẩu ngay.');
+  Logger.log('  5. Đặt Script Property CHE_DO_TOKEN = bat_buoc.');
+  Logger.log('  6. Tạo tài khoản cho nhân sự 7 cơ sở bằng action taoTaiKhoan.');
 }
 
-/** Chuyển tài khoản từ bảng cũ sang bảng mới. Mật khẩu chữ thô thì băm luôn;
-    mật khẩu đã băm kiểu khác thì cấp mật khẩu tạm và in ra để admin phát lại. */
-function chuyenTaiKhoanCu_() {
-  if (typeof tk_timBang_ !== 'function') {
-    return { thongBao: 'chưa có file TaoAdmin.gs (cần hàm dò bảng cũ) nên bỏ qua bước chuyển.' };
+/** Tạo nhanh một tài khoản từ trình soạn thảo, khi chưa có màn hình quản lý.
+    Sửa 4 biến rồi ▶ Run. Mật khẩu tạm in ra Execution log. */
+function taoNhanhMotTaiKhoan() {
+  var SDT    = '09xxxxxxxx';
+  var HO_TEN = 'Nguyễn Văn A';
+  var VAI_TRO= 'le_tan';      // admin | hlv_truong | hlv | le_tan | phu_huynh
+  var CO_SO  = 'Hapulico';    // để trống nếu là admin tổng
+
+  if (SDT.indexOf('x') !== -1) { Logger.log('Sửa 4 biến ở đầu hàm trước đã.'); return; }
+  var kq = authTaoTaiKhoan_({ soDienThoai: SDT, hoTen: HO_TEN, vaiTro: VAI_TRO, coSo: CO_SO });
+  Logger.log(JSON.stringify(kq, null, 2));
+  if (kq.status === 'success') {
+    Logger.log('Gửi riêng cho người này: ' + kq.soDienThoai + ' / ' + kq.matKhauTam);
+    Logger.log('Họ đăng nhập xong hệ thống sẽ bắt đổi mật khẩu.');
   }
-  var ds = tk_timBang_();
-  if (!ds.length) return { thongBao: 'không tìm thấy bảng tài khoản cũ, bỏ qua.' };
-
-  var b = ds[0];
-  var dang = tk_dangMatKhau_(b).dang;
-  var lastRow = b.sheet.getLastRow();
-  if (lastRow < 2) return { thongBao: 'bảng cũ "' + b.ten + '" chưa có dòng nào.' };
-
-  var vals = b.sheet.getRange(2, 1, lastRow - 1, b.sheet.getLastColumn()).getValues();
-  var them = 0, boQua = 0, tamThoi = [];
-  for (var i = 0; i < vals.length; i++) {
-    var sdt = auth_chuanSdt_(vals[i][b.cot.sdt]);
-    if (!/^0\d{9}$/.test(sdt)) { boQua++; continue; }
-    if (auth_timTaiKhoan_(sdt)) { boQua++; continue; }
-
-    var matKhauCu = String(vals[i][b.cot.matKhau] || '');
-    var chuoiBam, phaiDoi;
-    if (dang === 'tho' && matKhauCu) {
-      chuoiBam = auth_taoChuoiBam_(matKhauCu);   // giữ nguyên mật khẩu người dùng đang dùng
-      phaiDoi = false;
-    } else {
-      var tam = auth_matKhauTamNgauNhien_();
-      chuoiBam = auth_taoChuoiBam_(tam);
-      phaiDoi = true;
-      tamThoi.push(sdt + ' : ' + tam);
-    }
-
-    auth_them_(AUTH_SHEET_TK, AUTH_COT_TK, {
-      id: Utilities.getUuid(),
-      maNV: b.cot.maNV !== -1 ? String(vals[i][b.cot.maNV] || '') : '',
-      maPH: '',
-      hoTen: b.cot.hoTen !== -1 ? String(vals[i][b.cot.hoTen] || '') : '',
-      soDienThoai: sdt,
-      email: b.cot.email !== -1 ? String(vals[i][b.cot.email] || '') : '',
-      vaiTro: b.cot.vaiTro !== -1 ? String(vals[i][b.cot.vaiTro] || 'hlv') : 'hlv',
-      coSo: b.cot.coSo !== -1 ? String(vals[i][b.cot.coSo] || '') : '',
-      capDai: '', matKhau: chuoiBam, phaiDoiMatKhau: phaiDoi,
-      trangThai: 'Hoạt động', soLanSai: 0, khoaDenLuc: '',
-      ngayTao: new Date(), lanDangNhapCuoi: ''
-    });
-    them++;
-  }
-
-  if (tamThoi.length) {
-    Logger.log('  Mật khẩu cũ đã băm nên không chuyển được, các tài khoản sau được cấp');
-    Logger.log('  mật khẩu tạm — gửi riêng cho từng người, họ đăng nhập xong phải đổi:');
-    for (var t = 0; t < tamThoi.length; t++) Logger.log('    ' + tamThoi[t]);
-  }
-  return { thongBao: 'thêm ' + them + ', bỏ qua ' + boQua + ' (đã có hoặc số không hợp lệ).' };
-}
-
-/** Sau khi xác nhận đăng nhập đường mới chạy tốt: xoá cột mật khẩu ở bảng CŨ
-    để không còn bản mật khẩu nào nằm cùng Sheet dữ liệu. */
-function xoaMatKhauBangCu() {
-  if (typeof tk_timBang_ !== 'function') { Logger.log('Cần file TaoAdmin.gs.'); return; }
-  var ds = tk_timBang_();
-  if (!ds.length) { Logger.log('Không tìm thấy bảng cũ.'); return; }
-  var b = ds[0], lastRow = b.sheet.getLastRow();
-  if (lastRow < 2) { Logger.log('Bảng cũ trống.'); return; }
-  var soDong = lastRow - 1;
-  b.sheet.getRange(2, b.cot.matKhau + 1, soDong, 1).clearContent();
-  Logger.log('Đã xoá ' + soDong + ' ô ở cột "' + b.headers[b.cot.matKhau] +
-             '" của sheet "' + b.ten + '".');
-  Logger.log('Từ giờ đăng nhập chỉ đi qua bảng tài khoản mới.');
 }

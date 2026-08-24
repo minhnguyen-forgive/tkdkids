@@ -13,8 +13,36 @@ var SHEETS_ = (function () {
   var CACHE_TTL = 21600;          // 6 giờ
   var _ssCache = null;
 
+  /* Sheet DỮ LIỆU (khác Sheet tài khoản của Auth.gs — tài khoản để riêng cho
+     không ai ngoài chủ sở hữu đọc được mật khẩu).
+
+     Thứ tự tìm:
+       1. Script Property ID_SHEET_DULIEU — đặt sẵn thì dùng luôn
+       2. Sheet mà project đang gắn vào (nếu script mở từ trong một Sheet)
+       3. Chưa có gì thì TỰ TẠO file "TaekwondoKids-DuLieu" trong Drive của
+          chủ sở hữu rồi ghi id vào Script Property
+
+     Nhờ bước 3 mà project kiểu độc lập (tạo từ script.google.com, không gắn
+     Sheet nào) cũng chạy được — trước đây getActiveSpreadsheet() trả rỗng là
+     mọi thứ đổ. */
   function ss() {
-    if (!_ssCache) _ssCache = SpreadsheetApp.getActiveSpreadsheet();
+    if (_ssCache) return _ssCache;
+    var props = PropertiesService.getScriptProperties();
+    var id = props.getProperty('ID_SHEET_DULIEU');
+    if (id) {
+      _ssCache = SpreadsheetApp.openById(id);
+      return _ssCache;
+    }
+    var dangGan = null;
+    try { dangGan = SpreadsheetApp.getActiveSpreadsheet(); } catch (e) { dangGan = null; }
+    if (dangGan) {
+      props.setProperty('ID_SHEET_DULIEU', dangGan.getId());
+      _ssCache = dangGan;
+      return _ssCache;
+    }
+    var moi = SpreadsheetApp.create('TaekwondoKids-DuLieu');
+    props.setProperty('ID_SHEET_DULIEU', moi.getId());
+    _ssCache = moi;
     return _ssCache;
   }
 

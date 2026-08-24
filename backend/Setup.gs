@@ -93,6 +93,36 @@ var CAU_TRUC = {
     note: 'Cột noiDungHtml do hệ thống tự ghi khi bấm Xuất bản — không sửa tay'
   },
 
+  /* ---- Sáu sheet nghiệp vụ. Trước đây nằm trong hệ thống của bên khác, nay
+     dựng lại trong Sheet dữ liệu của trung tâm. ---- */
+
+  LichDay: {
+    cols: ['id','maNV','tuanBatDau','thu','ca','coSo','ngayTao'],
+    note: 'thu theo chuẩn JS: 0=Chủ Nhật, 1=Thứ 2 ... 6=Thứ 7'
+  },
+
+  GhiChuLich: {
+    cols: ['id','maNV','ngay','loai','noiDung','ngayTao'],
+    validate: { loai: ['teaching','working','leave'] }
+  },
+
+  LichChung: {
+    cols: ['id','ngay','loai','noiDung','coSo','nguoiTao','ngayTao'],
+    note: 'coSo = ALL nghĩa là toàn hệ thống'
+  },
+
+  NghiPhep: {
+    cols: ['id','maNV','hoTen','coSo','tuNgay','denNgay','lyDo','trangThai',
+           'nguoiDuyet','lyDoTuChoi','ngayTao','ngayQuyetDinh'],
+    validate: { trangThai: ['Chờ duyệt','Đã duyệt','Từ chối'] }
+  },
+
+  Luong: {
+    cols: ['id','maNV','hoTen','coSo','thang','nam','soBuoiDaDuyet','donGia',
+           'tongLuong','trangThai','nguoiDuyet','ngayQuyetDinh'],
+    validate: { trangThai: ['Chờ duyệt','Đã duyệt'] }
+  },
+
   ThongBao: {
     cols: ['id','doiTuong','loai','tieuDe','noiDung','ngayTao','hanXuLy','daDoc']
   }
@@ -115,7 +145,7 @@ var CAU_TRUC_THEO_NAM = {
 /* ---------- HÀM CHÍNH — CHẠY HÀM NÀY ---------- */
 
 function taoToanBoCauTruc() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SHEETS_.ss();
   var nam = new Date().getFullYear();
   var bienBan = [];
 
@@ -232,7 +262,7 @@ function layHoacTaoThuMuc_(cha, ten) {
    Toạ độ tự tra có thể lệch — nên mở Google Maps kiểm lại từng cơ sở. */
 
 function layToaDoCacCoSo() {
-  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CoSo');
+  var sh = SHEETS_.ss().getSheetByName('CoSo');
   if (!sh) throw new Error('Chưa có sheet CoSo. Chạy taoToanBoCauTruc() trước.');
 
   var head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];

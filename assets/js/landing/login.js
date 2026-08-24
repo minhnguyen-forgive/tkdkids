@@ -87,12 +87,13 @@ function buildModal() {
 
   $('#parentLoginForm').addEventListener('submit', ev => {
     ev.preventDefault();
-    doLogin({ action: 'login_parent', phoneSel: '#parentLoginPhone', passSel: '#parentLoginPass',
+    // Hai tab chỉ khác ô nhập; máy chủ tự nhận vai trò từ tài khoản
+    doLogin({ phoneSel: '#parentLoginPhone', passSel: '#parentLoginPass',
               btnSel: '#parentLoginBtn', form: ev.currentTarget });
   });
   $('#internalLoginForm').addEventListener('submit', ev => {
     ev.preventDefault();
-    doLogin({ action: 'login_hlv', phoneSel: '#loginPhone', passSel: '#loginPass',
+    doLogin({ phoneSel: '#loginPhone', passSel: '#loginPass',
               btnSel: '#internalLoginBtn', form: ev.currentTarget });
   });
 }
@@ -106,29 +107,7 @@ export function switchTab(id) {
   }
 }
 
-/** Đăng nhập qua đường mới (Auth.gs: có băm mật khẩu, token, khoá tạm khi dò).
-
-    Backend chưa deploy Auth.gs thì action 'dangNhap' bị trả về "Action không
-    hợp lệ" — lúc đó rơi về đường cũ để website vẫn đăng nhập được bình thường.
-    Bỏ đoạn dự phòng này sau khi đã deploy và xác nhận đường mới chạy. */
-async function dangNhapCoDuPhong(actionCu, phone, password) {
-  /* Chỉ tài khoản nội bộ đi đường mới. Tài khoản phụ huynh vẫn dùng
-     login_parent, vì danh sách con nằm ở bảng cũ mà bảng tài khoản mới chưa
-     đọc được — đi đường mới thì đăng nhập được nhưng vào không thấy con nào.
-     Bỏ điều kiện này ở giai đoạn 2, khi hồ sơ võ sinh chuyển sang bảng mới. */
-  if (actionCu !== 'login_hlv') return callApi(actionCu, { phone, password });
-
-  try {
-    return await callApi('dangNhap', { phone, password });
-  } catch (err) {
-    if (err.kind === 'business' && /Action không hợp lệ/i.test(err.message || '')) {
-      return callApi(actionCu, { phone, password });
-    }
-    throw err;
-  }
-}
-
-async function doLogin({ action, phoneSel, passSel, btnSel, form }) {
+async function doLogin({ phoneSel, passSel, btnSel, form }) {
   const btn = $(btnSel);
   const original = btn.innerHTML;
   btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> ĐANG KẾT NỐI...';
@@ -139,7 +118,7 @@ async function doLogin({ action, phoneSel, passSel, btnSel, form }) {
     // Cho phép đăng nhập bằng mã học viên nên chỉ chuẩn hoá khi đúng dạng số
     const phone = /^[\d+\s.-]+$/.test(phoneRaw) ? normalizePhone(phoneRaw) : phoneRaw;
 
-    const res = await dangNhapCoDuPhong(action, phone, $(passSel).value);
+    const res = await callApi('dangNhap', { phone, password: $(passSel).value });
     saveSession(res.user, res.token);
     if (res.user && res.user.phaiDoiMatKhau) {
       // Tài khoản đang dùng mật khẩu tạm do quản trị viên cấp

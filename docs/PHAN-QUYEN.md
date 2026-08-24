@@ -24,7 +24,7 @@ hai mã vì HLV trưởng có thêm quyền duyệt.
 | Duyệt nghỉ phép, duyệt chấm công & lương, thêm lịch chung | Có |
 | **Tạo / khoá tài khoản, đổi vai trò người khác** | Backend đã có (`taoTaiKhoan`, `datLaiMatKhau`, `doiVaiTro`, `khoaTaiKhoan`, `danhSachTaiKhoan` trong `Auth.gs`) — **còn thiếu màn hình** trong app |
 | Xem toàn bộ học viên của cả 7 cơ sở | Chưa có (chưa có màn hình danh sách học viên) |
-| Xem danh sách đăng ký học thử từ trang chủ | Chưa có (`listDangKyTuVan` chưa deploy) |
+| Xem danh sách đăng ký học thử từ trang chủ | Backend đã có (`listDangKyTuVan`) — còn thiếu màn hình |
 
 ## Nhóm 2 — Học viên
 
@@ -41,10 +41,10 @@ hai mã vì HLV trưởng có thêm quyền duyệt.
 
 | Việc | Hiện trạng |
 |---|---|
-| **Chỉ thấy học viên của cơ sở mình** | **Chưa có** — chưa có danh sách học viên, và backend chưa lọc theo `coSo` |
+| **Chỉ thấy học viên của cơ sở mình** | Backend đã lọc theo `coSo` ở mọi lệnh; còn thiếu màn hình danh sách học viên |
 | **Tạo hồ sơ học viên mới**: chỉ nhập tên, tuổi, nạp ảnh thẻ | **Chưa có** — cần action `taoVoSinh` + màn hình |
 | **Mã học viên do hệ thống sinh, không nhập tay** | Quy tắc đã chốt trong SCHEMA.md: `{code cơ sở}{năm 2 số}{số thứ tự 4 số}` — VD `HP260012`. Chưa cài đặt |
-| Tra cứu học viên theo mã | Có một phần — action `lookupStudent` đã chạy, nhưng **không giới hạn cơ sở** |
+| Tra cứu học viên theo mã | Có — `lookupStudent` đã giới hạn theo cơ sở của người tra |
 
 Ảnh thẻ: [`Setup.gs`](../backend/Setup.gs) đã tạo sẵn thư mục Drive
 `TaekwondoKids-Data` + 5 thư mục con và lưu ID vào Script Properties, nên chỗ
@@ -60,7 +60,7 @@ chứa ảnh đã có, chỉ còn phần tải lên và gắn vào hồ sơ.
 | Duyệt nghỉ phép (chỉ HLV trưởng / admin) | Có |
 | Chấm công (check-in/out có kiểm toạ độ GPS) & xem lương | Có |
 | Nhận xét học viên theo tháng | Có |
-| Tra cứu thông tin học viên (tên, ngày sinh, cấp đai...) | Có một phần — như nhóm 3, chưa giới hạn cơ sở |
+| Tra cứu thông tin học viên (tên, ngày sinh, cấp đai...) | Có — giới hạn theo cơ sở |
 
 ## Việc phải làm, theo thứ tự phụ thuộc
 
@@ -69,10 +69,10 @@ chứa ảnh đã có, chỉ còn phần tải lên và gắn vào hồ sơ.
    của [TRIEN-KHAI.md](TRIEN-KHAI.md). Còn thiếu màn hình quản lý tài khoản cho
    admin trong app (nay admin gọi được API nhưng chưa có giao diện).
 2. ~~**Kiểm quyền phía máy chủ ở mọi action**~~ **Xong** — cổng `xacThuc_` đứng
-   trước mọi action, kể cả action của script cũ: bắt buộc có token, ghi đè mã
-   nhân viên theo chủ token, chặn phụ huynh gọi lệnh nội bộ, chặn người không
-   phải quản lý gọi lệnh duyệt. Còn một lỗ đã biết: `listStudentReviews` tạm mở
-   cho luồng phụ huynh cũ, đóng ở việc số 3.
+   trước mọi action: bắt buộc có token, ghi đè mã nhân viên theo chủ token,
+   chặn phụ huynh gọi lệnh nội bộ, chặn người không phải quản lý gọi lệnh
+   duyệt, và lọc dữ liệu theo cơ sở. Không còn action nào mở cho lệnh không
+   token, trừ `dangNhap` và `dangKyTuVan` (form đăng ký học thử ở trang chủ).
 3. **Hồ sơ võ sinh**: sheet `VoSinh` + sinh mã tự động + lễ tân tạo hồ sơ (tên,
    tuổi, ảnh thẻ) + danh sách lọc theo `coSo`.
 4. **Lịch sử thi lên đai** (`ThiThangCap`) và **ảnh theo học viên** — hai phần
@@ -84,6 +84,12 @@ chứa ảnh đã có, chỉ còn phần tải lên và gắn vào hồ sơ.
 **Bảng tài khoản** (24/08/2026): tách sang một Sheet **riêng**, không share cho
 ai, mật khẩu băm SHA-256 + muối 1000 vòng, máy chủ phát token và kiểm token ở
 mọi lệnh. Đã cài đặt trong `backend/Auth.gs`.
+
+**Backend tự chủ** (24/08/2026): cắt hết phụ thuộc vào Apps Script và Sheet của
+bên khác. Toàn bộ nghiệp vụ dựng lại trong `backend/Api_HeThong.gs`, chạy trong
+project và Sheet của trung tâm — xem [TRIEN-KHAI.md](TRIEN-KHAI.md). Dữ liệu cũ
+(lịch dạy, chấm công, lương của hệ thống bên kia) **không được chuyển sang**: hệ
+thống mới bắt đầu từ dữ liệu trắng, tài khoản nhân sự phải tạo lại.
 
 ## Hai việc còn phải chốt
 

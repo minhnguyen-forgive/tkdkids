@@ -1,249 +1,146 @@
-# HƯỚNG DẪN TRIỂN KHAI — Giai đoạn 0 & 1
+# HƯỚNG DẪN TRIỂN KHAI BACKEND
 
-## A. Việc bạn cần làm trên Google Apps Script (khoảng 5 phút)
+Backend của trung tâm nằm hoàn toàn trong **project Apps Script và Google Sheet
+của trung tâm**. Không còn phụ thuộc gì vào Apps Script hay Sheet của bên nào
+khác. Làm theo đúng thứ tự dưới đây, khoảng 15 phút.
 
-### Bước 1 — Thêm 3 file mới
-Mở project Apps Script hiện tại → nút `+` cạnh **Files** → **Script**:
+---
 
-| Tạo file tên | Dán nội dung từ |
-|---|---|
-| `Sheets` | `backend/Sheets.gs` |
-| `Api_DangKy` | `backend/Api_DangKy.gs` |
-| `Setup` | `backend/Setup.gs` |
+## A. Năm file dán vào Apps Script
 
-> Không sửa, không xoá file cũ. Ba file này độc lập hoàn toàn.
+Mở project Apps Script (script.google.com → project của trung tâm) → nút `+`
+cạnh **Files** → **Script** → đặt tên → dán nội dung, không sửa gì.
 
-### Bước 1b — Tạo cấu trúc dữ liệu (chạy MỘT LẦN)
-Ở thanh chọn hàm phía trên, chọn **`taoToanBoCauTruc`** → bấm ▶ **Run**.
-Lần đầu Google sẽ hỏi cấp quyền — chọn tài khoản, bấm *Advanced* → *Go to ... (unsafe)* → *Allow*.
-(Cảnh báo "unsafe" là bình thường với script tự viết chưa qua thẩm định của Google.)
-
-Script sẽ tạo:
-- **11 sheet**: `CoSo`, `VoSinh`, `ThiThangCap`, `SucKhoe`, `BangGia`, `UuDai`,
-  `DangKyTuVan`, `BaiViet`, `ThongBao`, `HocPhi_2026`, `NhanXet_2026`
-- **Dữ liệu mẫu**: 7 cơ sở, 8 gói học phí, 4 ưu đãi (lấy từ trang chủ)
-- **Danh sách chọn** cho các cột như giới tính, cơ sở, trạng thái — chống nhập sai
-- **Thư mục Drive** `TaekwondoKids-Data` + 5 thư mục con, ID lưu sẵn vào Script Properties
-
-Chạy lại nhiều lần vẫn an toàn: sheet đã có thì **không đụng vào dữ liệu**, chỉ bổ sung cột còn thiếu.
-
-Sau khi chạy, mở lại Google Sheet sẽ thấy menu mới **⚙️ Taekwondo Kids**.
-
-### Bước 1c — Hai việc cần làm tay sau khi tạo
-1. **Điền giá vào sheet `BangGia`** — cột `donGia` đang để 0. Chức năng học phí
-   (Giai đoạn 4) cần số liệu thật.
-2. **Lấy toạ độ cơ sở**: menu **⚙️ Taekwondo Kids → Lấy toạ độ GPS các cơ sở**.
-   Toạ độ tự tra có thể lệch vài chục mét — nên mở Google Maps, bấm chuột phải
-   đúng cửa phòng tập để lấy toạ độ chính xác rồi sửa lại. Toạ độ này dùng để
-   kiểm tra HLV có thật sự đứng tại cơ sở khi điểm danh.
-
-### Bước 2 — Nối vào bộ định tuyến sẵn có
-Mở file chứa hàm `doPost(e)`. Thêm **3 dòng** ngay dòng đầu tiên trong thân hàm:
-
-```js
-function doPost(e) {
-  // ↓↓↓ THÊM 3 DÒNG NÀY ↓↓↓
-  var kq = routeNewActions_(e);
-  if (kq) return ContentService.createTextOutput(JSON.stringify(kq))
-                               .setMimeType(ContentService.MimeType.JSON);
-  // ↑↑↑ HẾT PHẦN THÊM ↑↑↑
-
-  ... code cũ của bạn giữ nguyên ...
-}
-```
-
-`routeNewActions_` trả `null` với mọi action cũ, nên toàn bộ chức năng đang chạy
-(đăng nhập, lịch dạy, chấm công, lương, nghỉ phép) **không bị ảnh hưởng**.
-
-### Bước 3 — (Tuỳ chọn) Nhận email khi có khách đăng ký
-**Project Settings** → **Script Properties** → **Add script property**:
-
-| Property | Value |
-|---|---|
-| `EMAIL_NHAN_LEAD` | email nhận thông báo, VD `taekwondokids.vn@gmail.com` |
-
-Bỏ qua bước này thì hệ thống vẫn ghi đăng ký vào Sheet bình thường, chỉ là không gửi mail.
-
-### Bước 4 — Deploy lại
-**Deploy** → **Manage deployments** → biểu tượng bút chì → **Version: New version** → **Deploy**.
-
-> Giữ nguyên URL cũ. Nếu URL đổi, phải sửa `API_URL` trong `assets/js/core/config.js`.
-
-Sheet `DangKyTuVan` sẽ **tự động được tạo** kèm dòng tiêu đề khi có đăng ký đầu tiên.
-
-### Bước 5 — Tạo tài khoản admin tổng
-Thêm một file nữa: `+` cạnh **Files** → **Script** → tên `TaoAdmin`, dán nội dung
-`backend/TaoAdmin.gs`. File này không dính vào `doPost`, chỉ chạy tay.
-
-1. Chọn hàm **`xemCauTrucTaiKhoan`** → ▶ **Run** → mở **Execution log**.
-   Hàm này **chỉ đọc**, không sửa gì. Nó in ra: tài khoản đang nằm ở sheet nào,
-   cột nào là tên đăng nhập / mật khẩu / vai trò, và mật khẩu đang lưu dạng gì.
-2. Log báo **"ĐỦ ĐIỀU KIỆN TẠO"** thì chọn hàm **`taoAdminTong`** → ▶ **Run**.
-   Tài khoản `0934641039` được tạo với vai trò admin, mật khẩu tạm `admin`.
-   Chạy lại lần nữa cũng không tạo dòng trùng — nó cập nhật đúng dòng đã có.
-3. Log báo **"CHƯA TẠO ĐƯỢC TỰ ĐỘNG"** nghĩa là mật khẩu đang được băm theo công
-   thức riêng của script cũ. Đừng ghi tay vào cột mật khẩu — sai là không đăng
-   nhập được. Gửi lại hàm `login` của script cũ để đối chiếu công thức.
-4. Đăng nhập trên website rồi vào **Sửa thông tin & mật khẩu** đổi mật khẩu ngay.
-   Mật khẩu mới phải từ 6 ký tự, có ít nhất 1 chữ hoa và 1 chữ số.
-
-> Đổi số điện thoại, mật khẩu tạm hay họ tên: sửa mấy biến ở đầu `TaoAdmin.gs`.
-
-### Bước 6 — Đăng nhập an toàn (bắt buộc, làm ngay sau bước 5)
-
-Bước 5 tạo tài khoản trong bảng cũ. Bước này chuyển toàn bộ việc đăng nhập sang
-một Sheet riêng có băm mật khẩu, và khoá các lệnh gọi không có token.
-
-**6a. Kiểm tra quyền chia sẻ của Sheet tài khoản**
-Mở [Sheet quản lý tài khoản](https://docs.google.com/spreadsheets/d/1bQGLL5Xor1pW2GUDSh-0oNq45WffWjgIZuIjsdgy_KY/edit)
-→ **Share** → phải là **Restricted**, chỉ mình chủ sở hữu. Không share cho HLV,
-lễ tân hay bất kỳ ai; không bật "Anyone with the link"; không **File → Share →
-Publish to web**. Web app chạy bằng quyền chủ sở hữu nên script vẫn đọc được.
-
-**6b. Thêm file `Auth`**
-`+` cạnh **Files** → **Script** → tên `Auth`, dán nội dung `backend/Auth.gs`.
-(File này dùng hai hàm dò bảng cũ của `TaoAdmin.gs` để chuyển tài khoản, nên giữ
-cả hai file.)
-
-**6c. Chạy `khoiTaoBangTaiKhoan` một lần**
-Nó dựng 3 sheet `TaiKhoan` / `Phien` / `NhatKyDangNhap`, chuyển tài khoản từ bảng
-cũ sang (mật khẩu chữ thô thì băm luôn — người dùng **giữ nguyên mật khẩu đang
-dùng**; mật khẩu đã băm kiểu khác thì cấp mật khẩu tạm và **in ra Execution log**
-để phát lại cho từng người), rồi tạo admin tổng `0934641039` với mật khẩu tạm
-`admin` kèm cờ bắt đổi.
-
-**6d. Thêm cổng bảo vệ vào `doPost`** — sửa lại đoạn đã thêm ở bước 2 thành:
-
-```js
-function doPost(e) {
-  // ↓↓↓ CỔNG BẢO VỆ + BỘ ĐỊNH TUYẾN MỚI ↓↓↓
-  var chan = xacThuc_(e);                  // chặn lệnh không có token
-  if (chan) return traJson_(chan);
-  var kq = routeAuthActions_(e) || routeNewActions_(e);
-  if (kq) return traJson_(kq);
-  // ↑↑↑ HẾT PHẦN THÊM ↑↑↑
-
-  ... code cũ của bạn giữ nguyên ...
-}
-```
-
-**6e. Deploy version mới**, rồi đăng nhập `0934641039` / `admin` và **đổi mật
-khẩu ngay** (hệ thống tự mở sẵn ô đổi mật khẩu).
-
-**6f. Bật chế độ chặn** — lúc này cổng vẫn đang ở chế độ `canh_bao`: lệnh không
-có token vẫn cho qua nhưng bị ghi vào `NhatKyDangNhap`. Đợi vài ngày cho mọi
-người đăng nhập lại bằng đường mới, mở sheet `NhatKyDangNhap` xem còn dòng
-`khong_token` nào không. Hết rồi thì **Project Settings → Script Properties**:
-
-| Property | Value |
-|---|---|
-| `CHE_DO_TOKEN` | `bat_buoc` |
-
-Từ đây gọi API không có token là bị chặn — đúng chỗ hở lớn nhất hiện nay.
-
-**6g. Xoá mật khẩu ở bảng cũ** — chạy hàm `xoaMatKhauBangCu` để trong Sheet dữ
-liệu không còn bản mật khẩu nào. Chỉ làm sau khi đã xác nhận mọi người đăng nhập
-được bằng đường mới.
-
-**6h. Cấu trúc 3 tab trong Sheet tài khoản** — `khoiTaoBangTaiKhoan` tự tạo, mục
-này chỉ để đối chiếu. **Đừng đổi tên cột**: script tra cột theo đúng tên này.
-
-Tab `TaiKhoan` — mỗi dòng một người đăng nhập được:
-
-| Cột | Ai điền | Ghi chú |
+| Tên file đặt trong Apps Script | Dán nội dung từ | Việc của nó |
 |---|---|---|
-| `id` | script | UUID, không sửa |
-| `maNV` | người | Mã nhân viên, VD `TKD04`. Phụ huynh để trống |
-| `maPH` | người | Mã phụ huynh. Nhân viên để trống |
-| `hoTen` | người | |
-| `soDienThoai` | người | **Tên đăng nhập**, 10 số, không được trùng |
-| `email` | người | |
-| `vaiTro` | người | `admin` / `hlv_truong` / `hlv` / `le_tan` / `phu_huynh` |
-| `coSo` | người | Id cơ sở: `Hapulico` `GreenStars` `NghiaDo` `HaDong` `LongBien` `GiaHoa` `HaLong`. **Admin để trống = toàn hệ thống** |
-| `capDai` | người | Chỉ với HLV, xem `BELTS` trong `config.js` |
-| `matKhau` | **script** | Chuỗi băm `sha256$1000$muối$hash`. **Không bao giờ gõ tay vào cột này** — gõ chữ thô vào là tài khoản không đăng nhập được |
-| `phaiDoiMatKhau` | script | `true` = đang dùng mật khẩu tạm, hệ thống sẽ bắt đổi |
-| `trangThai` | người | `Hoạt động` / `Khoá` |
-| `soLanSai` | script | Đếm số lần sai mật khẩu liên tiếp |
-| `khoaDenLuc` | script | Thời điểm hết khoá tạm |
-| `ngayTao` | script | |
-| `lanDangNhapCuoi` | script | |
+| `Sheets` | `backend/Sheets.gs` | Lớp đọc/ghi Sheet dùng chung |
+| `Setup` | `backend/Setup.gs` | Tạo cấu trúc dữ liệu, chạy một lần |
+| `Auth` | `backend/Auth.gs` | Đăng nhập, mật khẩu băm, token, phân quyền |
+| `Api_DangKy` | `backend/Api_DangKy.gs` | Nhận đăng ký học thử từ trang chủ |
+| `Api_HeThong` | `backend/Api_HeThong.gs` | `doPost` + toàn bộ nghiệp vụ |
 
-Tab `Phien` — token đang còn hiệu lực, script tự quản lý, không sửa tay:
-`tokenHash`, `soDienThoai`, `maNV`, `maPH`, `vaiTro`, `coSo`, `taoLuc`, `hetHan`,
-`thuHoiLuc`. Chỉ giữ **bản băm** của token nên đọc được sheet cũng không dùng
-lại được token. Muốn tống một người ra khỏi hệ thống ngay: điền `thuHoiLuc`.
+File `Code.gs` mặc định của project mới (chỉ có `myFunction` rỗng) thì xoá đi.
 
-Tab `NhatKyDangNhap` — `thoiGian`, `soDienThoai`, `action`, `ketQua`, `ghiChu`.
-Cột `ketQua` nhận `thanh_cong` / `that_bai` / `tu_choi` / `khong_token`. Đây là
-chỗ xem còn ai gọi API không có token trước khi bật `bat_buoc`.
+> Không cần thêm dòng nào vào `doPost` như các bản hướng dẫn trước: `doPost`
+> nằm sẵn trong `Api_HeThong.gs`, đã gọi cổng bảo vệ rồi lần lượt qua ba bộ
+> định tuyến.
 
-> **Thêm tài khoản mới trong lúc chưa có màn hình quản lý**: đừng thêm dòng tay
-> vì không tự băm được mật khẩu. Cứ đăng nhập bằng tài khoản admin rồi gọi action
-> `taoTaiKhoan` — hoặc nhắn tôi làm màn hình quản lý tài khoản, backend đã có sẵn.
+## B. Hai Google Sheet
 
-> **Còn một lỗ đã biết**: tài khoản phụ huynh vẫn đăng nhập đường cũ, vì danh
-> sách con của phụ huynh nằm trong bảng cũ. Nên action `listStudentReviews` còn
-> tạm mở cho lệnh không token — ai biết mã học viên thì đọc được nhận xét của em
-> đó, đúng bằng mức hở hôm nay. Đóng ở giai đoạn 2 khi hồ sơ võ sinh chuyển sang
-> bảng `VoSinh`. Dữ liệu nhân sự (lịch dạy, chấm công, lương, duyệt đơn) thì đã
-> đóng hẳn.
+| Sheet | Chứa gì | Ai được mở |
+|---|---|---|
+| **Sheet tài khoản** — [file này](https://docs.google.com/spreadsheets/d/1bQGLL5Xor1pW2GUDSh-0oNq45WffWjgIZuIjsdgy_KY/edit) | `TaiKhoan`, `Phien`, `NhatKyDangNhap` | **Chỉ chủ sở hữu.** Share → **Restricted**, không share cho ai, không "Anyone with the link", không Publish to web |
+| **Sheet dữ liệu** — script tự tạo, tên `TaekwondoKids-DuLieu` | Cơ sở, võ sinh, lịch dạy, chấm công, lương, nghỉ phép, nhận xét, học phí... | Sau này share cho lễ tân/HLV nếu cần nhập liệu tay |
 
----
+Tách hai file là có chủ ý: mật khẩu không nằm cùng chỗ với dữ liệu nghiệp vụ,
+nên có mở Sheet dữ liệu cho nhân viên cũng không ai đọc được mật khẩu.
 
-## B. Việc bạn cần làm với website
+Muốn dùng Sheet dữ liệu có sẵn thay vì để script tạo mới: đặt Script Property
+`ID_SHEET_DULIEU` bằng id của file đó trước khi chạy bước C.
 
-### Tải lên hosting
-Tải **toàn bộ** cấu trúc thư mục, giữ nguyên đường dẫn tương đối:
+## C. Chạy hai hàm, mỗi hàm một lần
 
-```
-index.html
-app.html
-assets/          ← thư mục mới, bắt buộc phải có
-LOGO.png  favicon.png  embe1.png
-hapu.jpg  green.JPG  nghiado.jpg  hadong.jpg  longbien.jpg
-tirak.png  blackbelt.png  canada.png  jaeil.png
-```
+Chọn hàm ở thanh trên → ▶ **Run**. Lần đầu Google hỏi cấp quyền: chọn tài
+khoản → *Advanced* → *Go to ... (unsafe)* → *Allow*. (Cảnh báo "unsafe" là
+bình thường với script tự viết.)
 
-### Hai ảnh còn thiếu
-Website nay hiển thị đủ **7 cơ sở**. Cần bổ sung 2 ảnh vào thư mục gốc:
+1. **`khoiTaoBangTaiKhoan`** (file `Auth`) — dựng 3 tab trong Sheet tài khoản và
+   tạo admin tổng `0934641039`, mật khẩu tạm `admin`, có cờ bắt đổi ngay.
+2. **`taoToanBoCauTruc`** (file `Setup`) — tạo Sheet dữ liệu với 17 sheet
+   (7 cơ sở, bảng giá, ưu đãi đã có dữ liệu mẫu) + thư mục Drive để chứa ảnh.
+   Mở **Execution log** để lấy đường dẫn Sheet dữ liệu vừa tạo. Chạy lại nhiều
+   lần vẫn an toàn: sheet đã có thì không đụng dữ liệu, chỉ bổ sung cột thiếu.
 
-| Tên file | Cơ sở |
+Hai việc làm tay sau đó:
+
+- **Điền giá vào sheet `BangGia`** — cột `donGia` đang để 0.
+- **Lấy toạ độ 7 cơ sở**: chạy hàm `layToaDoCacCoSo` (file `Setup`). Toạ độ tự
+  tra lệch vài chục mét, nên mở Google Maps bấm chuột phải đúng cửa phòng tập
+  rồi sửa lại cột `lat`/`lng`. Toạ độ này để kiểm HLV có đứng tại cơ sở khi
+  điểm danh; cơ sở nào chưa có toạ độ thì bước kiểm GPS được bỏ qua.
+
+## D. Deploy
+
+**Deploy → New deployment → Web app**:
+
+| Mục | Chọn |
 |---|---|
-| `giahoa.jpg` | Cơ sở Gia Hoà (TP. Hồ Chí Minh) |
-| `halong.jpg`  | Cơ sở Hạ Long (Quảng Ninh) |
+| Execute as | **Me** (chủ sở hữu) |
+| Who has access | **Anyone** |
 
-Chưa có thì hệ thống tự hiện ảnh thay thế có logo, không vỡ giao diện.
+Bấm **Deploy**, copy **URL /exec**, dán vào `API_URL` trong
+[`assets/js/core/config.js`](../assets/js/core/config.js), rồi tải file đó lên
+hosting. Từ đây website nói chuyện với backend của trung tâm.
 
-### Ảnh chia sẻ mạng xã hội
-Tạo ảnh `og-image.jpg` kích thước **1200×630px** đặt ở thư mục gốc.
-Đây là ảnh hiện lên khi ai đó chia sẻ link website qua Facebook/Zalo.
-Trước đây website không có ảnh này nên link chia sẻ ra trống trơn.
+> Mỗi lần sửa code trong Apps Script phải **Deploy → Manage deployments → bút
+> chì → Version: New version → Deploy**, nếu không thì bản đang chạy vẫn là bản
+> cũ. Đây là chỗ hay quên nhất.
+
+## E. Script Properties
+
+**Project Settings → Script Properties**:
+
+| Property | Value | Bắt buộc |
+|---|---|---|
+| `CHE_DO_TOKEN` | `bat_buoc` | **Có** — chặn mọi lệnh gọi không có token |
+| `EMAIL_NHAN_LEAD` | `taekwondokids.vn@gmail.com` | Không — để nhận mail khi có khách đăng ký học thử |
+| `DON_GIA_BUOI` | VD `100000` | Không — mặc định 100.000đ/buổi, dùng để tính lương |
+| `ID_SHEET_DULIEU` / `ID_SHEET_TAIKHOAN` | id Sheet | Không — script tự điền |
+
+`CHE_DO_TOKEN` chưa đặt thì cổng chạy ở chế độ `canh_bao`: lệnh không token vẫn
+đi qua nhưng bị ghi vào `NhatKyDangNhap`. Chế độ đó chỉ để chuyển tiếp; hệ
+thống mới không cần, đặt `bat_buoc` ngay.
+
+## F. Tài khoản
+
+Đăng nhập `0934641039` / `admin` → hệ thống mở sẵn ô đổi mật khẩu → **đổi ngay**.
+Mật khẩu mới từ 6 ký tự, chỉ chữ và số, có ít nhất 1 chữ hoa và 1 chữ số.
+
+Tạo tài khoản cho nhân sự 7 cơ sở: chưa có màn hình quản lý nên tạm dùng hàm
+**`taoNhanhMotTaiKhoan`** trong file `Auth` — sửa 4 biến ở đầu hàm rồi ▶ Run,
+mật khẩu tạm in ra Execution log, gửi riêng cho từng người. Vai trò nhận một
+trong: `admin`, `hlv_truong`, `hlv`, `le_tan`, `phu_huynh`.
+
+Cấu trúc cột của 3 tab trong Sheet tài khoản — script tự tạo, **đừng đổi tên
+cột**, và **đừng bao giờ gõ mật khẩu chữ thô vào cột `matKhau`** (cột đó chỉ
+nhận chuỗi băm; gõ chữ thường vào là tài khoản không đăng nhập được):
+
+`TaiKhoan`: `id`, `maNV`, `maPH`, `hoTen`, `soDienThoai` (tên đăng nhập),
+`email`, `ngaySinh`, `vaiTro`, `coSo` (id cơ sở; **admin để trống = toàn hệ
+thống**), `capDai`, `chucVu`, `matKhau`, `phaiDoiMatKhau`, `trangThai`,
+`soLanSai`, `khoaDenLuc`, `ngayTao`, `lanDangNhapCuoi`.
+
+`Phien`: `tokenHash`, `soDienThoai`, `maNV`, `maPH`, `vaiTro`, `coSo`, `taoLuc`,
+`hetHan`, `thuHoiLuc`. Chỉ giữ **bản băm** của token nên đọc được sheet cũng
+không dùng lại được token. Muốn tống ai ra khỏi hệ thống ngay: điền `thuHoiLuc`.
+
+`NhatKyDangNhap`: `thoiGian`, `soDienThoai`, `action`, `ketQua`, `ghiChu`.
 
 ---
 
-## C. Xem thử trên máy trước khi tải lên
+## Kiểm tra sau khi deploy
 
-Website nay dùng ES module nên **không mở trực tiếp bằng cách nhấp đúp file** được.
-Mở Terminal tại thư mục website và chạy:
+| Việc | Kết quả đúng |
+|---|---|
+| Mở URL `/exec` trên trình duyệt | `{"status":"success","message":"API Taekwondo Kids đang chạy."}` |
+| Đăng nhập admin trên website | Vào được app, hiện ô đổi mật khẩu |
+| Gửi thử form đăng ký học thử ở trang chủ | Có dòng mới trong sheet `DangKyTuVan` |
+| Đăng ký lịch dạy, xin nghỉ phép | Có dòng mới trong `LichDay` / `NghiPhep` |
 
-```bash
-python3 -m http.server 8000
-```
+## Những gì backend này đã có
 
-Rồi mở trình duyệt vào `http://localhost:8000`.
+Đăng nhập một cửa (tự nhận vai trò) · đổi mật khẩu · tạo/khoá tài khoản, đổi
+vai trò, đặt lại mật khẩu · lịch dạy theo tuần · ghi chú lịch cá nhân · lịch
+chung theo cơ sở hoặc toàn hệ thống · nghỉ phép và duyệt nghỉ phép · chấm công
+có kiểm GPS và ảnh xác thực · duyệt chấm công · lương tạm tính và duyệt lương ·
+tra cứu võ sinh · nhận xét HLV theo tháng · sửa hồ sơ cá nhân · nhận đăng ký
+học thử từ trang chủ và danh sách lead cho lễ tân.
 
----
+Phân quyền: nhân viên chỉ thấy dữ liệu **cơ sở mình**, admin thấy tất cả, phụ
+huynh chỉ thấy **con mình** và bị chặn khỏi mọi lệnh nội bộ. Cổng bảo vệ tra
+token ra người thật rồi ghi đè mã nhân viên trong tham số, nên sửa dữ liệu gửi
+lên từ trình duyệt cũng không mạo danh được ai.
 
-## D. Kiểm tra sau khi triển khai
-
-- [ ] Trang chủ hiện đủ **7 cơ sở**, chia 3 nhóm: Hà Nội (5), TP.HCM (1), Quảng Ninh (1)
-- [ ] Thu nhỏ cửa sổ dưới 900px → xuất hiện **nút menu ☰** ở góc phải
-- [ ] Bấm **Chỉ đường** trên một cơ sở → mở Google Maps ở chế độ dẫn đường
-- [ ] Bấm **Đăng ký** trên một cơ sở → popup hiện bản đồ + form
-- [ ] Trong popup bấm **+ Thêm võ sinh** vài lần → thêm được, đánh số lại đúng
-- [ ] Gửi thử một đăng ký → xuất hiện dòng mới trong sheet `DangKyTuVan`
-- [ ] Đăng nhập bằng tài khoản HLV → chuyển sang `app.html`, thấy hồ sơ và lịch
-- [ ] Nhấn F5 trong `app.html` → **vẫn đăng nhập** (trước đây bị văng ra)
-- [ ] Đăng xuất rồi đăng nhập tài khoản khác → **không còn dữ liệu người trước**
-- [ ] Chia sẻ link lên Facebook → hiện ảnh và mô tả (sau khi có `og-image.jpg`)
+Còn thiếu (xem [PHAN-QUYEN.md](PHAN-QUYEN.md)): màn hình quản lý tài khoản, lễ
+tân tạo hồ sơ võ sinh sinh mã tự động, lịch sử thi lên đai, ảnh theo học viên,
+chỉ số phát triển.
