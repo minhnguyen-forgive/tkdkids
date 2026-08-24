@@ -80,6 +80,26 @@
   background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+/* Mép dưới hero hoà dần vào nền trang.
+
+   Trước đây hero cắt ngang dứt khoát: xanh #006DC4 đứng cạnh xám #F4F7F9,
+   bậc nhảy 154 đơn vị độ sáng — đúng chỗ người dùng chụp ảnh báo lỗi màu.
+   Nay 200px cuối hero mờ dần về đúng màu trắng của vùng bên dưới
+   (xem #features::before), nên không còn đường cắt nào.
+
+   z-index: 1 — trên lớp vân chấm và chữ mờ nền, nhưng dưới .hero-content
+   (z-index 2) để chữ và nút không bị lớp mờ này phủ lên. */
+#hero::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 200px; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.22) 45%,
+    rgba(255, 255, 255, 0.62) 74%,
+    #FFFFFF 100%);
+}
+@media (max-width: 900px) { #hero::after { height: 130px; } }
+
 .hero-watermark {
   position: absolute; top: 10%; left: -2%;
   font-family: var(--font-display); font-weight: 900; font-size: clamp(120px, 20vw, 300px);
@@ -134,13 +154,36 @@
 
 /* ---------------- ĐIỂM MẠNH ---------------- */
 #features { position: relative; z-index: 10; margin-top: -60px; padding: 0 24px; }
+
+/* Nền trắng cho khoảng giữa chân hero và section tin tức.
+
+   Section này trước để trong suốt nên lộ màu xám #F4F7F9 của body: giữa
+   hero và #news (trắng) có một dải xám cao 138px, tạo thêm một đường kẻ
+   ngang nữa ngay dưới đường cắt của hero. Nay dải đó cũng trắng, cả vùng
+   từ chân hero xuống hết trang tin tức là một màu liền.
+
+   inset bắt đầu từ 60px = đúng phần section đè lên hero (margin-top: -60px),
+   để lớp trắng này không cắt vào ảnh nền hero. */
+#features::before {
+  content: ''; position: absolute; inset: 60px 0 0 0; z-index: -1;
+  background: var(--bg-section);
+}
 .features-strip {
   max-width: 1200px; margin: 0 auto; background: var(--bg-section);
-  border-radius: var(--r-xl); box-shadow: var(--card-shadow);
+  border-radius: var(--r-xl);
+  /* Trước đây dải này là thẻ trắng nằm trên nền xám, chỉ cần bóng nhạt là đủ
+     nổi. Nay nền quanh nó cũng trắng nên bóng phải đậm hơn một chút, không thì
+     mép dưới thẻ tan vào nền. */
+  box-shadow: 0 18px 44px -14px rgba(0, 71, 171, 0.22);
   display: grid; grid-template-columns: repeat(4, 1fr);
   padding: 20px 0; border: 1px solid var(--border-light);
 }
-@media (max-width: 900px) { .features-strip { grid-template-columns: repeat(2, 1fr); margin-top: 0; } #features { margin-top: 40px; } }
+@media (max-width: 900px) {
+  .features-strip { grid-template-columns: repeat(2, 1fr); margin-top: 0; }
+  #features { margin-top: 40px; }
+  /* Không còn đè lên hero nữa: lớp trắng với lên 40px cho kín chân hero */
+  #features::before { inset: -40px 0 0 0; }
+}
 @media (max-width: 480px) { .features-strip { grid-template-columns: 1fr; padding: 10px 0; } }
 
 .feat-item {
@@ -177,61 +220,100 @@
    Cách dùng: <section id="..." class="sec-tinted">  (thêm sec-tinted-flip
    để đảo hướng quầng màu, tránh các section nhìn giống hệt nhau).       */
 
-/* Section có nền màu — dải màu PHẲNG ĐỀU.
+/* Section có nền màu — lòng section phẳng, hai đầu hoà dần vào trắng.
 
    Đã thử hai cách trước đó, cả hai đều hỏng theo kiểu khác nhau:
 
-   1. Chuyển sắc dọc từ trắng xuống #EAF2F9: đáy section này đậm, đỉnh
-      section kế tiếp lại trắng tinh -> lộ vạch ngang, bậc nhảy 18 đơn vị.
-   2. Mờ dần ở hai đầu để xoá vạch: hết vạch nhưng mỗi section màu biến
-      thành một mảng màu phình ở giữa rồi xẹp về trắng ở hai đầu. Cuộn
-      xuống thấy nền sáng lên tối đi bốn lần, nhìn rất chắp vá.
+   1. Chuyển sắc dọc từ trắng xuống #EAF2F9 vẽ thẳng vào section: đáy
+      section này đậm, đỉnh section kế tiếp lại trắng tinh -> lộ vạch
+      ngang, bậc nhảy 18 đơn vị.
+   2. Một màu phẳng duy nhất từ đỉnh tới đáy: hai mép thành đường kẻ ngang
+      thẳng tắp, chia trang thành từng ô vuông cứng, cũng không đẹp.
 
-   Cách hiện tại: mỗi section màu là MỘT MÀU PHẲNG DUY NHẤT từ đỉnh tới
-   đáy. Ranh giới với section trắng thành một đường ngang thẳng và đều
-   tăm tắp trên toàn bộ chiều rộng — mắt đọc đó là dải màu cố ý, giống
-   kiểu kẻ sọc xen kẽ, chứ không phải chỗ nối bị lỗi.
+   Cách hiện tại lấy phần đúng của cả hai: giữa section là MỘT MÀU PHẲNG
+   (#EFF4FA) nên không có mảng màu phình lên xẹp xuống khi cuộn; chỉ 170px
+   sát mép trên và mép dưới là màu nhạt dần về đúng màu trắng của section
+   kề bên, nên chỗ giáp ranh không còn đường kẻ nào.
 
-   Quầng màu thương hiệu vẫn giữ nhưng rất nhạt và được mask cho tắt hẳn
-   trước khi chạm mép trên/mép dưới, để hai mép luôn đúng một màu. */
+   Section màu vì thế phải lấy nền TRẮNG (không phải màu xám của body):
+   chỗ dải màu tắt hẳn phải trùng đúng màu section trắng bên cạnh.
+
+   --tint-fade dùng min() để trên section thấp, khoảng mờ tự co lại theo
+   chiều cao, không bao giờ chiếm quá một phần tư section.
+
+   Cách dùng: <section id="..." class="sec-tinted">  (thêm sec-tinted-flip
+   để đảo hướng quầng màu, tránh các section nhìn giống hệt nhau).       */
 .sec-tinted {
   position: relative;
   overflow: hidden;
-  background: #EFF4FA;
+  background: var(--bg-section);
+  --tint-fade: 170px;
+}
+@supports (height: min(1px, 1%)) {
+  .sec-tinted { --tint-fade: min(170px, 26%); }
 }
 
-/* Quầng màu trang trí — nhạt, và tắt hẳn ở 18% trên cùng và 18% dưới cùng
-   để không làm mép section bị loang màu không đều */
+/* Lớp 1 — dải màu phẳng + quầng màu thương hiệu, mờ dần ở hai đầu */
 .sec-tinted::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(680px 460px at 12% 50%, rgba(0, 174, 239, 0.065), transparent 66%),
-    radial-gradient(560px 420px at 90% 52%, rgba(255, 214, 0,  0.055), transparent 66%),
-    radial-gradient(460px 360px at 62% 46%, rgba(232, 35,  42, 0.02), transparent 68%);
-  -webkit-mask-image: linear-gradient(180deg,
-    transparent 0, #000 18%, #000 82%, transparent 100%);
-          mask-image: linear-gradient(180deg,
-    transparent 0, #000 18%, #000 82%, transparent 100%);
+    radial-gradient(680px 460px at 12% 50%, rgba(0, 174, 239, 0.085), transparent 66%),
+    radial-gradient(560px 420px at 90% 52%, rgba(255, 214, 0,  0.07), transparent 66%),
+    radial-gradient(460px 360px at 62% 46%, rgba(232, 35,  42, 0.025), transparent 68%),
+    #EFF4FA;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0,
+    #000 var(--tint-fade), #000 calc(100% - var(--tint-fade)), transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0,
+    #000 var(--tint-fade), #000 calc(100% - var(--tint-fade)), transparent 100%);
 }
 .sec-tinted-flip::before { transform: scaleX(-1); }
 
-/* Vân chấm — phủ đều cả section, chỉ tắt sát hai mép cho khỏi cắt cụt hàng chấm */
+/* Lớp 2 — vân chấm, tắt cùng nhịp với dải màu để mép section chỉ có trắng */
 .sec-tinted::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background-image: radial-gradient(rgba(0, 71, 171, 0.10) 1.1px, transparent 1.1px);
   background-size: 24px 24px;
-  -webkit-mask-image: linear-gradient(180deg,
-    transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
-          mask-image: linear-gradient(180deg,
-    transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0,
+    #000 var(--tint-fade), #000 calc(100% - var(--tint-fade)), transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0,
+    #000 var(--tint-fade), #000 calc(100% - var(--tint-fade)), transparent 100%);
 }
 
 .sec-tinted > .container { position: relative; z-index: 1; }
 
 /* Màn hình nhỏ: giảm cường độ để chữ luôn dễ đọc và đỡ tốn công vẽ */
 @media (max-width: 600px) {
-  .sec-tinted::before { opacity: 0.75; }
+  .sec-tinted::before { opacity: 0.85; }
   .sec-tinted::after  { background-size: 20px 20px; opacity: 0.7; }
+}
+
+/* ---------------- VỆT SÁNG ĐI THEO CON TRỎ ---------------- */
+/* Nền section sáng lên đúng chỗ con trỏ đang trỏ tới. Lớp vẽ do
+   assets/js/landing/spotlight.js chèn vào cuối mỗi section, nên chỉ chạy
+   trên thiết bị có chuột thật và khi người dùng không tắt hiệu ứng.
+
+   z-index: 0 — nằm trên dải màu (::before) nhưng dưới nội dung (z-index 1),
+   nên chữ không bị vệt sáng phủ lên. */
+.sec-spot {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0; transition: opacity 0.5s ease;
+  background: radial-gradient(circle 460px at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 174, 239, 0.12), rgba(0, 174, 239, 0.045) 42%, transparent 70%);
+}
+.sec-spot.spot-live { opacity: 1; }
+
+/* Nội dung phải nổi lên trên vệt sáng */
+.has-spot > .container,
+.has-spot > .features-strip { position: relative; z-index: 1; }
+
+/* Section nền xanh đậm (hero, đăng ký) thì vệt phải LÀM ĐẬM thêm chứ không
+   làm sáng lên: nền hero chỗ sáng nhất đã chỉ còn 4,73:1 với chữ trắng, hắt
+   thêm ánh sáng trắng vào là tụt xuống 3,76:1, dưới chuẩn WCAG AA. Quầng xanh
+   thẫm thì ngược lại — vừa thấy rõ vệt, vừa đẩy tương phản chữ lên. */
+#hero .sec-spot,
+#register .sec-spot {
+  background: radial-gradient(circle 480px at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 40, 105, 0.24), rgba(0, 40, 105, 0.09) 45%, transparent 72%);
 }
 
 /* ---------------- LỊCH SỬ / TIMELINE ---------------- */
