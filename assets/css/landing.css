@@ -294,6 +294,16 @@
 
    z-index: 0 — nằm trên dải màu (::before) nhưng dưới nội dung (z-index 1),
    nên chữ không bị vệt sáng phủ lên. */
+/* Section phải là position: relative, nếu không lớp .sec-spot (absolute)
+   sẽ neo vào cả trang chứ không vào section: tâm quầng sáng tính theo mép
+   trên section, ví dụ 300px, nhưng khung của lớp lại bắt đầu từ đỉnh trang
+   nên quầng rơi ra ngoài khung -> hover không thấy gì.
+
+   #hero, #features, #coaches, #register và .sec-tinted vốn đã relative nên
+   vẫn chạy; #news, #knowledge, #partners thì không, đúng ba vùng bị mất
+   hiệu ứng. Đặt ở .has-spot để section nào có vệt sáng cũng được neo đúng. */
+.has-spot { position: relative; }
+
 .sec-spot {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   opacity: 0; transition: opacity 0.5s ease;
