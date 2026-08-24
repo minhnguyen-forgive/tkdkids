@@ -145,6 +145,43 @@ Từ đây gọi API không có token là bị chặn — đúng chỗ hở lớ
 liệu không còn bản mật khẩu nào. Chỉ làm sau khi đã xác nhận mọi người đăng nhập
 được bằng đường mới.
 
+**6h. Cấu trúc 3 tab trong Sheet tài khoản** — `khoiTaoBangTaiKhoan` tự tạo, mục
+này chỉ để đối chiếu. **Đừng đổi tên cột**: script tra cột theo đúng tên này.
+
+Tab `TaiKhoan` — mỗi dòng một người đăng nhập được:
+
+| Cột | Ai điền | Ghi chú |
+|---|---|---|
+| `id` | script | UUID, không sửa |
+| `maNV` | người | Mã nhân viên, VD `TKD04`. Phụ huynh để trống |
+| `maPH` | người | Mã phụ huynh. Nhân viên để trống |
+| `hoTen` | người | |
+| `soDienThoai` | người | **Tên đăng nhập**, 10 số, không được trùng |
+| `email` | người | |
+| `vaiTro` | người | `admin` / `hlv_truong` / `hlv` / `le_tan` / `phu_huynh` |
+| `coSo` | người | Id cơ sở: `Hapulico` `GreenStars` `NghiaDo` `HaDong` `LongBien` `GiaHoa` `HaLong`. **Admin để trống = toàn hệ thống** |
+| `capDai` | người | Chỉ với HLV, xem `BELTS` trong `config.js` |
+| `matKhau` | **script** | Chuỗi băm `sha256$1000$muối$hash`. **Không bao giờ gõ tay vào cột này** — gõ chữ thô vào là tài khoản không đăng nhập được |
+| `phaiDoiMatKhau` | script | `true` = đang dùng mật khẩu tạm, hệ thống sẽ bắt đổi |
+| `trangThai` | người | `Hoạt động` / `Khoá` |
+| `soLanSai` | script | Đếm số lần sai mật khẩu liên tiếp |
+| `khoaDenLuc` | script | Thời điểm hết khoá tạm |
+| `ngayTao` | script | |
+| `lanDangNhapCuoi` | script | |
+
+Tab `Phien` — token đang còn hiệu lực, script tự quản lý, không sửa tay:
+`tokenHash`, `soDienThoai`, `maNV`, `maPH`, `vaiTro`, `coSo`, `taoLuc`, `hetHan`,
+`thuHoiLuc`. Chỉ giữ **bản băm** của token nên đọc được sheet cũng không dùng
+lại được token. Muốn tống một người ra khỏi hệ thống ngay: điền `thuHoiLuc`.
+
+Tab `NhatKyDangNhap` — `thoiGian`, `soDienThoai`, `action`, `ketQua`, `ghiChu`.
+Cột `ketQua` nhận `thanh_cong` / `that_bai` / `tu_choi` / `khong_token`. Đây là
+chỗ xem còn ai gọi API không có token trước khi bật `bat_buoc`.
+
+> **Thêm tài khoản mới trong lúc chưa có màn hình quản lý**: đừng thêm dòng tay
+> vì không tự băm được mật khẩu. Cứ đăng nhập bằng tài khoản admin rồi gọi action
+> `taoTaiKhoan` — hoặc nhắn tôi làm màn hình quản lý tài khoản, backend đã có sẵn.
+
 > **Còn một lỗ đã biết**: tài khoản phụ huynh vẫn đăng nhập đường cũ, vì danh
 > sách con của phụ huynh nằm trong bảng cũ. Nên action `listStudentReviews` còn
 > tạm mở cho lệnh không token — ai biết mã học viên thì đọc được nhận xét của em
