@@ -1,7 +1,6 @@
 /* --------- KHU VỰC KIẾN THỨC TRÊN TRANG CHỦ ---------
    Cùng nhịp khoảng cách 120px như các section sẵn có. */
-#knowledge { padding: 120px 0; background: var(--bg-section);
-             border-top: 1px solid var(--border-light); }
+#knowledge { padding: 120px 0; background: var(--bg-section); }
 
 /* =============================================================
    KIẾN THỨC TAEKWONDO — trang tổng, chương trình thi lên đai,

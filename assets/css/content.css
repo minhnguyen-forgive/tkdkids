@@ -5,7 +5,7 @@
 
 /* --------- HAI KHU VỰC MỚI TRÊN TRANG CHỦ ---------
    Dùng cùng nhịp khoảng cách 120px như các section sẵn có. */
-#news    { padding: 120px 0; background: var(--bg-section); border-top: 1px solid var(--border-light); }
+#news    { padding: 120px 0; background: var(--bg-section); }
 #gallery { padding: 120px 0; }
 
 /* ---------------- KHUNG TRANG CON ---------------- */

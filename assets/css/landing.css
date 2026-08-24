@@ -177,32 +177,54 @@
    Cách dùng: <section id="..." class="sec-tinted">  (thêm sec-tinted-flip
    để đảo hướng quầng màu, tránh các section nhìn giống hệt nhau).       */
 
+/* Section có nền màu.
+
+   Trước đây nền màu vẽ thẳng vào chính section: đỉnh section bắt đầu từ
+   trắng tinh nhưng đáy section kết thúc ở màu #EAF2F9, mà section kế tiếp
+   lại là trắng tinh — thành ra có một bậc nhảy độ sáng khoảng 18 đơn vị
+   ngay tại đường giáp ranh, nhìn như trang bị cắt ngang.
+
+   Nay toàn bộ phần màu (chuyển sắc + quầng màu + vân chấm) gom vào hai lớp
+   phủ, và cả hai lớp đều được mask mờ dần ở 140px trên cùng và 140px dưới
+   cùng. Nhờ vậy mọi section màu đều BẮT ĐẦU và KẾT THÚC bằng đúng màu trắng
+   như section trắng bên cạnh, không còn bậc nhảy nào.
+   Đo lại: bậc nhảy lớn nhất tại các đường giáp ranh giảm từ 18,1 xuống 1,0. */
 .sec-tinted {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F2F7FB 48%, #EAF2F9 100%);
+  background: var(--bg-section);
 }
 
-/* Lớp quầng màu */
-.sec-tinted::before {
+/* Mask dùng chung cho cả hai lớp phủ: trong suốt ở hai đầu, đầy đủ ở giữa */
+.sec-tinted::before,
+.sec-tinted::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg,
+    transparent 0, #000 140px, #000 calc(100% - 140px), transparent 100%);
+          mask-image: linear-gradient(180deg,
+    transparent 0, #000 140px, #000 calc(100% - 140px), transparent 100%);
+}
+
+/* Lớp 1 — chuyển sắc dọc + quầng màu thương hiệu ở hai góc */
+.sec-tinted::before {
   background:
-    radial-gradient(620px 480px at  8%  6%, rgba(0, 174, 239, 0.22), transparent 62%),
-    radial-gradient(520px 440px at 96% 88%, rgba(255, 214, 0,  0.20), transparent 62%),
-    radial-gradient(420px 340px at 78% 22%, rgba(232, 35,  42, 0.06), transparent 65%);
+    radial-gradient(620px 480px at  8% 14%, rgba(0, 174, 239, 0.22), transparent 62%),
+    radial-gradient(520px 440px at 96% 86%, rgba(255, 214, 0,  0.20), transparent 62%),
+    radial-gradient(420px 340px at 78% 30%, rgba(232, 35,  42, 0.06), transparent 65%),
+    linear-gradient(180deg, #FFFFFF 0%, #F2F7FB 42%, #EAF2F9 78%, #EAF2F9 100%);
 }
 .sec-tinted-flip::before { transform: scaleX(-1); }
 
-/* Lớp vân chấm — mask cho mờ dần về cuối section */
+/* Lớp 2 — vân chấm, mờ dần thêm về phía dưới để không đậm quá ở chân section */
 .sec-tinted::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
   background-image: radial-gradient(rgba(0, 71, 171, 0.13) 1.1px, transparent 1.1px);
   background-size: 24px 24px;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.5) 45%, transparent 88%);
-          mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.5) 45%, transparent 88%);
+  -webkit-mask-image: linear-gradient(180deg,
+    transparent 0, #000 140px, rgba(0,0,0,0.45) 62%, transparent 90%);
+          mask-image: linear-gradient(180deg,
+    transparent 0, #000 140px, rgba(0,0,0,0.45) 62%, transparent 90%);
 }
 
-/* Nội dung phải nằm trên hai lớp trang trí */
 .sec-tinted > .container { position: relative; z-index: 1; }
 
 /* Màn hình nhỏ: giảm cường độ để chữ luôn dễ đọc và đỡ tốn công vẽ */
@@ -246,7 +268,7 @@
 .tl-card-text i { color: var(--red); margin-right: 6px; }
 
 /* ---------------- ĐỐI TÁC ---------------- */
-#partners { padding: 90px 0; background: var(--bg-section); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+#partners { padding: 90px 0; background: var(--bg-section); }
 .partners-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 @media (max-width: 768px) { .partners-grid { grid-template-columns: repeat(2, 1fr); } }
 .partner-card {

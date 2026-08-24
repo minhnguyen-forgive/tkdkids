@@ -3,8 +3,7 @@
    ============================================================= */
 
 #coaches { padding: 120px 0; position: relative; overflow: hidden;
-           background: var(--bg-section); border-top: 1px solid var(--border-light);
-           border-bottom: 1px solid var(--border-light); }
+           background: var(--bg-section); }
 
 /* ---------------- SÂN KHẤU TRÌNH CHIẾU ---------------- */
 .coach-stage {
