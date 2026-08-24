@@ -1,14 +1,101 @@
 /* =============================================================
-   ĐĂNG NHẬP — cổng tra cứu ở trang chủ.
-   Thành công thì lưu phiên và chuyển sang app.html.
-   Phiên lưu trong sessionStorage nên F5 không bị đăng xuất.
+   ĐĂNG NHẬP — mở bằng nút trên thanh điều hướng, hiện dưới dạng popup.
+
+   Trước đây đăng nhập nằm trong một section riêng ở cuối trang chủ. Nay
+   section đó bỏ đi, nút "Đăng nhập" trên thanh điều hướng có mặt ở mọi
+   trang nên popup được dựng bằng JavaScript thay vì chép markup vào cả
+   15 tệp HTML — sửa một chỗ là mọi trang cùng đổi.
+
+   Đăng nhập xong lưu phiên vào sessionStorage rồi chuyển sang app.html,
+   nơi phân quyền theo vai trò (phụ huynh / huấn luyện viên / lễ tân).
    ============================================================= */
 
-import { $, $$ } from '../core/dom.js';
+import { $, $$, esc } from '../core/dom.js';
 import { callApi } from '../core/api.js';
-import { toastError, toastSuccess } from '../core/ui.js';
-import { saveSession, isLoggedIn } from '../core/store.js';
+import { openModal, closeModal, toastError, toastSuccess } from '../core/ui.js';
+import { saveSession, isLoggedIn, currentUser } from '../core/store.js';
 import { normalizePhone } from '../core/format.js';
+
+const MODAL_ID = 'loginModal';
+
+function buildModal() {
+  if ($('#' + MODAL_ID)) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'modal-overlay';
+  wrap.id = MODAL_ID;
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.setAttribute('role', 'dialog');
+  wrap.setAttribute('aria-modal', 'true');
+  wrap.setAttribute('aria-labelledby', 'loginModalTitle');
+  wrap.innerHTML = `
+    <div class="modal-content" style="max-width:460px">
+      <div class="modal-header">
+        <h3 class="modal-title" id="loginModalTitle">Đăng nhập hệ thống</h3>
+        <button type="button" class="modal-close" data-close aria-label="Đóng">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal-tabs" role="tablist" aria-label="Chọn loại tài khoản">
+        <button class="m-tab-btn active" id="btn-phuhuynh" data-tab="phuhuynh" role="tab"
+                aria-selected="true" aria-controls="tab-phuhuynh" type="button">Phụ huynh &amp; Võ sinh</button>
+        <button class="m-tab-btn" id="btn-hlv" data-tab="hlv" role="tab"
+                aria-selected="false" aria-controls="tab-hlv" type="button">Nhân viên</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="m-tab-panel active" id="tab-phuhuynh" role="tabpanel" aria-labelledby="btn-phuhuynh">
+          <form id="parentLoginForm" novalidate>
+            <div class="form-group">
+              <label for="parentLoginPhone">Số điện thoại hoặc mã học viên</label>
+              <input type="text" id="parentLoginPhone" required autocomplete="username"
+                     placeholder="VD: 0978931747 hoặc HP0012">
+            </div>
+            <div class="form-group">
+              <label for="parentLoginPass">Mật khẩu</label>
+              <input type="password" id="parentLoginPass" required autocomplete="current-password" placeholder="Mật khẩu">
+            </div>
+            <button type="submit" id="parentLoginBtn" class="btn-login-parent">Đăng nhập</button>
+            <p class="form-hint" style="text-align:center;margin-top:14px">
+              Chưa có tài khoản? Liên hệ lễ tân cơ sở của con để được cấp.
+            </p>
+          </form>
+        </div>
+
+        <div class="m-tab-panel" id="tab-hlv" role="tabpanel" aria-labelledby="btn-hlv">
+          <form id="internalLoginForm" novalidate>
+            <div class="form-group">
+              <label for="loginPhone">Số điện thoại</label>
+              <input type="text" id="loginPhone" required autocomplete="username" placeholder="Số điện thoại đã đăng ký">
+            </div>
+            <div class="form-group">
+              <label for="loginPass">Mật khẩu</label>
+              <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Mật khẩu">
+            </div>
+            <button type="submit" id="internalLoginBtn" class="btn-login-staff">Đăng nhập</button>
+            <p class="form-hint" style="text-align:center;margin-top:14px">
+              Dành cho huấn luyện viên, lễ tân và cán bộ trung tâm.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(wrap);
+
+  $$('[data-tab]', wrap).forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+
+  $('#parentLoginForm').addEventListener('submit', ev => {
+    ev.preventDefault();
+    doLogin({ action: 'login_parent', phoneSel: '#parentLoginPhone', passSel: '#parentLoginPass',
+              btnSel: '#parentLoginBtn', form: ev.currentTarget });
+  });
+  $('#internalLoginForm').addEventListener('submit', ev => {
+    ev.preventDefault();
+    doLogin({ action: 'login_hlv', phoneSel: '#loginPhone', passSel: '#loginPass',
+              btnSel: '#internalLoginBtn', form: ev.currentTarget });
+  });
+}
 
 export function switchTab(id) {
   for (const t of ['phuhuynh', 'hlv']) {
@@ -45,31 +132,32 @@ async function doLogin({ action, phoneSel, passSel, btnSel, form }) {
   }
 }
 
+export function openLogin() {
+  buildModal();
+  openModal(MODAL_ID);
+}
+
+/** Đổi nút trên thanh điều hướng thành lời chào khi đã đăng nhập sẵn. */
+function reflectSession(btns) {
+  if (!isLoggedIn()) return;
+  const u = currentUser() || {};
+  const ten = (u.hoTen || u.name || '').split(' ').at(-1) || 'bạn';
+  btns.forEach(b => {
+    b.innerHTML = `<i class="fa-solid fa-circle-user" aria-hidden="true"></i> ${esc(ten)}`;
+    b.setAttribute('title', 'Vào hệ thống quản trị');
+  });
+}
+
 export function initLogin() {
-  // Đã đăng nhập rồi thì mời vào thẳng hệ thống thay vì bắt đăng nhập lại
-  if (isLoggedIn()) {
-    const box = $('#portalBox');
-    if (box) {
-      box.insertAdjacentHTML('beforebegin', `
-        <div class="branch-address-box" style="max-width:500px;margin:0 auto 20px;justify-content:space-between;align-items:center">
-          <span><i class="fa-solid fa-circle-check" style="color:var(--green)" aria-hidden="true"></i>
-                Bạn đang đăng nhập.</span>
-          <a href="app.html" class="btn-save" style="text-decoration:none">Vào hệ thống</a>
-        </div>`);
-    }
-  }
+  const btns = $$('[data-login]');
+  if (!btns.length) return;
 
-  $$('[data-tab]').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+  reflectSession(btns);
 
-  $('#parentLoginForm')?.addEventListener('submit', ev => {
+  btns.forEach(b => b.addEventListener('click', ev => {
     ev.preventDefault();
-    doLogin({ action: 'login_parent', phoneSel: '#parentLoginPhone', passSel: '#parentLoginPass',
-              btnSel: '#parentLoginBtn', form: ev.currentTarget });
-  });
-
-  $('#internalLoginForm')?.addEventListener('submit', ev => {
-    ev.preventDefault();
-    doLogin({ action: 'login_hlv', phoneSel: '#loginPhone', passSel: '#loginPass',
-              btnSel: '#internalLoginBtn', form: ev.currentTarget });
-  });
+    // Đã đăng nhập thì vào thẳng, không bắt gõ lại
+    if (isLoggedIn()) { window.location.href = 'app.html'; return; }
+    openLogin();
+  }));
 }

@@ -112,6 +112,20 @@ Còn lại:
 > Vì sao cần: Facebook/Zalo không chạy JavaScript — chia sẻ bài viết dựng bằng JS
 > sẽ không hiện đúng tiêu đề và ảnh của bài đó. Google cũng lập chỉ mục kém.
 
+### BỐ CỤC TRANG CHỦ  ✅ SẮP XẾP LẠI (24/08/2026)
+
+Thứ tự mới: Banner → Tin tức → Hệ thống cơ sở → **Huấn luyện viên** → Lịch sử →
+Đối tác → Ưu đãi → Kiến thức → Album ảnh.
+
+- [x] Section **Huấn luyện viên** tự chuyển slide 5 giây/người, có hiệu ứng xoay
+      thẻ theo trục dọc và xếp chồng chiều sâu (`docs/HUAN-LUYEN-VIEN.md`)
+- [x] Hệ thống cơ sở chuyển sang **3 tab theo tỉnh** thay vì trải dài từ trên xuống
+- [x] Bỏ form đăng ký học thử — chuyển hết sang CTA đăng ký của từng cơ sở
+- [x] Bỏ section tra cứu; nút trên thanh điều hướng đổi thành **Đăng nhập**,
+      mở popup ngay tại chỗ, dùng chung cho cả 15 trang
+- [ ] Bổ sung cấp đẳng + ảnh chân dung của huấn luyện viên (xem `HUAN-LUYEN-VIEN.md`)
+- [ ] Dựng chi tiết giao diện phân vùng quản trị theo vai trò trong `app.html`
+
 ### GIAI ĐOẠN 7 — Hoàn thiện
 - [ ] Dashboard Admin: doanh thu, sĩ số, tỉ lệ duy trì theo cơ sở
 - [ ] Tối ưu tốc độ, thay Font Awesome bằng SVG, PWA (cài lên màn hình điện thoại)

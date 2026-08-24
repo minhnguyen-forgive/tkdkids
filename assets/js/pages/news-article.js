@@ -4,7 +4,7 @@
    ============================================================= */
 
 import { $, esc } from '../core/dom.js';
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 import { getArticle, getRelated, paramId } from '../core/content.js';
 import { cardHTML, viDate } from './news-view.js';
 
@@ -41,7 +41,7 @@ const CTA_HTML = `<div class="article-cta">
   <h3>Cho con trải nghiệm buổi học thử miễn phí</h3>
   <p>7 cơ sở tại Hà Nội, TP.HCM và Quảng Ninh — huấn luyện viên quốc tế, giáo án riêng theo từng độ tuổi.</p>
   <div class="cta-row">
-    <a href="index.html#register" class="btn-register" style="width:auto;padding:14px 30px">Đăng ký học thử</a>
+    <a href="index.html#locations" class="btn-register" style="width:auto;padding:14px 30px">Đăng ký học thử</a>
     <a href="tel:0978931747" class="share-btn" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff">
       <i class="fa-solid fa-phone" aria-hidden="true"></i> 097 893 1747</a>
   </div>
@@ -73,7 +73,7 @@ function initProgress() {
 }
 
 async function boot() {
-  initNav();
+  initHeader();
   const id = paramId('id');
   if (!id) return notFound();
 

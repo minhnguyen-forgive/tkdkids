@@ -18,7 +18,6 @@ const LINKS = [
   { href: 'thu-vien.html',    icon: 'fa-images',            label: 'Thư viện ảnh' },
   { href: '#pricing',         icon: 'fa-tags',              label: 'Ưu đãi' },
   { href: '#partners',        icon: 'fa-handshake',         label: 'Đối tác' },
-  { href: '#portal',          icon: 'fa-right-to-bracket',  label: 'Tra cứu / Đăng nhập' },
 ];
 
 const onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
@@ -35,7 +34,10 @@ export function initNav() {
       <li><a href="${resolve(l.href)}"${l.href === here ? ' aria-current="page"' : ''}><i class="fa-solid ${l.icon}" aria-hidden="true"></i>${l.label}</a></li>`).join('')}
     </ul>
     <div class="mobile-menu-cta">
-      <a href="${resolve('#register')}" class="btn-nav">Đăng ký học thử</a>
+      <button type="button" class="btn-nav" data-login>
+        <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Đăng nhập
+      </button>
+      <a href="${resolve('#locations')}" class="btn-secondary">Đăng ký học thử</a>
       <a href="tel:0978931747" class="btn-cancel">
         <i class="fa-solid fa-phone" aria-hidden="true"></i> Gọi 097 893 1747
       </a>

@@ -5,7 +5,7 @@
    ============================================================= */
 
 import { $, $$ } from '../core/dom.js';
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 
 /* Chuẩn hoá chuỗi trước khi so khớp:
    - bỏ dấu tiếng Việt, để gõ "tan ngua" vẫn ra "tấn ngựa"
@@ -19,7 +19,7 @@ const chuan_hoa = s => s
   .trim();
 
 function boot() {
-  initNav();
+  initHeader();
   const input = $('#termQ');
   const count = $('#termCount');
   if (!input) return;

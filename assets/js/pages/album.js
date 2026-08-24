@@ -3,7 +3,7 @@
    ============================================================= */
 
 import { $, esc } from '../core/dom.js';
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 import { getAlbum, getAlbums, paramId } from '../core/content.js';
 
 let PHOTOS = [];
@@ -69,7 +69,7 @@ function notFound() {
 }
 
 async function boot() {
-  initNav();
+  initHeader();
   initLightbox();
 
   const id = paramId('id');

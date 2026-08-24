@@ -1,0 +1,78 @@
+{
+  "updated": "2026-08-24",
+  "note": "Tên và chức danh lấy từ website cũ của trung tâm. Cấp đẳng chỉ điền khi có nguồn xác nhận — để trống thì huy hiệu tự ẩn. Hai cơ sở Hà Đông và Long Biên chưa có dữ liệu huấn luyện viên.",
+  "coaches": [
+    {
+      "id": "nguyen-dinh-toan",
+      "name": "Nguyễn Đình Toàn",
+      "title": "Huấn luyện viên trưởng",
+      "honorific": "Thầy",
+      "dang": 6,
+      "dangNote": "Thi đỗ 6 đẳng tại kỳ thi thăng cao đẳng quốc gia năm 2021",
+      "branchId": "Hapulico",
+      "photo": "",
+      "bio": "Người sáng lập và dẫn dắt chuyên môn của toàn hệ thống Taekwondo Kids Việt Nam từ cơ sở đầu tiên năm 2015. Trực tiếp phụ trách trụ sở chính Hapulico.",
+      "highlights": [
+        "Dẫn dắt hệ thống từ 1 lên 7 cơ sở",
+        "Trọng tài điều hành giải quốc gia",
+        "Phụ trách chuyên môn toàn hệ thống"
+      ]
+    },
+    {
+      "id": "nguyen-quang-huy",
+      "name": "Nguyễn Quang Huy",
+      "title": "Huấn luyện viên phó",
+      "honorific": "Thầy",
+      "dang": null,
+      "dangNote": "",
+      "branchId": "GreenStars",
+      "photo": "",
+      "bio": "Phụ trách chi nhánh GreenStars từ khi cơ sở thứ hai của hệ thống được khai trương năm 2018.",
+      "highlights": [
+        "Phụ trách cơ sở GreenStars từ 2018"
+      ]
+    },
+    {
+      "id": "vu-thanh-dat",
+      "name": "Vũ Thành Đạt",
+      "title": "Huấn luyện viên phụ trách cơ sở",
+      "honorific": "Thầy",
+      "dang": null,
+      "dangNote": "",
+      "branchId": "NghiaDo",
+      "photo": "",
+      "bio": "Phụ trách chi nhánh Nghĩa Đô từ khi cơ sở thứ tư của hệ thống được thành lập năm 2020.",
+      "highlights": [
+        "Phụ trách cơ sở Nghĩa Đô từ 2020"
+      ]
+    },
+    {
+      "id": "nguyen-thi-ngan",
+      "name": "Nguyễn Thị Ngân",
+      "title": "Huấn luyện viên phụ trách cơ sở",
+      "honorific": "Cô",
+      "dang": null,
+      "dangNote": "",
+      "branchId": "GiaHoa",
+      "photo": "",
+      "bio": "Phụ trách chi nhánh Gia Hoà — cơ sở đầu tiên của Taekwondo Kids tại Thành phố Hồ Chí Minh, thành lập năm 2019.",
+      "highlights": [
+        "Phụ trách cơ sở đầu tiên tại TP.HCM"
+      ]
+    },
+    {
+      "id": "nguyen-quoc-viet",
+      "name": "Nguyễn Quốc Việt",
+      "title": "Huấn luyện viên phụ trách cơ sở",
+      "honorific": "Thầy",
+      "dang": null,
+      "dangNote": "",
+      "branchId": "HaLong",
+      "photo": "",
+      "bio": "Phụ trách chi nhánh Hạ Long — cơ sở đầu tiên của Taekwondo Kids tại Quảng Ninh, thành lập năm 2021.",
+      "highlights": [
+        "Phụ trách cơ sở đầu tiên tại Quảng Ninh"
+      ]
+    }
+  ]
+}

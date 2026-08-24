@@ -1,0 +1,210 @@
+/* =============================================================
+   HUẤN LUYỆN VIÊN — trình chiếu tự chuyển, và tab chọn khu vực cơ sở
+   ============================================================= */
+
+#coaches { padding: 120px 0; position: relative; overflow: hidden;
+           background: var(--bg-section); border-top: 1px solid var(--border-light);
+           border-bottom: 1px solid var(--border-light); }
+
+/* ---------------- SÂN KHẤU TRÌNH CHIẾU ---------------- */
+.coach-stage {
+  position: relative;
+  display: grid; grid-template-columns: 400px 1fr; gap: 56px; align-items: center;
+  /* perspective làm cho phép xoay rotateY bên dưới có chiều sâu thật,
+     thiếu dòng này thì thẻ chỉ bị bóp ngang chứ không có cảm giác xoay */
+  perspective: 1400px;
+}
+@media (max-width: 940px) {
+  .coach-stage { grid-template-columns: 1fr; gap: 34px; justify-items: center; text-align: center; }
+}
+
+/* --- Cột trái: chồng thẻ chân dung --- */
+.coach-deck { position: relative; width: 100%; max-width: 400px; aspect-ratio: 4 / 5; }
+
+.coach-card {
+  position: absolute; inset: 0; border-radius: var(--r-xl); overflow: hidden;
+  transform-style: preserve-3d; backface-visibility: hidden;
+  box-shadow: 0 26px 60px -18px rgba(15, 23, 42, 0.42);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.55s ease, filter 0.6s ease;
+}
+/* Ba trạng thái: thẻ đang xem, thẻ vừa rời đi, thẻ đang xếp chờ phía sau */
+.coach-card[data-state="active"] {
+  transform: translateX(0) scale(1) rotateY(0deg); opacity: 1; z-index: 3; filter: none;
+}
+.coach-card[data-state="out"] {
+  transform: translateX(-70px) scale(0.88) rotateY(16deg); opacity: 0; z-index: 1;
+}
+.coach-card[data-state="in"] {
+  transform: translateX(70px) scale(0.88) rotateY(-16deg); opacity: 0; z-index: 1;
+}
+.coach-card[data-state="stack1"] {
+  transform: translate(26px, 20px) scale(0.93) rotateY(-7deg); opacity: 1; z-index: 2;
+  filter: brightness(0.72) saturate(0.75);
+}
+.coach-card[data-state="stack2"] {
+  transform: translate(48px, 38px) scale(0.87) rotateY(-11deg); opacity: 1; z-index: 1;
+  filter: brightness(0.55) saturate(0.6);
+}
+.coach-card[data-state="hidden"] {
+  transform: translate(48px, 38px) scale(0.87) rotateY(-11deg); opacity: 0; z-index: 0;
+}
+
+.coach-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Chưa có ảnh chân dung thì dựng thẻ chữ cái đầu — trông có chủ đích,
+   không giống ảnh bị vỡ, và thay bằng ảnh thật lúc nào cũng được. */
+.coach-mono {
+  width: 100%; height: 100%; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(145deg, #0047AB 0%, #00AEEF 100%);
+}
+.coach-mono::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1.4px, transparent 1.4px);
+  background-size: 26px 26px;
+}
+.coach-mono::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 8px;
+  background: var(--yellow);
+}
+.coach-mono span {
+  position: relative; font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(76px, 12vw, 118px); line-height: 1; letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.94); text-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+}
+
+/* Huy hiệu cấp đẳng gắn góc thẻ */
+.coach-dan {
+  position: absolute; top: 18px; right: 18px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 62px; height: 62px; border-radius: 50%;
+  background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35); color: var(--white);
+}
+.coach-dan b { font-family: var(--font-display); font-size: 26px; line-height: 1; font-weight: 900; }
+.coach-dan small { font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0.9; }
+
+/* --- Cột phải: phần chữ --- */
+.coach-text { min-height: 330px; display: flex; flex-direction: column; justify-content: center; }
+@media (max-width: 940px) { .coach-text { min-height: 0; } }
+
+/* Mỗi dòng trượt lên lần lượt, tạo cảm giác nội dung "dựng" lên
+   chứ không đổi phụt một cái */
+.coach-text > * {
+  opacity: 0; transform: translateY(22px);
+  animation: coachIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.coach-text > *:nth-child(1) { animation-delay: 0.05s; }
+.coach-text > *:nth-child(2) { animation-delay: 0.13s; }
+.coach-text > *:nth-child(3) { animation-delay: 0.21s; }
+.coach-text > *:nth-child(4) { animation-delay: 0.29s; }
+.coach-text > *:nth-child(5) { animation-delay: 0.37s; }
+@keyframes coachIn { to { opacity: 1; transform: translateY(0); } }
+
+.coach-role {
+  display: inline-flex; align-items: center; gap: 9px; align-self: flex-start;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--red); background: rgba(232, 35, 42, 0.08);
+  padding: 7px 16px; border-radius: var(--r-pill); margin-bottom: 16px;
+}
+@media (max-width: 940px) { .coach-role { align-self: center; } }
+.coach-name {
+  font-family: var(--font-display); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(34px, 5vw, 60px); line-height: 1.04; letter-spacing: 0.5px;
+  color: var(--text-main); margin-bottom: 14px;
+}
+.coach-name .hon { display: block; font-size: 0.42em; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 4px; }
+.coach-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+@media (max-width: 940px) { .coach-meta { justify-content: center; } }
+.coach-chip {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 13px;
+  background: var(--white); border: 1px solid var(--border-light);
+  padding: 8px 15px; border-radius: var(--r-pill); color: var(--text-main);
+}
+.coach-chip i { color: var(--primary-blue); font-size: 12px; }
+.coach-chip.is-dan { background: var(--primary-blue); border-color: var(--primary-blue); color: var(--white); font-weight: 700; }
+.coach-chip.is-dan i { color: var(--yellow); }
+.coach-bio { font-size: 16px; line-height: 1.75; color: var(--text-muted); margin-bottom: 20px; max-width: 560px; }
+.coach-highlights { list-style: none; display: grid; gap: 9px; }
+.coach-highlights li {
+  position: relative; padding-left: 26px; font-size: 14.5px; color: #334155; line-height: 1.6;
+  text-align: left;
+}
+@media (max-width: 940px) { .coach-highlights { justify-items: center; } .coach-highlights li { max-width: 460px; } }
+.coach-highlights li::before {
+  content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  position: absolute; left: 0; top: 2px; font-size: 11px; color: var(--green);
+}
+
+/* ---------------- ĐIỀU KHIỂN ---------------- */
+.coach-controls {
+  display: flex; align-items: center; gap: 18px; margin-top: 40px; flex-wrap: wrap;
+}
+@media (max-width: 940px) { .coach-controls { justify-content: center; } }
+.coach-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
+  background: var(--white); border: 1px solid var(--border-light);
+  color: var(--primary-blue); font-size: 14px; transition: all 0.25s;
+}
+.coach-arrow:hover { background: var(--primary-blue); border-color: var(--primary-blue); color: var(--white); transform: translateY(-2px); }
+
+.coach-dots { display: flex; gap: 9px; align-items: center; }
+.coach-dot {
+  position: relative; width: 34px; height: 5px; border-radius: 99px; cursor: pointer;
+  border: 0; padding: 0; background: rgba(15, 23, 42, 0.13); overflow: hidden;
+  transition: background 0.3s;
+}
+.coach-dot:hover { background: rgba(15, 23, 42, 0.24); }
+.coach-dot[aria-current="true"] { background: rgba(0, 71, 171, 0.18); }
+/* Thanh chạy trong chấm đang xem chính là đồng hồ đếm 5 giây */
+.coach-dot .fill {
+  position: absolute; inset: 0 auto 0 0; width: 0;
+  background: linear-gradient(90deg, var(--primary-blue), var(--light-blue));
+  border-radius: 99px;
+}
+.coach-dot[aria-current="true"] .fill { animation: coachTick var(--coach-delay, 5s) linear forwards; }
+.coach-stage-wrap.is-paused .coach-dot .fill { animation-play-state: paused; }
+@keyframes coachTick { from { width: 0; } to { width: 100%; } }
+
+.coach-counter { font-family: var(--font-display); font-size: 17px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; }
+.coach-counter b { color: var(--primary-blue); font-size: 22px; }
+
+/* Người dùng bật chế độ giảm chuyển động thì bỏ hết hiệu ứng và bỏ tự chuyển */
+@media (prefers-reduced-motion: reduce) {
+  .coach-card { transition: opacity 0.2s; }
+  .coach-card[data-state="out"], .coach-card[data-state="in"] { transform: none; }
+  .coach-card[data-state="stack1"], .coach-card[data-state="stack2"] { transform: translate(20px, 16px) scale(0.92); }
+  .coach-text > * { animation: none; opacity: 1; transform: none; }
+  .coach-dot .fill { animation: none !important; }
+}
+
+/* ---------------- TAB KHU VỰC CỦA HỆ THỐNG CƠ SỞ ---------------- */
+.region-tabs {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 36px;
+}
+.region-tab {
+  display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+  font-family: var(--font-body); font-size: 14px; font-weight: 700;
+  padding: 13px 26px; border-radius: var(--r-pill);
+  background: var(--white); border: 1px solid var(--border-light); color: var(--text-muted);
+  transition: all 0.25s;
+}
+.region-tab:hover { border-color: rgba(0, 71, 171, 0.35); color: var(--primary-blue); transform: translateY(-2px); }
+.region-tab[aria-selected="true"] {
+  background: var(--primary-blue); border-color: var(--primary-blue); color: var(--white);
+  box-shadow: 0 10px 24px rgba(0, 71, 171, 0.25);
+}
+.region-tab .num {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; height: 24px; padding: 0 7px; border-radius: var(--r-pill);
+  background: rgba(15, 23, 42, 0.07); font-size: 12px; font-weight: 700;
+}
+.region-tab[aria-selected="true"] .num { background: rgba(255, 255, 255, 0.22); }
+
+/* Đổi tab thì lưới cơ sở hiện lên lại, không nhảy phụt */
+.region-panel[hidden] { display: none; }
+.region-panel { animation: regionIn 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes regionIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .region-panel { animation: none; } }

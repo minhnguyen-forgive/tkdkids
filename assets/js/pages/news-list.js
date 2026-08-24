@@ -3,7 +3,7 @@
    ============================================================= */
 
 import { $, esc } from '../core/dom.js';
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 import { getArticles } from '../core/content.js';
 import { cardHTML, featuredHTML } from './news-view.js';
 
@@ -68,7 +68,7 @@ function renderFilter() {
 }
 
 async function boot() {
-  initNav();
+  initHeader();
   try {
     ALL = await getArticles();
     renderFilter();

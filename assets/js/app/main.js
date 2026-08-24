@@ -61,7 +61,7 @@ function boot() {
       <div class="empty-note" style="padding:80px 20px">
         <i class="fa-solid fa-lock" aria-hidden="true" style="display:block;font-size:34px;opacity:.3;margin-bottom:14px"></i>
         Bạn cần đăng nhập để vào hệ thống.<br>
-        <a href="index.html#portal" class="btn-save" style="margin-top:18px;display:inline-flex;text-decoration:none">Tới trang đăng nhập</a>
+        <a href="index.html?login=1" class="btn-save" style="margin-top:18px;display:inline-flex;text-decoration:none">Tới trang đăng nhập</a>
       </div>`);
     $('#btnLogout').style.display = 'none';
     $('#userChip').style.display = 'none';

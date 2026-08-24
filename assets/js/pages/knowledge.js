@@ -1,10 +1,10 @@
 /* Điểm khởi động cho các trang thuộc phần Kiến thức. */
 
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 import { initVideoFacades } from './video.js';
 
 function boot() {
-  initNav();
+  initHeader();
   initVideoFacades();
 }
 

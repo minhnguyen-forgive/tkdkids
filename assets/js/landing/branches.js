@@ -28,16 +28,54 @@ export function renderBranchList(containerSel = '#locationsBody') {
     g.items.push(b);
   }
 
-  host.innerHTML = regions.map(region => `
-    <h3 class="region-title">
-      <i class="fa-solid fa-location-dot" aria-hidden="true" style="color:var(--red)"></i>
-      ${esc(region.name)}
-      <span class="count">${region.items.length} cơ sở</span>
-    </h3>
-    <div class="locations-grid">
-      ${region.items.map((b, i) => branchCardHTML(b, i)).join('')}
+  // Trước đây trải hết cơ sở của cả ba tỉnh từ trên xuống, trang rất dài.
+  // Giờ mỗi tỉnh một tab, mở trang là thấy ngay tỉnh đầu tiên.
+  const slug = i => `region-${i}`;
+  host.innerHTML = `
+    <div class="region-tabs" role="tablist" aria-label="Chọn khu vực">
+      ${regions.map((r, i) => `
+        <button type="button" class="region-tab" role="tab" id="tab-${slug(i)}"
+                aria-selected="${i === 0}" aria-controls="panel-${slug(i)}" data-region="${i}">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          ${esc(r.name)}
+          <span class="num">${r.items.length}</span>
+        </button>`).join('')}
     </div>
-  `).join('');
+    ${regions.map((r, i) => `
+      <div class="region-panel" role="tabpanel" id="panel-${slug(i)}"
+           aria-labelledby="tab-${slug(i)}"${i === 0 ? '' : ' hidden'}>
+        <div class="locations-grid">
+          ${r.items.map((b, j) => branchCardHTML(b, j)).join('')}
+        </div>
+      </div>`).join('')}`;
+
+  const tabs = Array.from(host.querySelectorAll('.region-tab'));
+  const show = n => {
+    tabs.forEach((t, i) => {
+      t.setAttribute('aria-selected', String(i === n));
+      const panel = host.querySelector(`#panel-${slug(i)}`);
+      if (!panel) return;
+      panel.hidden = i !== n;
+      // Gán lại class để hiệu ứng hiện lên chạy lại mỗi lần đổi tab
+      if (i === n) { panel.classList.remove('region-panel'); void panel.offsetWidth; panel.classList.add('region-panel'); }
+    });
+  };
+
+  host.addEventListener('click', ev => {
+    const t = ev.target.closest('.region-tab');
+    if (t) show(Number(t.dataset.region));
+  });
+
+  // Mũi tên trái/phải chuyển tab, đúng chuẩn thao tác bàn phím của tablist
+  host.addEventListener('keydown', ev => {
+    if (!ev.target.classList.contains('region-tab')) return;
+    const cur = tabs.indexOf(ev.target);
+    const next = ev.key === 'ArrowRight' ? cur + 1 : ev.key === 'ArrowLeft' ? cur - 1 : -1;
+    if (next < 0 || next >= tabs.length) return;
+    ev.preventDefault();
+    show(next);
+    tabs[next].focus();
+  });
 }
 
 function branchCardHTML(b, index) {

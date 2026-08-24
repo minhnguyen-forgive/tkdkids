@@ -36,6 +36,7 @@
 <link rel="stylesheet" href="assets/css/landing.css">
 <link rel="stylesheet" href="assets/css/content.css">
 <link rel="stylesheet" href="assets/css/knowledge.css">
+<link rel="stylesheet" href="assets/css/coaches.css">
 
 <script type="application/ld+json">
 {
@@ -90,13 +91,12 @@
       </ul>
     </li>
     <li><a href="#pricing">Ưu đãi</a></li>
-    <li><a href="#portal">Tra cứu</a></li>
   </ul>
   <div class="nav-right">
     <a href="tel:0978931747" class="nav-phone">
       <i class="fa-solid fa-phone" aria-hidden="true" style="margin-right:6px;font-size:12px"></i>097 893 1747
     </a>
-    <a href="#register" class="btn-nav">Đăng ký ngay</a>
+    <button type="button" class="btn-nav" data-login><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Đăng nhập</button>
     <button type="button" class="nav-toggle" id="navToggle"
             aria-label="Mở menu" aria-expanded="false" aria-controls="mobileMenu">
       <i class="fa-solid fa-bars" aria-hidden="true"></i>
@@ -117,7 +117,7 @@
       <h1 class="hero-title" id="heroTitle">Rèn luyện<br><span class="hl">Thể Lực</span><br>Và Ý Chí</h1>
       <p class="hero-sub">Chuyên đào tạo Taekwondo cho trẻ em từ 3,5 tuổi. Môi trường chuẩn quốc tế giúp trẻ phát triển toàn diện cả về thể chất lẫn tinh thần.</p>
       <div class="hero-cta-row">
-        <a href="#register" class="btn-primary">Đăng ký học thử ngay</a>
+        <a href="#locations" class="btn-primary">Đăng ký học thử ngay</a>
         <a href="#about" class="btn-ghost">Khám phá lộ trình</a>
       </div>
     </div>
@@ -148,6 +148,47 @@
       <div class="feat-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
       <div><p class="feat-title">7 Cơ sở hiện đại</p><p class="feat-desc">Hà Nội · TP.HCM · Quảng Ninh</p></div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ TIN TỨC & SỰ KIỆN ═══════════ -->
+<section id="news" aria-labelledby="newsTitle">
+  <div class="container">
+    <div class="portal-header reveal">
+      <p class="sec-tag">Hoạt động của trung tâm</p>
+      <h2 class="sec-title" id="newsTitle">Tin tức &amp; <span class="accent">sự kiện</span></h2>
+      <p class="sec-desc">Giải đấu, kỳ thi thăng đai và hành trình của võ sinh Taekwondo Kids.</p>
+    </div>
+    <div id="homeNews" class="news-grid" aria-live="polite"></div>
+    <div class="load-more">
+      <a href="tin-tuc.html" class="btn-secondary">
+        Xem tất cả bài viết <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ HỆ THỐNG CƠ SỞ ═══════════ -->
+<section id="locations" class="sec-tinted sec-tinted-flip" aria-labelledby="locationsTitle">
+  <div class="container">
+    <div class="locations-header reveal">
+      <p class="sec-tag">Tìm cơ sở gần vị trí của bạn</p>
+      <h2 class="sec-title" id="locationsTitle">Hệ thống <span class="accent">7 cơ sở</span></h2>
+      <p class="sec-desc">Bấm <strong>Chỉ đường</strong> để mở Google Maps dẫn tới tận nơi, hoặc bấm <strong>Đăng ký</strong> để nhận lịch học và học phí của riêng cơ sở đó.</p>
+    </div>
+    <div id="locationsBody"></div>
+  </div>
+</section>
+
+<!-- ═══════════ HUAN LUYEN VIEN ═══════════ -->
+<section id="coaches" aria-labelledby="coachesTitle">
+  <div class="container">
+    <div class="portal-header reveal">
+      <p class="sec-tag">Đội ngũ chuyên môn</p>
+      <h2 class="sec-title" id="coachesTitle">Huấn luyện viên <span class="accent">trưởng</span></h2>
+      <p class="sec-desc">Những người trực tiếp đứng lớp và chịu trách nhiệm chuyên môn tại từng cơ sở.</p>
+    </div>
+    <div id="coachesBody"></div>
   </div>
 </section>
 
@@ -265,15 +306,31 @@
   </div>
 </section>
 
-<!-- ═══════════ HỆ THỐNG CƠ SỞ ═══════════ -->
-<section id="locations" class="sec-tinted sec-tinted-flip" aria-labelledby="locationsTitle">
+<!-- ═══════════ ƯU ĐÃI ═══════════ -->
+<section id="pricing" class="sec-tinted sec-tinted-flip" aria-labelledby="pricingTitle">
   <div class="container">
-    <div class="locations-header reveal">
-      <p class="sec-tag">Tìm cơ sở gần vị trí của bạn</p>
-      <h2 class="sec-title" id="locationsTitle">Hệ thống <span class="accent">7 cơ sở</span></h2>
-      <p class="sec-desc">Bấm <strong>Chỉ đường</strong> để mở Google Maps dẫn tới tận nơi, hoặc bấm <strong>Đăng ký</strong> để nhận lịch học và học phí của riêng cơ sở đó.</p>
+    <div class="pricing-header reveal">
+      <p class="sec-tag">Ưu đãi dành riêng cho bạn</p>
+      <h2 class="sec-title" id="pricingTitle">Chương trình <span class="accent">đặc biệt</span></h2>
     </div>
-    <div id="locationsBody"></div>
+    <div class="promo-grid">
+      <div class="promo-card promo-card-blue reveal">
+        <p class="promo-tag">Giảm ngay</p><p class="promo-big">10%</p>
+        <span class="promo-unit">Học phí</span><p class="promo-desc">Khi đăng ký nhóm từ 3 người</p>
+      </div>
+      <div class="promo-card promo-card-red reveal delay-1">
+        <p class="promo-tag">Tặng võ phục trị giá</p><p class="promo-big">500</p>
+        <span class="promo-unit">nghìn VNĐ</span><p class="promo-desc">Khi đăng ký nhóm từ 2 người trở lên</p>
+      </div>
+      <div class="promo-card promo-card-purple reveal delay-2">
+        <p class="promo-tag">Tặng miễn phí</p><p class="promo-big">1</p>
+        <span class="promo-unit">Tháng</span><p class="promo-desc">Khi đóng học phí 6 tháng</p>
+      </div>
+      <div class="promo-card promo-card-green reveal delay-3">
+        <p class="promo-tag">Tặng miễn phí</p><p class="promo-big">3</p>
+        <span class="promo-unit">Tháng</span><p class="promo-desc">Khi đóng học phí 12 tháng</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -359,23 +416,6 @@
   </div>
 </section>
 
-<!-- ═══════════ TIN TỨC & SỰ KIỆN ═══════════ -->
-<section id="news" aria-labelledby="newsTitle">
-  <div class="container">
-    <div class="portal-header reveal">
-      <p class="sec-tag">Hoạt động của trung tâm</p>
-      <h2 class="sec-title" id="newsTitle">Tin tức &amp; <span class="accent">sự kiện</span></h2>
-      <p class="sec-desc">Giải đấu, kỳ thi thăng đai và hành trình của võ sinh Taekwondo Kids.</p>
-    </div>
-    <div id="homeNews" class="news-grid" aria-live="polite"></div>
-    <div class="load-more">
-      <a href="tin-tuc.html" class="btn-secondary">
-        Xem tất cả bài viết <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </a>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════════ THƯ VIỆN ẢNH ═══════════ -->
 <section id="gallery" class="sec-tinted" aria-labelledby="galleryTitle">
   <div class="container">
@@ -389,121 +429,6 @@
       <a href="thu-vien.html" class="btn-secondary">
         Xem toàn bộ thư viện <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ ƯU ĐÃI ═══════════ -->
-<section id="pricing" aria-labelledby="pricingTitle">
-  <div class="container">
-    <div class="pricing-header reveal">
-      <p class="sec-tag">Ưu đãi dành riêng cho bạn</p>
-      <h2 class="sec-title" id="pricingTitle">Chương trình <span class="accent">đặc biệt</span></h2>
-    </div>
-    <div class="promo-grid">
-      <div class="promo-card promo-card-blue reveal">
-        <p class="promo-tag">Giảm ngay</p><p class="promo-big">10%</p>
-        <span class="promo-unit">Học phí</span><p class="promo-desc">Khi đăng ký nhóm từ 3 người</p>
-      </div>
-      <div class="promo-card promo-card-red reveal delay-1">
-        <p class="promo-tag">Tặng võ phục trị giá</p><p class="promo-big">500</p>
-        <span class="promo-unit">nghìn VNĐ</span><p class="promo-desc">Khi đăng ký nhóm từ 2 người trở lên</p>
-      </div>
-      <div class="promo-card promo-card-purple reveal delay-2">
-        <p class="promo-tag">Tặng miễn phí</p><p class="promo-big">1</p>
-        <span class="promo-unit">Tháng</span><p class="promo-desc">Khi đóng học phí 6 tháng</p>
-      </div>
-      <div class="promo-card promo-card-green reveal delay-3">
-        <p class="promo-tag">Tặng miễn phí</p><p class="promo-big">3</p>
-        <span class="promo-unit">Tháng</span><p class="promo-desc">Khi đóng học phí 12 tháng</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ ĐĂNG KÝ HỌC THỬ ═══════════ -->
-<section id="register" aria-labelledby="registerTitle">
-  <div class="container">
-    <div class="register-grid">
-      <div class="register-left reveal">
-        <p class="sec-tag">Khởi đầu ngay</p>
-        <h2 id="registerTitle">Đăng ký <span class="hl">học thử</span></h2>
-        <p>Đăng ký hôm nay để nhận tư vấn và trải nghiệm lớp học thử miễn phí. Chúng tôi sẵn sàng đồng hành cùng bạn và con trên hành trình phát triển thể chất và ý chí.</p>
-      </div>
-      <div class="reg-form-box reveal delay-1">
-        <p class="reg-form-title">Đăng ký học thử</p>
-        <form id="registerForm" novalidate>
-          <div class="reg-form-group">
-            <label for="rfParent">Họ và tên phụ huynh *</label>
-            <input type="text" id="rfParent" name="parentName" autocomplete="name" required placeholder="VD: Nguyễn Văn An">
-          </div>
-          <div class="reg-form-group">
-            <label for="rfChild">Họ và tên võ sinh *</label>
-            <input type="text" id="rfChild" name="childName" required placeholder="VD: Nguyễn Minh Khang">
-          </div>
-          <div class="form-row">
-            <div class="reg-form-group">
-              <label for="rfDob">Ngày sinh võ sinh</label>
-              <div class="field-date"><input type="date" id="rfDob" name="childDob" min="2005-01-01" max="2026-12-31"></div>
-            </div>
-            <div class="reg-form-group">
-              <label for="rfPhone">Số điện thoại *</label>
-              <input type="tel" id="rfPhone" name="phone" inputmode="numeric" autocomplete="tel" required placeholder="0xxxxxxxxx">
-            </div>
-          </div>
-          <div class="reg-form-group">
-            <label for="rfEmail">Email</label>
-            <input type="email" id="rfEmail" name="email" autocomplete="email" placeholder="email@example.com">
-          </div>
-          <div class="reg-form-group">
-            <label for="trialBranch">Cơ sở quan tâm</label>
-            <select id="trialBranch" name="branch"></select>
-          </div>
-          <div class="validation-msg" id="trialErr"></div>
-          <button type="submit" id="submitBtn" class="btn-register">Đăng ký ngay</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ CỔNG TRA CỨU ═══════════ -->
-<section id="portal" class="sec-tinted" aria-labelledby="portalTitle">
-  <div class="container">
-    <div class="portal-header reveal">
-      <p class="sec-tag">Dành riêng cho thành viên</p>
-      <h2 class="sec-title" id="portalTitle">Hệ thống <span class="accent">tra cứu</span></h2>
-      <p class="sec-desc">Tra cứu học bạ, học phí và lịch học của võ sinh. Dành cho phụ huynh và cán bộ trung tâm.</p>
-    </div>
-    <div class="portal-box reveal" id="portalBox">
-      <div class="portal-tabs" role="tablist" aria-label="Chọn loại tài khoản">
-        <button class="tab-btn active" id="btn-phuhuynh" data-tab="phuhuynh" role="tab"
-                aria-selected="true" aria-controls="tab-phuhuynh" type="button">Phụ huynh &amp; Võ sinh</button>
-        <button class="tab-btn" id="btn-hlv" data-tab="hlv" role="tab"
-                aria-selected="false" aria-controls="tab-hlv" type="button">Nhân viên</button>
-      </div>
-
-      <div class="tab-panel active" id="tab-phuhuynh" role="tabpanel" aria-labelledby="btn-phuhuynh">
-        <h3>Dành cho Phụ huynh &amp; Võ sinh của trung tâm</h3>
-        <form id="parentLoginForm" class="login-form" novalidate>
-          <label class="sr-only" for="parentLoginPhone">Số điện thoại hoặc mã học viên</label>
-          <input type="text" id="parentLoginPhone" required autocomplete="username" placeholder="Số điện thoại / Mã học viên">
-          <label class="sr-only" for="parentLoginPass">Mật khẩu</label>
-          <input type="password" id="parentLoginPass" required autocomplete="current-password" placeholder="Mật khẩu">
-          <button type="submit" id="parentLoginBtn" class="btn-login-parent">Đăng nhập</button>
-        </form>
-      </div>
-
-      <div class="tab-panel" id="tab-hlv" role="tabpanel" aria-labelledby="btn-hlv">
-        <h3>Dành cho Huấn luyện viên, Lễ tân &amp; Nhân viên</h3>
-        <form id="internalLoginForm" class="login-form" novalidate>
-          <label class="sr-only" for="loginPhone">Số điện thoại</label>
-          <input type="text" id="loginPhone" required autocomplete="username" placeholder="Số điện thoại">
-          <label class="sr-only" for="loginPass">Mật khẩu</label>
-          <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Mật khẩu">
-          <button type="submit" id="internalLoginBtn" class="btn-login-staff">Đăng nhập</button>
-        </form>
-      </div>
     </div>
   </div>
 </section>

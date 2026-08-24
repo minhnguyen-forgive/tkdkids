@@ -3,7 +3,7 @@
    ============================================================= */
 
 import { $, esc } from '../core/dom.js';
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 import { getAlbumsByYear } from '../core/content.js';
 
 function albumCardHTML(a) {
@@ -32,7 +32,7 @@ function yearBlockHTML(g) {
 }
 
 async function boot() {
-  initNav();
+  initHeader();
   const root = $('#galleryRoot');
   const nav = $('#yearNav');
 

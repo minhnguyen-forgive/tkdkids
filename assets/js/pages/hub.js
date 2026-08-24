@@ -3,7 +3,7 @@
    ============================================================= */
 
 import { $ } from '../core/dom.js';
-import { initNav } from '../landing/nav.js';
+import { initHeader } from '../core/header.js';
 import { initVideoFacades } from './video.js';
 import { getArticles } from '../core/content.js';
 import { cardHTML } from './news-view.js';
@@ -12,7 +12,7 @@ import { cardHTML } from './news-view.js';
 const CHUYEN_MON = ['Kiến thức', 'Kiến thức chung', 'Kỹ thuật', 'Chuyên môn'];
 
 async function boot() {
-  initNav();
+  initHeader();
   initVideoFacades();
   const box = $('#knowNews');
   if (!box) return;
