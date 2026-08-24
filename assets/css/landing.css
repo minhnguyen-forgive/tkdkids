@@ -539,6 +539,24 @@ footer { background: var(--bg-section); border-top: 1px solid var(--border-light
 .footer-list li { font-size: 14px; color: var(--text-muted); }
 .footer-list a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
 .footer-list a:hover { color: var(--primary-blue); }
+
+/* Sơ đồ trang — liệt kê hết trang của website ở cuối mọi trang.
+   Bốn cột trên máy tính, hai cột trên máy tính bảng, một cột trên điện thoại:
+   cột thi lên đai có 7 dòng, để bốn cột trên màn hình hẹp thì dòng bị gãy chữ. */
+.footer-sitemap {
+  border-top: 1px solid var(--border-light);
+  padding-top: 36px; margin-bottom: 44px;
+}
+.sitemap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+@media (max-width: 900px) { .sitemap-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; } }
+@media (max-width: 480px) { .sitemap-grid { grid-template-columns: 1fr; } }
+.sitemap-col-title {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+  color: var(--primary-blue); margin-bottom: 14px;
+}
+.footer-sitemap .footer-list { gap: 10px; }
+.footer-sitemap .footer-list li { font-size: 13.5px; }
+
 .footer-bottom { border-top: 1px solid var(--border-light); padding-top: 24px; font-size: 13px; color: var(--text-muted); text-align: center; }
 
 /* ---------------- NÚT NỔI ---------------- */
