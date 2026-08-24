@@ -10,10 +10,12 @@
      4. Thanh điều hướng không giống nhau giữa các trang
      5. Thuộc tính width/height của <img> sai tỉ lệ so với ảnh thật
         (chính là lỗi làm logo ở chân trang bị bóp thành hình vuông)
+     6. sitemap.xml / robots.txt cũ so với danh sách trang và dữ liệu
    ============================================================= */
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 // Phải dùng fileURLToPath: đường dẫn dự án có dấu cách, nếu lấy .pathname
@@ -151,6 +153,26 @@ console.log('\n[5] Tỉ lệ width/height của <img> so với ảnh thật');
     }
   }
   if (!xau) OK(`${xet} thẻ <img> khai đúng tỉ lệ`);
+}
+
+/* ---------- [6] sitemap.xml và robots.txt còn đúng không ---------- */
+console.log('\n[6] sitemap.xml và robots.txt');
+{
+  // Hai tệp này sinh bằng tools/sitemap.mjs. Thêm trang mới hay thêm bài
+  // viết vào data/ mà quên chạy lại thì sitemap thiếu địa chỉ — không ai
+  // nhìn ra bằng mắt được, nên để script tự đối chiếu.
+  try {
+    execFileSync('node', [path.join(ROOT, 'tools/sitemap.mjs'), '--kiem'],
+      { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' });
+    OK('sitemap.xml và robots.txt khớp với danh sách trang và dữ liệu');
+  } catch (e) {
+    for (const dong of String(e.stdout || '').split('\n')) {
+      const m = dong.match(/^\s*!\s*(.+)$/);
+      // Bỏ qua dòng tổng kết "! 2 cảnh báo" của chính script sitemap
+      if (m && !/^\d+ cảnh báo$/.test(m[1])) KO(`sitemap: ${m[1]}`);
+    }
+    if (!/!/.test(String(e.stdout || ''))) KO(`không chạy được tools/sitemap.mjs --kiem: ${e.message}`);
+  }
 }
 
 console.log(`\n${loi ? `✗ ${loi} lỗi` : '✓ không có lỗi'}${canh ? `, ${canh} cảnh báo` : ''}\n`);

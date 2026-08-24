@@ -9,6 +9,28 @@ import { getAlbum, getAlbums, paramId } from '../core/content.js';
 let PHOTOS = [];
 let cur = 0;
 
+/** Cập nhật tiêu đề tab, thẻ chia sẻ và canonical theo album đang mở.
+
+    Cần thiết vì album.html là vỏ trang dùng chung cho mọi album: nếu để
+    nguyên canonical tĩnh trong HTML thì cả 9 địa chỉ album.html?id=... đều
+    khai canonical về album.html, máy tìm kiếm gộp hết thành một trang và
+    các địa chỉ trong sitemap.xml thành vô nghĩa. Trang bài viết đã làm đúng
+    như vậy sẵn (xem news-article.js). */
+function setMeta(a) {
+  const url = location.href;
+  const soAnh = (a.photos || []).length;
+  const mota = [a.title, a.place, `${soAnh} ảnh`].filter(Boolean).join(' · ');
+  document.title = `${a.title} | Thư viện ảnh Taekwondo Kids Việt Nam`;
+  const set = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+  set('meta[name="description"]', mota);
+  set('meta[property="og:title"]', a.title);
+  set('meta[property="og:description"]', mota);
+  set('meta[property="og:url"]', url);
+  if (a.cover) set('meta[property="og:image"]', new URL(a.cover, location.href).href);
+  const canon = document.querySelector('link[rel="canonical"]');
+  if (canon) canon.href = url;
+}
+
 /* ---------- Khung xem ảnh phóng to ---------- */
 function show(i) {
   if (!PHOTOS.length) return;
@@ -87,7 +109,7 @@ async function boot() {
   if (!a) return notFound();
 
   PHOTOS = a.photos || [];
-  document.title = `${a.title} | Thư viện ảnh Taekwondo Kids Việt Nam`;
+  setMeta(a);
   $('#crumbAlbum').textContent = a.title;
   $('#albumTitle').textContent = a.title;
   $('#albumSub').innerHTML =

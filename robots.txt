@@ -1,0 +1,8 @@
+# Sinh bằng: node tools/sitemap.mjs — đừng sửa tay, chạy lại script.
+User-agent: *
+Allow: /
+
+# Hệ thống quản trị nội bộ, mở ra cũng phải đăng nhập mới xem được gì
+Disallow: /app.html
+
+Sitemap: https://taekwondokids.vn/sitemap.xml
