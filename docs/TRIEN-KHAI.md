@@ -71,6 +71,24 @@ Bỏ qua bước này thì hệ thống vẫn ghi đăng ký vào Sheet bình th
 
 Sheet `DangKyTuVan` sẽ **tự động được tạo** kèm dòng tiêu đề khi có đăng ký đầu tiên.
 
+### Bước 5 — Tạo tài khoản admin tổng
+Thêm một file nữa: `+` cạnh **Files** → **Script** → tên `TaoAdmin`, dán nội dung
+`backend/TaoAdmin.gs`. File này không dính vào `doPost`, chỉ chạy tay.
+
+1. Chọn hàm **`xemCauTrucTaiKhoan`** → ▶ **Run** → mở **Execution log**.
+   Hàm này **chỉ đọc**, không sửa gì. Nó in ra: tài khoản đang nằm ở sheet nào,
+   cột nào là tên đăng nhập / mật khẩu / vai trò, và mật khẩu đang lưu dạng gì.
+2. Log báo **"ĐỦ ĐIỀU KIỆN TẠO"** thì chọn hàm **`taoAdminTong`** → ▶ **Run**.
+   Tài khoản `0934641039` được tạo với vai trò admin, mật khẩu tạm `admin`.
+   Chạy lại lần nữa cũng không tạo dòng trùng — nó cập nhật đúng dòng đã có.
+3. Log báo **"CHƯA TẠO ĐƯỢC TỰ ĐỘNG"** nghĩa là mật khẩu đang được băm theo công
+   thức riêng của script cũ. Đừng ghi tay vào cột mật khẩu — sai là không đăng
+   nhập được. Gửi lại hàm `login` của script cũ để đối chiếu công thức.
+4. Đăng nhập trên website rồi vào **Sửa thông tin & mật khẩu** đổi mật khẩu ngay.
+   Mật khẩu mới phải từ 6 ký tự, có ít nhất 1 chữ hoa và 1 chữ số.
+
+> Đổi số điện thoại, mật khẩu tạm hay họ tên: sửa mấy biến ở đầu `TaoAdmin.gs`.
+
 ---
 
 ## B. Việc bạn cần làm với website
