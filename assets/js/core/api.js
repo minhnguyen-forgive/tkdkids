@@ -5,6 +5,7 @@
    ============================================================= */
 
 import { API_URL } from './config.js';
+import { authToken, clearSession } from './store.js';
 
 /** Lỗi có phân loại, để chỗ gọi biết nên hiện thông báo gì. */
 export class ApiError extends Error {
@@ -34,6 +35,11 @@ export async function callApi(action, params = {}, { timeout = DEFAULT_TIMEOUT }
     if (value === undefined || value === null) continue;
     body.append(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
   }
+
+  // Chứng minh danh tính cho máy chủ. Không có token (chưa đăng nhập, hoặc
+  // backend chưa deploy Auth.gs) thì bỏ qua — máy chủ tự quyết cho hay chặn.
+  const token = authToken();
+  if (token && !body.has('token')) body.append('token', token);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -69,6 +75,9 @@ export async function callApi(action, params = {}, { timeout = DEFAULT_TIMEOUT }
   }
 
   if (json.status !== 'success') {
+    // Phiên hết hoặc chưa đăng nhập: dọn phiên rồi đưa về trang đăng nhập,
+    // đỡ để người dùng bấm tiếp vào một giao diện đã mất quyền.
+    if (json.code === 'HET_PHIEN' || json.code === 'CHUA_DANG_NHAP') hetPhien();
     throw new ApiError(json.message || 'Thao tác không thành công.', {
       kind: 'business',
       code: json.code || '',
@@ -77,6 +86,17 @@ export async function callApi(action, params = {}, { timeout = DEFAULT_TIMEOUT }
   }
 
   return json;
+}
+
+/* Chỉ chuyển trang một lần, dù nhiều lệnh gọi song song cùng báo hết phiên */
+let dangChuyenTrang = false;
+function hetPhien() {
+  if (dangChuyenTrang) return;
+  dangChuyenTrang = true;
+  clearSession();
+  if (!/index\.html|\/$/.test(location.pathname) || location.search.indexOf('login') === -1) {
+    setTimeout(() => { window.location.href = 'index.html?login=1'; }, 1200);
+  }
 }
 
 /** Gọi API nhưng không ném lỗi — trả { ok, data, error } để hiển thị trạng thái rỗng. */

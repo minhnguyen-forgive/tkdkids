@@ -33,11 +33,18 @@ export function loadSession() {
   return session;
 }
 
-export function saveSession(user) {
+/** Lưu phiên. `token` là token do máy chủ phát khi đăng nhập (Auth.gs) —
+    từ đây mọi lệnh gọi đều kèm token, máy chủ tra token ra người thật chứ
+    không tin mã nhân viên do trình duyệt gửi lên. */
+export function saveSession(user, token) {
   session = { ...user, role: normalizeRole(user.role || user.vaiTro) };
+  if (token) session.token = token;
   try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch {}
   return session;
 }
+
+/** Token của phiên hiện tại, '' nếu chưa đăng nhập hoặc backend chưa có Auth.gs. */
+export const authToken = () => loadSession()?.token || '';
 
 /** Cập nhật vài trường của người dùng đang đăng nhập (VD sau khi sửa hồ sơ). */
 export function patchSession(patch) {

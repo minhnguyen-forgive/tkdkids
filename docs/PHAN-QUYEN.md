@@ -22,7 +22,7 @@ hai mã vì HLV trưởng có thêm quyền duyệt.
 |---|---|
 | Xem/làm được mọi việc của nhóm 3 và 4, không giới hạn cơ sở | Có (vai trò `admin` đã được `isApprover` cho qua) |
 | Duyệt nghỉ phép, duyệt chấm công & lương, thêm lịch chung | Có |
-| **Tạo / khoá tài khoản, đổi vai trò người khác** | **Chưa có** — nay vẫn phải sửa tay trong Google Sheet |
+| **Tạo / khoá tài khoản, đổi vai trò người khác** | Backend đã có (`taoTaiKhoan`, `datLaiMatKhau`, `doiVaiTro`, `khoaTaiKhoan`, `danhSachTaiKhoan` trong `Auth.gs`) — **còn thiếu màn hình** trong app |
 | Xem toàn bộ học viên của cả 7 cơ sở | Chưa có (chưa có màn hình danh sách học viên) |
 | Xem danh sách đăng ký học thử từ trang chủ | Chưa có (`listDangKyTuVan` chưa deploy) |
 
@@ -64,26 +64,31 @@ chứa ảnh đã có, chỉ còn phần tải lên và gắn vào hồ sơ.
 
 ## Việc phải làm, theo thứ tự phụ thuộc
 
-1. **Quản lý tài khoản** (chặn mọi việc khác): bảng `NguoiDung` theo SCHEMA.md,
-   mật khẩu băm SHA-256 + muối, chuyển tài khoản từ bảng cũ sang. Kèm action
-   `taoTaiKhoan` / `doiVaiTro` / `khoaTaiKhoan` để admin tự làm trên giao diện,
-   không phải mở Google Sheet.
-2. **Kiểm quyền phía máy chủ ở mọi action**: hiện các lệnh đọc không kiểm gì —
-   gọi `getSchedule` với mã nhân viên bịa vẫn trả về lịch dạy thật. Phải kiểm
-   trước khi mở thêm dữ liệu học viên.
+1. ~~**Quản lý tài khoản**: bảng tài khoản riêng, mật khẩu băm, chuyển tài khoản
+   cũ sang.~~ **Xong phần backend** — `backend/Auth.gs`, triển khai theo bước 6
+   của [TRIEN-KHAI.md](TRIEN-KHAI.md). Còn thiếu màn hình quản lý tài khoản cho
+   admin trong app (nay admin gọi được API nhưng chưa có giao diện).
+2. ~~**Kiểm quyền phía máy chủ ở mọi action**~~ **Xong** — cổng `xacThuc_` đứng
+   trước mọi action, kể cả action của script cũ: bắt buộc có token, ghi đè mã
+   nhân viên theo chủ token, chặn phụ huynh gọi lệnh nội bộ, chặn người không
+   phải quản lý gọi lệnh duyệt. Còn một lỗ đã biết: `listStudentReviews` tạm mở
+   cho luồng phụ huynh cũ, đóng ở việc số 3.
 3. **Hồ sơ võ sinh**: sheet `VoSinh` + sinh mã tự động + lễ tân tạo hồ sơ (tên,
    tuổi, ảnh thẻ) + danh sách lọc theo `coSo`.
 4. **Lịch sử thi lên đai** (`ThiThangCap`) và **ảnh theo học viên** — hai phần
    còn thiếu của giao diện học viên.
 5. **Chỉ số phát triển** (`SucKhoe`) + biểu đồ.
 
-## Ba việc cần chốt trước khi viết mã
+## Đã chốt
 
-1. **Bảng tài khoản**: làm bảng `NguoiDung` mới rồi chuyển tài khoản cũ sang
-   (đúng thiết kế, mật khẩu được băm), hay bám tiếp bảng cũ cho nhanh? Nên chọn
-   cách một, vì phần mật khẩu của bảng cũ chưa rõ có băm hay không.
-2. **Học viên đăng nhập bằng gì**: số điện thoại phụ huynh, hay mã học viên?
+**Bảng tài khoản** (24/08/2026): tách sang một Sheet **riêng**, không share cho
+ai, mật khẩu băm SHA-256 + muối 1000 vòng, máy chủ phát token và kiểm token ở
+mọi lệnh. Đã cài đặt trong `backend/Auth.gs`.
+
+## Hai việc còn phải chốt
+
+1. **Học viên đăng nhập bằng gì**: số điện thoại phụ huynh, hay mã học viên?
    (Mã đăng nhập bằng mã HV đã có sẵn trong [`login.js`](../assets/js/landing/login.js)
    — chỗ chuẩn hoá số điện thoại đã chấp nhận cả chuỗi không phải số.)
-3. **Ảnh thẻ và ảnh tập luyện**: để link Drive công khai cho nhẹ, hay chỉ người
+2. **Ảnh thẻ và ảnh tập luyện**: để link Drive công khai cho nhẹ, hay chỉ người
    đã đăng nhập mới xem được (phải cho ảnh đi qua Apps Script, chậm hơn)?

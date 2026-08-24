@@ -64,6 +64,11 @@
       </div>
       <div class="modal-body m-tab-panel" data-mpanel="pass">
         <div class="form-group">
+          <label for="epCurrentPass">Mật khẩu hiện tại</label>
+          <input type="password" id="epCurrentPass" placeholder="Nhập mật khẩu đang dùng" autocomplete="current-password">
+          <div id="passCurErr" class="validation-msg">Nhập mật khẩu hiện tại để đổi sang mật khẩu mới.</div>
+        </div>
+        <div class="form-group">
           <label for="epNewPass">Mật khẩu mới</label>
           <input type="password" id="epNewPass" placeholder="Bỏ trống nếu không muốn đổi" autocomplete="new-password">
           <div id="passErr" class="validation-msg">Mật khẩu tối thiểu 6 ký tự, chỉ gồm chữ và số, có ít nhất 1 chữ hoa và 1 chữ số.</div>

@@ -89,6 +89,69 @@ Thêm một file nữa: `+` cạnh **Files** → **Script** → tên `TaoAdmin`,
 
 > Đổi số điện thoại, mật khẩu tạm hay họ tên: sửa mấy biến ở đầu `TaoAdmin.gs`.
 
+### Bước 6 — Đăng nhập an toàn (bắt buộc, làm ngay sau bước 5)
+
+Bước 5 tạo tài khoản trong bảng cũ. Bước này chuyển toàn bộ việc đăng nhập sang
+một Sheet riêng có băm mật khẩu, và khoá các lệnh gọi không có token.
+
+**6a. Kiểm tra quyền chia sẻ của Sheet tài khoản**
+Mở [Sheet quản lý tài khoản](https://docs.google.com/spreadsheets/d/1bQGLL5Xor1pW2GUDSh-0oNq45WffWjgIZuIjsdgy_KY/edit)
+→ **Share** → phải là **Restricted**, chỉ mình chủ sở hữu. Không share cho HLV,
+lễ tân hay bất kỳ ai; không bật "Anyone with the link"; không **File → Share →
+Publish to web**. Web app chạy bằng quyền chủ sở hữu nên script vẫn đọc được.
+
+**6b. Thêm file `Auth`**
+`+` cạnh **Files** → **Script** → tên `Auth`, dán nội dung `backend/Auth.gs`.
+(File này dùng hai hàm dò bảng cũ của `TaoAdmin.gs` để chuyển tài khoản, nên giữ
+cả hai file.)
+
+**6c. Chạy `khoiTaoBangTaiKhoan` một lần**
+Nó dựng 3 sheet `TaiKhoan` / `Phien` / `NhatKyDangNhap`, chuyển tài khoản từ bảng
+cũ sang (mật khẩu chữ thô thì băm luôn — người dùng **giữ nguyên mật khẩu đang
+dùng**; mật khẩu đã băm kiểu khác thì cấp mật khẩu tạm và **in ra Execution log**
+để phát lại cho từng người), rồi tạo admin tổng `0934641039` với mật khẩu tạm
+`admin` kèm cờ bắt đổi.
+
+**6d. Thêm cổng bảo vệ vào `doPost`** — sửa lại đoạn đã thêm ở bước 2 thành:
+
+```js
+function doPost(e) {
+  // ↓↓↓ CỔNG BẢO VỆ + BỘ ĐỊNH TUYẾN MỚI ↓↓↓
+  var chan = xacThuc_(e);                  // chặn lệnh không có token
+  if (chan) return traJson_(chan);
+  var kq = routeAuthActions_(e) || routeNewActions_(e);
+  if (kq) return traJson_(kq);
+  // ↑↑↑ HẾT PHẦN THÊM ↑↑↑
+
+  ... code cũ của bạn giữ nguyên ...
+}
+```
+
+**6e. Deploy version mới**, rồi đăng nhập `0934641039` / `admin` và **đổi mật
+khẩu ngay** (hệ thống tự mở sẵn ô đổi mật khẩu).
+
+**6f. Bật chế độ chặn** — lúc này cổng vẫn đang ở chế độ `canh_bao`: lệnh không
+có token vẫn cho qua nhưng bị ghi vào `NhatKyDangNhap`. Đợi vài ngày cho mọi
+người đăng nhập lại bằng đường mới, mở sheet `NhatKyDangNhap` xem còn dòng
+`khong_token` nào không. Hết rồi thì **Project Settings → Script Properties**:
+
+| Property | Value |
+|---|---|
+| `CHE_DO_TOKEN` | `bat_buoc` |
+
+Từ đây gọi API không có token là bị chặn — đúng chỗ hở lớn nhất hiện nay.
+
+**6g. Xoá mật khẩu ở bảng cũ** — chạy hàm `xoaMatKhauBangCu` để trong Sheet dữ
+liệu không còn bản mật khẩu nào. Chỉ làm sau khi đã xác nhận mọi người đăng nhập
+được bằng đường mới.
+
+> **Còn một lỗ đã biết**: tài khoản phụ huynh vẫn đăng nhập đường cũ, vì danh
+> sách con của phụ huynh nằm trong bảng cũ. Nên action `listStudentReviews` còn
+> tạm mở cho lệnh không token — ai biết mã học viên thì đọc được nhận xét của em
+> đó, đúng bằng mức hở hôm nay. Đóng ở giai đoạn 2 khi hồ sơ võ sinh chuyển sang
+> bảng `VoSinh`. Dữ liệu nhân sự (lịch dạy, chấm công, lương, duyệt đơn) thì đã
+> đóng hẳn.
+
 ---
 
 ## B. Việc bạn cần làm với website

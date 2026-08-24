@@ -9,7 +9,7 @@
 import { $, $$, esc, setHTML } from '../core/dom.js';
 import { callApi, tryApi } from '../core/api.js';
 import {
-  openModal, closeModal, toastSuccess, toastError, toastApiError,
+  openModal, closeModal, toastSuccess, toastError, toastWarning, toastApiError,
   confirmDialog, promptDialog, loadingHTML, emptyHTML, errorHTML,
 } from '../core/ui.js';
 import { currentUser, patchSession, state } from '../core/store.js';
@@ -133,6 +133,14 @@ function bindOps() {
   };
   $$('[data-op]').forEach(btn => btn.addEventListener('click', () => handlers[btn.dataset.op]?.()));
   $('#btnEditProfile').addEventListener('click', openEditProfile);
+
+  /* Tài khoản đang dùng mật khẩu tạm do quản trị viên cấp: mở sẵn ô đổi mật
+     khẩu. Đừng để mật khẩu tạm sống lâu trong hệ thống. */
+  if (sessionStorage.getItem('tkd.phaiDoiMatKhau') === '1') {
+    toastWarning('Bạn đang dùng mật khẩu tạm. Hãy đặt mật khẩu riêng ngay.', 9000);
+    openEditProfile();
+    $('[data-mtab="pass"]')?.click();
+  }
 }
 
 /* ═══════════ SỬA HỒ SƠ ═══════════ */
@@ -143,20 +151,50 @@ function openEditProfile() {
   $('#epEmail').value    = user.email || '';
   $('#epDob').value      = (user.ngaySinh || user.dob || '').slice(0, 10);
   $('#epRole').value     = user.chucVu || user.role_label || '';
-  $('#epNewPass').value = ''; $('#epConfirmPass').value = '';
+  $('#epCurrentPass').value = ''; $('#epNewPass').value = ''; $('#epConfirmPass').value = '';
   $$('#editProfileModal .validation-msg').forEach(m => m.classList.remove('visible'));
   $('[data-mtab="info"]').click();
   openModal('editProfileModal');
 }
 
+/** Đổi mật khẩu qua action `doiMatKhau` của Auth.gs — mật khẩu được băm và
+    lưu ở Sheet tài khoản riêng, nên phải đi đường này chứ không gửi kèm
+    updateProfile như trước (updateProfile ghi vào bảng cũ, chỗ đó đã bỏ).
+
+    Backend chưa deploy Auth.gs thì rơi về đường cũ, bỏ đoạn dự phòng sau khi
+    đã deploy. */
+async function doiMatKhau(matKhauCu, matKhauMoi) {
+  try {
+    await callApi('doiMatKhau', { matKhauCu, matKhauMoi });
+  } catch (err) {
+    if (err.kind === 'business' && /Action không hợp lệ/i.test(err.message || '')) {
+      await callApi('updateProfile', {
+        maNV: user.maNV, fullName: $('#epFullName').value.trim(),
+        phone: $('#epPhone').value.trim(), email: $('#epEmail').value.trim(),
+        dob: $('#epDob').value, role: $('#epRole').value, newPassword: matKhauMoi,
+      });
+      return;
+    }
+    throw err;
+  }
+  sessionStorage.removeItem('tkd.phaiDoiMatKhau');
+}
+
 $('#editProfileForm')?.addEventListener('submit', async ev => {
   ev.preventDefault();
+  const curPass = $('#epCurrentPass').value;
   const newPass = $('#epNewPass').value;
   const confirm = $('#epConfirmPass').value;
   $('#passErr').classList.remove('visible');
   $('#passMatchErr').classList.remove('visible');
+  $('#passCurErr').classList.remove('visible');
 
   if (newPass) {
+    // Đổi mật khẩu phải nhập mật khẩu hiện tại: chặn người khác ngồi vào máy
+    // đang mở phiên rồi đổi mật khẩu chiếm tài khoản.
+    if (!curPass) {
+      $('[data-mtab="pass"]').click(); $('#passCurErr').classList.add('visible'); return;
+    }
     if (!isValidPassword(newPass)) {
       $('[data-mtab="pass"]').click(); $('#passErr').classList.add('visible'); return;
     }
@@ -179,8 +217,9 @@ $('#editProfileForm')?.addEventListener('submit', async ev => {
   try {
     await callApi('updateProfile', {
       maNV: user.maNV, fullName, phone, email,
-      dob: $('#epDob').value, role: $('#epRole').value, newPassword: newPass,
+      dob: $('#epDob').value, role: $('#epRole').value,
     });
+    if (newPass) await doiMatKhau(curPass, newPass);
     // Cập nhật phiên tại chỗ thay vì tải lại toàn bộ dashboard (tiết kiệm 3 lệnh gọi API)
     user = patchSession({ hoTen: fullName, full_name: fullName, soDienThoai: phone, phone,
                           email, ngaySinh: $('#epDob').value, dob: $('#epDob').value,
