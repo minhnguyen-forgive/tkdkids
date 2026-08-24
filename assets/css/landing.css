@@ -177,52 +177,53 @@
    Cách dùng: <section id="..." class="sec-tinted">  (thêm sec-tinted-flip
    để đảo hướng quầng màu, tránh các section nhìn giống hệt nhau).       */
 
-/* Section có nền màu.
+/* Section có nền màu — dải màu PHẲNG ĐỀU.
 
-   Trước đây nền màu vẽ thẳng vào chính section: đỉnh section bắt đầu từ
-   trắng tinh nhưng đáy section kết thúc ở màu #EAF2F9, mà section kế tiếp
-   lại là trắng tinh — thành ra có một bậc nhảy độ sáng khoảng 18 đơn vị
-   ngay tại đường giáp ranh, nhìn như trang bị cắt ngang.
+   Đã thử hai cách trước đó, cả hai đều hỏng theo kiểu khác nhau:
 
-   Nay toàn bộ phần màu (chuyển sắc + quầng màu + vân chấm) gom vào hai lớp
-   phủ, và cả hai lớp đều được mask mờ dần ở 140px trên cùng và 140px dưới
-   cùng. Nhờ vậy mọi section màu đều BẮT ĐẦU và KẾT THÚC bằng đúng màu trắng
-   như section trắng bên cạnh, không còn bậc nhảy nào.
-   Đo lại: bậc nhảy lớn nhất tại các đường giáp ranh giảm từ 18,1 xuống 1,0. */
+   1. Chuyển sắc dọc từ trắng xuống #EAF2F9: đáy section này đậm, đỉnh
+      section kế tiếp lại trắng tinh -> lộ vạch ngang, bậc nhảy 18 đơn vị.
+   2. Mờ dần ở hai đầu để xoá vạch: hết vạch nhưng mỗi section màu biến
+      thành một mảng màu phình ở giữa rồi xẹp về trắng ở hai đầu. Cuộn
+      xuống thấy nền sáng lên tối đi bốn lần, nhìn rất chắp vá.
+
+   Cách hiện tại: mỗi section màu là MỘT MÀU PHẲNG DUY NHẤT từ đỉnh tới
+   đáy. Ranh giới với section trắng thành một đường ngang thẳng và đều
+   tăm tắp trên toàn bộ chiều rộng — mắt đọc đó là dải màu cố ý, giống
+   kiểu kẻ sọc xen kẽ, chứ không phải chỗ nối bị lỗi.
+
+   Quầng màu thương hiệu vẫn giữ nhưng rất nhạt và được mask cho tắt hẳn
+   trước khi chạm mép trên/mép dưới, để hai mép luôn đúng một màu. */
 .sec-tinted {
   position: relative;
   overflow: hidden;
-  background: var(--bg-section);
+  background: #EFF4FA;
 }
 
-/* Mask dùng chung cho cả hai lớp phủ: trong suốt ở hai đầu, đầy đủ ở giữa */
-.sec-tinted::before,
-.sec-tinted::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  -webkit-mask-image: linear-gradient(180deg,
-    transparent 0, #000 140px, #000 calc(100% - 140px), transparent 100%);
-          mask-image: linear-gradient(180deg,
-    transparent 0, #000 140px, #000 calc(100% - 140px), transparent 100%);
-}
-
-/* Lớp 1 — chuyển sắc dọc + quầng màu thương hiệu ở hai góc */
+/* Quầng màu trang trí — nhạt, và tắt hẳn ở 18% trên cùng và 18% dưới cùng
+   để không làm mép section bị loang màu không đều */
 .sec-tinted::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(620px 480px at  8% 14%, rgba(0, 174, 239, 0.22), transparent 62%),
-    radial-gradient(520px 440px at 96% 86%, rgba(255, 214, 0,  0.20), transparent 62%),
-    radial-gradient(420px 340px at 78% 30%, rgba(232, 35,  42, 0.06), transparent 65%),
-    linear-gradient(180deg, #FFFFFF 0%, #F2F7FB 42%, #EAF2F9 78%, #EAF2F9 100%);
+    radial-gradient(680px 460px at 12% 50%, rgba(0, 174, 239, 0.065), transparent 66%),
+    radial-gradient(560px 420px at 90% 52%, rgba(255, 214, 0,  0.055), transparent 66%),
+    radial-gradient(460px 360px at 62% 46%, rgba(232, 35,  42, 0.02), transparent 68%);
+  -webkit-mask-image: linear-gradient(180deg,
+    transparent 0, #000 18%, #000 82%, transparent 100%);
+          mask-image: linear-gradient(180deg,
+    transparent 0, #000 18%, #000 82%, transparent 100%);
 }
 .sec-tinted-flip::before { transform: scaleX(-1); }
 
-/* Lớp 2 — vân chấm, mờ dần thêm về phía dưới để không đậm quá ở chân section */
+/* Vân chấm — phủ đều cả section, chỉ tắt sát hai mép cho khỏi cắt cụt hàng chấm */
 .sec-tinted::after {
-  background-image: radial-gradient(rgba(0, 71, 171, 0.13) 1.1px, transparent 1.1px);
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(0, 71, 171, 0.10) 1.1px, transparent 1.1px);
   background-size: 24px 24px;
   -webkit-mask-image: linear-gradient(180deg,
-    transparent 0, #000 140px, rgba(0,0,0,0.45) 62%, transparent 90%);
+    transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
           mask-image: linear-gradient(180deg,
-    transparent 0, #000 140px, rgba(0,0,0,0.45) 62%, transparent 90%);
+    transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
 }
 
 .sec-tinted > .container { position: relative; z-index: 1; }
