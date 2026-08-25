@@ -87,6 +87,96 @@
   </div>
 </div>
 
+<!-- ═══════════ HỒ SƠ VÕ SINH ═══════════ -->
+<div id="studentsModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title">Hồ sơ võ sinh</div>
+      <button class="modal-close" type="button" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-tabs" role="tablist">
+      <button class="m-tab-btn active" type="button" data-mtab="vslist" role="tab">Danh sách</button>
+      <button class="m-tab-btn" type="button" data-mtab="vsnew" role="tab" id="vsTabNew">Tạo hồ sơ</button>
+    </div>
+
+    <div class="modal-body m-tab-panel active" data-mpanel="vslist">
+      <div class="form-row">
+        <div class="form-group" id="vsFilterBranchGroup">
+          <label for="vsFilterBranch">Cơ sở</label>
+          <select id="vsFilterBranch"></select>
+        </div>
+        <div class="form-group">
+          <label for="vsFilterStatus">Trạng thái</label>
+          <select id="vsFilterStatus">
+            <option value="">Tất cả</option>
+            <option value="Đang học">Đang học</option>
+            <option value="Bảo lưu">Bảo lưu</option>
+            <option value="Nghỉ">Nghỉ</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="vsSearch">Tìm theo tên hoặc mã</label>
+        <input type="search" id="vsSearch" placeholder="Gõ tên không dấu cũng được, VD: nguyen van a">
+      </div>
+      <div id="vsCount" class="form-hint" style="margin-bottom:10px"></div>
+      <div id="vsList"></div>
+    </div>
+
+    <div class="modal-body m-tab-panel" data-mpanel="vsnew">
+      <form id="vsNewForm" novalidate>
+        <p class="form-hint" style="margin-top:0">
+          Chỉ cần tên, tuổi và ảnh thẻ. <strong>Mã học viên do hệ thống sinh</strong>,
+          không có ô nhập — mã gõ tay sớm muộn cũng trùng, mà trùng mã thì học phí
+          và điểm danh của hai em lẫn vào nhau.
+        </p>
+        <div class="form-row">
+          <div class="form-group"><label for="vsHoTen">Họ và tên *</label>
+            <input type="text" id="vsHoTen" required placeholder="VD: Nguyễn Văn An"></div>
+          <div class="form-group"><label for="vsTuoi">Tuổi *</label>
+            <input type="number" id="vsTuoi" required min="3" max="80" placeholder="VD: 8" inputmode="numeric"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="vsGioiTinh">Giới tính</label>
+            <select id="vsGioiTinh">
+              <option value="">— Chưa rõ —</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select></div>
+          <div class="form-group"><label for="vsNgaySinh">Ngày sinh</label>
+            <div class="field-date"><input type="date" id="vsNgaySinh"></div>
+            <p class="form-hint">Có ngày sinh thì tuổi tự cập nhật theo năm.</p></div>
+        </div>
+        <div class="form-group" id="vsCoSoGroup">
+          <label for="vsCoSo">Cơ sở *</label>
+          <select id="vsCoSo"></select>
+        </div>
+        <div class="form-group">
+          <label for="vsAnh">Ảnh thẻ</label>
+          <input type="file" id="vsAnh" accept="image/*">
+          <p class="form-hint">Ảnh được thu nhỏ ngay trên máy trước khi gửi. Lưu trong thư mục
+             Drive riêng, chỉ người có quyền xem hồ sơ em đó mới mở được.</p>
+          <div id="vsAnhPreview"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="vsMaPH">Mã phụ huynh</label>
+            <input type="text" id="vsMaPH" placeholder="VD: PH001 — để trống nếu chưa có">
+            <p class="form-hint">Chưa gắn mã này thì phụ huynh đăng nhập sẽ không thấy hồ sơ con.</p></div>
+          <div class="form-group"><label for="vsSoBuoi">Số buổi/tuần</label>
+            <input type="number" id="vsSoBuoi" min="1" max="7" placeholder="VD: 2" inputmode="numeric"></div>
+        </div>
+        <div id="vsErr" class="validation-msg">Cần ít nhất họ tên và tuổi.</div>
+        <div id="vsNewResult"></div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" data-close>Đóng</button>
+      <button type="button" class="btn-save" id="vsCreateBtn">Tạo hồ sơ</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════ 2. ĐĂNG KÝ LỊCH DẠY ═══════════ -->
 <div id="scheduleModal" class="modal-overlay" aria-hidden="true">
   <div class="modal-content" style="max-width:800px" role="dialog" aria-modal="true">

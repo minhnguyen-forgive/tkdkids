@@ -23,6 +23,7 @@ import {
 } from '../core/format.js';
 import { initAttendance, openMyAttendancePayroll, openApproveAttendancePayroll } from './attendance.js';
 import { initAccounts, openAccountsModal } from './accounts.js';
+import { initStudents, openStudentsModal } from './students.js';
 
 let user = null;
 let calendarDate = new Date();
@@ -68,6 +69,7 @@ export function renderStaffDashboard(u) {
       <button class="ops-btn" data-op="leave"><span class="ops-icon">📝</span><span>Đăng ký nghỉ phép</span></button>
       <button class="ops-btn" data-op="review"><span class="ops-icon">⭐</span><span>Nhận xét học viên</span></button>
       <button class="ops-btn" data-op="myattendance"><span class="ops-icon">🧾</span><span>Chấm công &amp; Lương</span></button>
+      <button class="ops-btn" data-op="students"><span class="ops-icon">🥋</span><span>Hồ sơ võ sinh</span></button>
       ${approver ? `
       <button class="ops-btn" data-op="approval"><span class="ops-icon">✅</span><span>Duyệt đơn nghỉ phép</span></button>
       <button class="ops-btn" data-op="commonevent"><span class="ops-icon">📢</span><span>Thêm lịch chung</span></button>
@@ -102,6 +104,7 @@ export function renderStaffDashboard(u) {
   bindOps();
   initAttendance(user);
   if (user.role === 'admin') initAccounts(user);
+  initStudents(user);
 
   $('#calPrev').addEventListener('click', () => { calendarDate.setMonth(calendarDate.getMonth() - 1); renderCalendar(); });
   $('#calNext').addEventListener('click', () => { calendarDate.setMonth(calendarDate.getMonth() + 1); renderCalendar(); });
@@ -134,6 +137,7 @@ function bindOps() {
     approval: openApprovalModal,
     commonevent: openCommonEventModal,
     approveattendance: openApproveAttendancePayroll,
+    students: openStudentsModal,
     accounts: openAccountsModal,
   };
   $$('[data-op]').forEach(btn => btn.addEventListener('click', () => handlers[btn.dataset.op]?.()));

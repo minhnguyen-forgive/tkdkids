@@ -160,6 +160,8 @@ huynh chỉ thấy **con mình** và bị chặn khỏi mọi lệnh nội bộ.
 token ra người thật rồi ghi đè mã nhân viên trong tham số, nên sửa dữ liệu gửi
 lên từ trình duyệt cũng không mạo danh được ai.
 
-Còn thiếu (xem [PHAN-QUYEN.md](PHAN-QUYEN.md)): lễ tân tạo hồ sơ võ sinh sinh
-mã tự động, danh sách học viên theo cơ sở, lịch sử thi lên đai, ảnh theo học
-viên, chỉ số phát triển.
+· lễ tân tạo hồ sơ võ sinh với mã sinh tự động, ảnh thẻ riêng tư, danh sách
+lọc theo cơ sở.
+
+Còn thiếu (xem [PHAN-QUYEN.md](PHAN-QUYEN.md)): lịch sử thi lên đai, ảnh tập
+luyện theo học viên, chỉ số phát triển.

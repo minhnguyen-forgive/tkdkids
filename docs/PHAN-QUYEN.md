@@ -23,7 +23,7 @@ hai mã vì HLV trưởng có thêm quyền duyệt.
 | Xem/làm được mọi việc của nhóm 3 và 4, không giới hạn cơ sở | Có (vai trò `admin` đã được `isApprover` cho qua) |
 | Duyệt nghỉ phép, duyệt chấm công & lương, thêm lịch chung | Có |
 | **Tạo / khoá tài khoản, đổi vai trò, đặt lại mật khẩu** | **Xong** — nút "Quản lý tài khoản" trong app, xem [`accounts.js`](../assets/js/app/accounts.js) |
-| Xem toàn bộ học viên của cả 7 cơ sở | Chưa có (chưa có màn hình danh sách học viên) |
+| Xem toàn bộ học viên của cả 7 cơ sở | **Xong** — admin có thêm ô lọc theo cơ sở |
 | Xem danh sách đăng ký học thử từ trang chủ | Backend đã có (`listDangKyTuVan`) — còn thiếu màn hình |
 
 ## Nhóm 2 — Học viên
@@ -41,9 +41,9 @@ hai mã vì HLV trưởng có thêm quyền duyệt.
 
 | Việc | Hiện trạng |
 |---|---|
-| **Chỉ thấy học viên của cơ sở mình** | Backend đã lọc theo `coSo` ở mọi lệnh; còn thiếu màn hình danh sách học viên |
-| **Tạo hồ sơ học viên mới**: chỉ nhập tên, tuổi, nạp ảnh thẻ | **Chưa có** — cần action `taoVoSinh` + màn hình |
-| **Mã học viên do hệ thống sinh, không nhập tay** | Quy tắc đã chốt trong SCHEMA.md: `{code cơ sở}{năm 2 số}{số thứ tự 4 số}` — VD `HP260012`. Chưa cài đặt |
+| **Chỉ thấy học viên của cơ sở mình** | **Xong** — danh sách lọc sẵn theo cơ sở, có tìm theo tên bỏ dấu và theo mã |
+| **Tạo hồ sơ học viên mới**: chỉ nhập tên, tuổi, nạp ảnh thẻ | **Xong** — nút "Hồ sơ võ sinh" trong app, xem [`students.js`](../assets/js/app/students.js) |
+| **Mã học viên do hệ thống sinh, không nhập tay** | **Xong** — `{code cơ sở}{năm 2 số}{số thứ tự 4 số}`, VD `HP260012`. Màn hình không có ô nhập mã; mã gửi kèm từ trình duyệt bị bỏ qua |
 | Tra cứu học viên theo mã | Có — `lookupStudent` đã giới hạn theo cơ sở của người tra |
 
 Ảnh thẻ: [`Setup.gs`](../backend/Setup.gs) đã tạo sẵn thư mục Drive
@@ -73,8 +73,11 @@ chứa ảnh đã có, chỉ còn phần tải lên và gắn vào hồ sơ.
    chặn phụ huynh gọi lệnh nội bộ, chặn người không phải quản lý gọi lệnh
    duyệt, và lọc dữ liệu theo cơ sở. Không còn action nào mở cho lệnh không
    token, trừ `dangNhap` và `dangKyTuVan` (form đăng ký học thử ở trang chủ).
-3. **Hồ sơ võ sinh**: sheet `VoSinh` + sinh mã tự động + lễ tân tạo hồ sơ (tên,
-   tuổi, ảnh thẻ) + danh sách lọc theo `coSo`.
+3. ~~**Hồ sơ võ sinh**: sheet `VoSinh` + sinh mã tự động + lễ tân tạo hồ sơ (tên,
+   tuổi, ảnh thẻ) + danh sách lọc theo `coSo`.~~ **Xong cả backend và giao diện.**
+   Lễ tân và quản lý tạo/sửa được; HLV chỉ xem. Ảnh thẻ thu nhỏ ngay trên máy
+   rồi lưu vào thư mục Drive riêng tư, lấy về qua action `anhVoSinh` có kiểm
+   quyền — không dùng link Drive công khai.
 4. **Lịch sử thi lên đai** (`ThiThangCap`) và **ảnh theo học viên** — hai phần
    còn thiếu của giao diện học viên.
 5. **Chỉ số phát triển** (`SucKhoe`) + biểu đồ.
@@ -96,5 +99,7 @@ thống mới bắt đầu từ dữ liệu trắng, tài khoản nhân sự ph�
 1. **Học viên đăng nhập bằng gì**: số điện thoại phụ huynh, hay mã học viên?
    (Mã đăng nhập bằng mã HV đã có sẵn trong [`login.js`](../assets/js/landing/login.js)
    — chỗ chuẩn hoá số điện thoại đã chấp nhận cả chuỗi không phải số.)
-2. **Ảnh thẻ và ảnh tập luyện**: để link Drive công khai cho nhẹ, hay chỉ người
-   đã đăng nhập mới xem được (phải cho ảnh đi qua Apps Script, chậm hơn)?
+2. ~~**Ảnh thẻ và ảnh tập luyện**~~ **Đã chốt (25/08/2026)**: ảnh đi qua Apps
+   Script, chỉ người có quyền xem hồ sơ em đó mới lấy được. Ảnh trẻ em không để
+   link công khai. Đổi lại danh sách không hiện ảnh — mỗi ảnh là một lệnh gọi,
+   ba mươi em là ba mươi lượt chờ; ảnh chỉ tải khi mở từng hồ sơ.
