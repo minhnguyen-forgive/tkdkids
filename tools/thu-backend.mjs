@@ -124,6 +124,28 @@ t('HLV thường không sửa được', s4.status==='error' && s4.code==='KHONG
 t('tra mã của cơ sở khác vẫn báo không tìm thấy',
   goi({action:'lookupStudent',token:T_LT2,maHV:a.maHV}).code==='KHONG_TIM_THAY');
 
+/* ---------- ĐĂNG NHẬP BẰNG MÃ VTF / MÃ HỌC VIÊN ---------- */
+goi({ action:'suaVoSinh', token:T_LT1, maHV:a.maHV, maLienDoan:'VTF12345' });
+
+const dnMa = dangNhap('VTF12345', phuHuynh.matKhauTam);
+t('đăng nhập bằng mã VTF ra đúng tài khoản phụ huynh',
+  dnMa.status==='success' && dnMa.user && dnMa.user.maPH==='PH001', dnMa);
+t('mã VTF viết thường / có gạch vẫn vào được',
+  dangNhap('vtf-12345', phuHuynh.matKhauTam).status==='success');
+t('đăng nhập bằng mã học viên nội bộ cũng được',
+  dangNhap(a.maHV, phuHuynh.matKhauTam).status==='success');
+t('mã VTF đúng nhưng sai mật khẩu vẫn bị chặn',
+  dangNhap('VTF12345','saibet').status==='error');
+t('mã không tồn tại → cùng một câu lỗi, không lộ mã nào có thật',
+  dangNhap('VTF99999','saibet').message === dangNhap('VTF12345','saibet').message);
+t('số điện thoại vẫn đăng nhập bình thường',
+  dangNhap('0900000001', leTanHP.matKhauTam).status==='success');
+
+/* em chưa gắn phụ huynh thì mã không mở được cửa nào */
+goi({ action:'suaVoSinh', token:T_LT1, maHV:b.maHV, maLienDoan:'VTF77777' });
+t('võ sinh chưa gắn phụ huynh thì mã không đăng nhập được',
+  dangNhap('VTF77777', phuHuynh.matKhauTam).status==='error');
+
 console.log(ghi.join('\n'));
 console.log(`\n${pass} đạt, ${fail} hỏng`);
 process.exit(fail?1:0);

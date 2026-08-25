@@ -714,6 +714,18 @@ function hs_mapVoSinh_(r) {
   };
 }
 
+/** Tìm võ sinh theo mã VTF (cột maLienDoan) hoặc mã học viên nội bộ.
+    Auth.gs gọi khi người dùng gõ mã thay vì số điện thoại. So sánh sau khi
+    bỏ dấu và bỏ ký tự phân cách, nên 'vtf-12345' và 'VTF 12345' đều khớp. */
+function hs_voSinhTheoMa_(ma) {
+  var m = hs_chuan_(ma);
+  if (!m) return null;
+  var rows = SHEETS_.readAll('VoSinh', function (r) {
+    return hs_chuan_(r.maLienDoan) === m || hs_chuan_(r.maHV) === m;
+  });
+  return rows.length ? rows[0] : null;
+}
+
 /** Danh sách con của một phụ huynh — Auth.gs gọi khi đăng nhập. */
 function hs_dsVoSinhTheoPhuHuynh_(maPH) {
   if (!maPH) return [];

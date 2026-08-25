@@ -407,6 +407,37 @@ function authTaiKhoanTheoSdt_(sdt) {
 }
 
 /** Một tài khoản theo mã nhân viên. */
+/** Tài khoản của một phụ huynh theo mã phụ huynh. */
+function auth_timTaiKhoanTheoMaPH_(maPH) {
+  var can = String(maPH || '').trim();
+  if (!can) return null;
+  var sh = auth_sheet_(AUTH_SHEET_TK, AUTH_COT_TK);
+  var lastRow = sh.getLastRow();
+  if (lastRow < 2) return null;
+  var m = auth_map_(sh);
+  var vals = sh.getRange(2, 1, lastRow - 1, sh.getLastColumn()).getValues();
+  for (var i = 0; i < vals.length; i++) {
+    if (String(vals[i][m['maPH']]).trim() !== can) continue;
+    var o = {};
+    for (var k in m) o[k] = vals[i][m[k]];
+    o._row = i + 2; o._map = m; o._sheet = sh;
+    return o;
+  }
+  return null;
+}
+
+/** Đăng nhập bằng mã VTF / mã học viên: tra ra em đó rồi lấy tài khoản của
+    phụ huynh gắn với em. Em chưa gắn phụ huynh thì không có đường vào — đúng
+    ý, vì tài khoản là của phụ huynh chứ không phải của mã học viên. */
+function auth_timTaiKhoanTheoMaVoSinh_(ma) {
+  if (!String(ma || '').trim()) return null;
+  if (typeof hs_voSinhTheoMa_ !== 'function') return null;
+  var vs;
+  try { vs = hs_voSinhTheoMa_(ma); } catch (e) { return null; }
+  if (!vs) return null;
+  return auth_timTaiKhoanTheoMaPH_(vs.maPH);
+}
+
 function authTaiKhoanTheoMaNV_(maNV) {
   var sh = auth_sheet_(AUTH_SHEET_TK, AUTH_COT_TK);
   var lastRow = sh.getLastRow();
@@ -456,14 +487,20 @@ function authSuaHoSo_(tk, patch) {
 }
 
 function authDangNhap_(p) {
-  var sdt = auth_chuanSdt_(p.phone || p.soDienThoai);
+  /* Ô đăng nhập nhận cả số điện thoại lẫn mã VTF / mã học viên. Giữ nguyên
+     chuỗi gõ vào để còn tra theo mã: auth_chuanSdt_ xoá sạch chữ cái nên
+     'VTF12345' qua tay nó chỉ còn '12345'. */
+  var nhapVao = String(p.phone || p.soDienThoai || '').trim();
+  var sdt = auth_chuanSdt_(nhapVao);
   var matKhau = String(p.password || p.matKhau || '');
-  if (!sdt || !matKhau) return auth_fail_('Nhập số điện thoại và mật khẩu.');
+  if (!nhapVao || !matKhau) return auth_fail_('Nhập số điện thoại hoặc mã VTF, và mật khẩu.');
 
-  var tk = auth_timTaiKhoan_(sdt);
-  // Cùng một câu trả lời cho "không có số này" và "sai mật khẩu", để người
-  // ngoài không dò được số nào đang có tài khoản
-  var LOI_CHUNG = 'Số điện thoại hoặc mật khẩu không đúng.';
+  var tk = sdt ? auth_timTaiKhoan_(sdt) : null;
+  if (!tk) tk = auth_timTaiKhoanTheoMaVoSinh_(nhapVao);
+  if (!sdt) sdt = nhapVao;              // để ghi nhật ký còn biết ai gõ
+  // Cùng một câu trả lời cho "không có tài khoản này" và "sai mật khẩu", để
+  // người ngoài không dò được số nào, mã nào đang có tài khoản
+  var LOI_CHUNG = 'Thông tin đăng nhập hoặc mật khẩu không đúng.';
   if (!tk) { auth_nhatKy_(sdt, 'dangNhap', 'that_bai', 'Không có tài khoản'); return auth_fail_(LOI_CHUNG, 'SAI_THONG_TIN'); }
 
   if (String(tk.trangThai || '').toLowerCase().indexOf('khoá') !== -1 ||

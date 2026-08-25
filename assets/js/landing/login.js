@@ -36,89 +36,48 @@ function buildModal() {
         </button>
       </div>
 
-      <div class="modal-tabs" role="tablist" aria-label="Chọn loại tài khoản">
-        <button class="m-tab-btn active" id="btn-phuhuynh" data-tab="phuhuynh" role="tab"
-                aria-selected="true" aria-controls="tab-phuhuynh" type="button">Phụ huynh &amp; Võ sinh</button>
-        <button class="m-tab-btn" id="btn-hlv" data-tab="hlv" role="tab"
-                aria-selected="false" aria-controls="tab-hlv" type="button">Nhân viên</button>
-      </div>
-
       <div class="modal-body">
-        <div class="m-tab-panel active" id="tab-phuhuynh" role="tabpanel" aria-labelledby="btn-phuhuynh">
-          <form id="parentLoginForm" novalidate>
-            <div class="form-group">
-              <label for="parentLoginPhone">Số điện thoại hoặc mã học viên</label>
-              <input type="text" id="parentLoginPhone" required autocomplete="username"
-                     placeholder="VD: 0978931747 hoặc HP0012">
-            </div>
-            <div class="form-group">
-              <label for="parentLoginPass">Mật khẩu</label>
-              <input type="password" id="parentLoginPass" required autocomplete="current-password" placeholder="Mật khẩu">
-            </div>
-            <button type="submit" id="parentLoginBtn" class="btn-login-parent">Đăng nhập</button>
-            <p class="form-hint" style="text-align:center;margin-top:14px">
-              Chưa có tài khoản? Liên hệ lễ tân cơ sở của con để được cấp.
-            </p>
-          </form>
-        </div>
-
-        <div class="m-tab-panel" id="tab-hlv" role="tabpanel" aria-labelledby="btn-hlv">
-          <form id="internalLoginForm" novalidate>
-            <div class="form-group">
-              <label for="loginPhone">Số điện thoại</label>
-              <input type="text" id="loginPhone" required autocomplete="username" placeholder="Số điện thoại đã đăng ký">
-            </div>
-            <div class="form-group">
-              <label for="loginPass">Mật khẩu</label>
-              <input type="password" id="loginPass" required autocomplete="current-password" placeholder="Mật khẩu">
-            </div>
-            <button type="submit" id="internalLoginBtn" class="btn-login-staff">Đăng nhập</button>
-            <p class="form-hint" style="text-align:center;margin-top:14px">
-              Dành cho huấn luyện viên, lễ tân và cán bộ trung tâm.
-            </p>
-          </form>
-        </div>
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="loginUser">Số điện thoại hoặc mã VTF</label>
+            <input type="text" id="loginUser" required autocomplete="username"
+                   placeholder="VD: 0978931747 hoặc VTF12345">
+          </div>
+          <div class="form-group">
+            <label for="loginPass">Mật khẩu</label>
+            <input type="password" id="loginPass" required autocomplete="current-password"
+                   placeholder="Mật khẩu">
+          </div>
+          <button type="submit" id="loginBtn" class="btn-login-parent">Đăng nhập</button>
+          <p class="form-hint" style="text-align:center;margin-top:14px">
+            Dùng chung cho phụ huynh, võ sinh và cán bộ trung tâm.<br>
+            Chưa có tài khoản? Liên hệ lễ tân cơ sở để được cấp.
+          </p>
+        </form>
       </div>
     </div>`;
 
   document.body.appendChild(wrap);
 
-  $$('[data-tab]', wrap).forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
-
-  $('#parentLoginForm').addEventListener('submit', ev => {
+  $('#loginForm').addEventListener('submit', ev => {
     ev.preventDefault();
-    // Hai tab chỉ khác ô nhập; máy chủ tự nhận vai trò từ tài khoản
-    doLogin({ phoneSel: '#parentLoginPhone', passSel: '#parentLoginPass',
-              btnSel: '#parentLoginBtn', form: ev.currentTarget });
-  });
-  $('#internalLoginForm').addEventListener('submit', ev => {
-    ev.preventDefault();
-    doLogin({ phoneSel: '#loginPhone', passSel: '#loginPass',
-              btnSel: '#internalLoginBtn', form: ev.currentTarget });
+    doLogin(ev.currentTarget);
   });
 }
 
-export function switchTab(id) {
-  for (const t of ['phuhuynh', 'hlv']) {
-    $('#tab-' + t)?.classList.toggle('active', t === id);
-    const btn = $('#btn-' + t);
-    btn?.classList.toggle('active', t === id);
-    btn?.setAttribute('aria-selected', String(t === id));
-  }
-}
-
-async function doLogin({ phoneSel, passSel, btnSel, form }) {
-  const btn = $(btnSel);
+async function doLogin(form) {
+  const btn = $('#loginBtn');
   const original = btn.innerHTML;
   btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> ĐANG KẾT NỐI...';
   btn.disabled = true;
 
   try {
-    const phoneRaw = $(phoneSel).value.trim();
-    // Cho phép đăng nhập bằng mã học viên nên chỉ chuẩn hoá khi đúng dạng số
-    const phone = /^[\d+\s.-]+$/.test(phoneRaw) ? normalizePhone(phoneRaw) : phoneRaw;
+    const nhapVao = $('#loginUser').value.trim();
+    /* Ô này nhận cả số điện thoại lẫn mã VTF, nên chỉ chuẩn hoá khi đúng dạng
+       số. Chuẩn hoá mã là hỏng: hàm chuẩn hoá bỏ hết chữ cái. */
+    const phone = /^[\d+\s.-]+$/.test(nhapVao) ? normalizePhone(nhapVao) : nhapVao;
 
-    const res = await callApi('dangNhap', { phone, password: $(passSel).value });
+    const res = await callApi('dangNhap', { phone, password: $('#loginPass').value });
     saveSession(res.user, res.token);
     if (res.user && res.user.phaiDoiMatKhau) {
       // Tài khoản đang dùng mật khẩu tạm do quản trị viên cấp
@@ -129,8 +88,8 @@ async function doLogin({ phoneSel, passSel, btnSel, form }) {
     setTimeout(() => { window.location.href = 'app.html'; }, 400);
   } catch (err) {
     toastError(err.message);
-    $(passSel).value = '';
-    $(passSel).focus();
+    $('#loginPass').value = '';
+    $('#loginPass').focus();
   } finally {
     btn.innerHTML = original;
     btn.disabled = false;
