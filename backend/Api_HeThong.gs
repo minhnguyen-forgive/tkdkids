@@ -91,6 +91,11 @@ function routeHeThongActions_(e) {
     case 'decidePayroll':        return hsDecidePayroll_(p);
     /* Võ sinh và nhận xét */
     case 'lookupStudent':        return hsLookupStudent_(p);
+    /* Hồ sơ võ sinh */
+    case 'taoVoSinh':            return hsTaoVoSinh_(p);
+    case 'danhSachVoSinh':       return hsDanhSachVoSinh_(p);
+    case 'anhVoSinh':            return hsAnhVoSinh_(p);
+    case 'suaVoSinh':            return hsSuaVoSinh_(p);
     case 'listStudentReviews':   return hsListStudentReviews_(p);
     case 'saveStudentReview':    return hsSaveStudentReview_(p);
     /* Hồ sơ cá nhân */
@@ -670,6 +675,25 @@ function hsDecidePayroll_(p) {
 
 /* ═══════════════════ VÕ SINH & NHẬN XÉT ═══════════════════ */
 
+/** Tuổi tính từ ngày sinh nếu có, không thì từ năm sinh. Lễ tân chỉ nhập
+    tuổi, nên năm sinh là thứ được lưu — tuổi tự tăng theo thời gian thay vì
+    đứng yên ở con số nhập lúc tạo hồ sơ. */
+function hs_tuoi_(r) {
+  var ns = SHEETS_.toDateStr(r.ngaySinh);
+  var hn = new Date();
+  if (ns && ns.length >= 10) {
+    var d = new Date(ns.substring(0, 10));
+    if (!isNaN(d.getTime())) {
+      var t = hn.getFullYear() - d.getFullYear();
+      var m = hn.getMonth() - d.getMonth();
+      if (m < 0 || (m === 0 && hn.getDate() < d.getDate())) t--;
+      return t >= 0 ? t : '';
+    }
+  }
+  var nam = hs_soNguyen_(r.namSinh, 0);
+  return nam ? hn.getFullYear() - nam : '';
+}
+
 function hs_mapVoSinh_(r) {
   return {
     maHV: String(r.maHV || ''), hoTen: String(r.hoTen || ''),
@@ -682,6 +706,10 @@ function hs_mapVoSinh_(r) {
     soBuoiTuan: r.soBuoiTuan === '' ? '' : hs_soNguyen_(r.soBuoiTuan, ''),
     sessions_per_week: r.soBuoiTuan === '' ? '' : hs_soNguyen_(r.soBuoiTuan, ''),
     maPH: String(r.maPH || ''), anhDaiDien: String(r.anhDaiDien || ''),
+    coAnh: !!String(r.anhDaiDien || ''),
+    namSinh: hs_soNguyen_(r.namSinh, '') === '' ? '' : hs_soNguyen_(r.namSinh, ''),
+    tuoi: hs_tuoi_(r),
+    ngayNhapHoc: SHEETS_.toDateStr(r.ngayNhapHoc),
     trangThai: String(r.trangThai || '')
   };
 }
@@ -787,4 +815,233 @@ function hsUpdateProfile_(p) {
     ngaySinh: String(p.dob || p.ngaySinh || '').substring(0, 10)
   });
   return hs_ok_({});
+}
+
+/* ═══════════════════ HỒ SƠ VÕ SINH ═══════════════════
+
+   Lễ tân tạo hồ sơ chỉ với tên, tuổi, ảnh thẻ. Mã học viên do MÁY CHỦ sinh,
+   không nhận mã do trình duyệt gửi lên — gõ tay là sớm muộn trùng mã, mà mã
+   trùng thì học phí và điểm danh của hai em lẫn vào nhau.
+
+   Quy tắc mã: {code cơ sở}{2 số cuối của năm}{4 số thứ tự} — VD HP260012.
+   Số thứ tự đếm riêng theo từng cơ sở và từng năm.                          */
+
+var HS_VOSINH = ['maHV','maLienDoan','hoTen','ngaySinh','namSinh','gioiTinh','maPH','coSo',
+                 'capDaiHienTai','ngayNhapHoc','soBuoiTuan','anhDaiDien','dongYDungAnh',
+                 'ngayDongY','trangThai','ghiChu','ngayTao','nguoiTao'];
+
+var HS_VOSINH_TOI_DA = 500;        // trần một lần trả danh sách
+
+function hs_laLeTan_(p) {
+  return hs_chuan_(p._vaiTro).indexOf('letan') !== -1;
+}
+
+/** Code ngắn của cơ sở ('Hapulico' → 'HP'), dùng làm tiền tố mã học viên. */
+function hs_codeCoSo_(coSo) {
+  var cs = SHEETS_.findRow('CoSo', 'id', String(coSo || ''));
+  return cs ? String(cs.code || '').toUpperCase() : '';
+}
+
+/** Sinh mã học viên kế tiếp. LUÔN gọi bên trong withLock, nếu không hai lễ
+    tân bấm cùng lúc sẽ nhận cùng một mã. */
+function hs_sinhMaHV_(coSo) {
+  var code = hs_codeCoSo_(coSo);
+  if (!code) return '';
+  var nam = new Date().getFullYear() % 100;
+  var tienTo = code + (nam < 10 ? '0' + nam : String(nam));
+
+  var rows = SHEETS_.readAll('VoSinh', function (r) {
+    return String(r.maHV || '').indexOf(tienTo) === 0;
+  });
+  var lonNhat = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var duoi = String(rows[i].maHV).substring(tienTo.length);
+    var n = parseInt(duoi, 10);
+    if (!isNaN(n) && n > lonNhat) lonNhat = n;
+  }
+  var tt = String(lonNhat + 1);
+  while (tt.length < 4) tt = '0' + tt;
+  return tienTo + tt;
+}
+
+/** Ảnh thẻ nằm trong thư mục Drive riêng tư. Lưu ID chứ không lưu link: link
+    Drive ai cầm được cũng mở, còn ID thì phải qua action anhVoSinh — và action
+    đó kiểm quyền trước khi trả ảnh. Ảnh trẻ em không nên để công khai. */
+function hs_luuAnhVoSinh_(base64, maHV) {
+  if (!base64) return '';
+  var idThuMuc = PropertiesService.getScriptProperties().getProperty('FOLDER_ANH_VOSINH');
+  if (!idThuMuc) return '';
+  try {
+    var phan = String(base64).split(',');
+    var duLieu = phan.length > 1 ? phan[1] : phan[0];
+    var blob = Utilities.newBlob(Utilities.base64Decode(duLieu), 'image/jpeg',
+                                 'anhthe_' + maHV + '.jpg');
+    return DriveApp.getFolderById(idThuMuc).createFile(blob).getId();
+  } catch (err) {
+    console.error('Không lưu được ảnh thẻ ' + maHV + ': ' + err);
+    return '';
+  }
+}
+
+function hsTaoVoSinh_(p) {
+  if (!hs_laLeTan_(p) && !hs_laQuanLy_(p)) {
+    return hs_loi_('Chỉ lễ tân và quản lý mới tạo được hồ sơ võ sinh.', 'KHONG_DU_QUYEN');
+  }
+
+  var hoTen = String(p.hoTen || '').trim().replace(/\s+/g, ' ');
+  if (hoTen.length < 2) return hs_loi_('Chưa điền họ tên võ sinh.');
+
+  /* Cơ sở: nhân viên bị ép về cơ sở của mình, không cho tạo hộ cơ sở khác.
+     Chỉ admin (phạm vi rỗng) mới được chọn cơ sở trong tham số. */
+  var pv = hs_phamVi_(p);
+  var coSo = pv ? pv : String(p.coSo || '').trim();
+  if (!coSo) return hs_loi_('Chưa chọn cơ sở.');
+  if (!hs_codeCoSo_(coSo)) return hs_loi_('Cơ sở không hợp lệ: ' + coSo);
+
+  var ngaySinh = String(p.ngaySinh || '').substring(0, 10);
+  var tuoi = hs_soNguyen_(p.tuoi, 0);
+  var namSinh = hs_soNguyen_(p.namSinh, 0);
+  if (!namSinh && tuoi > 0) namSinh = new Date().getFullYear() - tuoi;
+  if (ngaySinh) {
+    var n = parseInt(ngaySinh.substring(0, 4), 10);
+    if (!isNaN(n)) namSinh = n;
+  }
+  if (!ngaySinh && !namSinh) return hs_loi_('Chưa điền tuổi hoặc ngày sinh.');
+  if (namSinh && (namSinh < 1950 || namSinh > new Date().getFullYear())) {
+    return hs_loi_('Tuổi hoặc ngày sinh không hợp lệ.');
+  }
+
+  var gioiTinh = String(p.gioiTinh || '').trim();
+  if (gioiTinh && gioiTinh !== 'Nam' && gioiTinh !== 'Nữ') gioiTinh = '';
+
+  var kq = SHEETS_.withLock(function () {
+    var maHV = hs_sinhMaHV_(coSo);
+    if (!maHV) return hs_loi_('Không sinh được mã học viên cho cơ sở ' + coSo + '.');
+    if (SHEETS_.findRow('VoSinh', 'maHV', maHV)) {
+      return hs_loi_('Mã ' + maHV + ' đã tồn tại. Thử lại lần nữa.');
+    }
+    SHEETS_.appendRow('VoSinh', HS_VOSINH, {
+      maHV: maHV, hoTen: hoTen, ngaySinh: ngaySinh, namSinh: namSinh || '',
+      gioiTinh: gioiTinh, maPH: String(p.maPH || '').trim(), coSo: coSo,
+      capDaiHienTai: String(p.capDaiHienTai || '').trim(),
+      ngayNhapHoc: String(p.ngayNhapHoc || '').substring(0, 10) || SHEETS_.today(),
+      soBuoiTuan: hs_soNguyen_(p.soBuoiTuan, '') === '' ? '' : hs_soNguyen_(p.soBuoiTuan, ''),
+      anhDaiDien: '',
+      dongYDungAnh: String(p.dongYDungAnh || 'Chưa hỏi'),
+      trangThai: 'Đang học',
+      ghiChu: String(p.ghiChu || '').trim(),
+      ngayTao: SHEETS_.now(), nguoiTao: String(p._maNV || p._sdt || '')
+    });
+    return hs_ok_({ maHV: maHV });
+  });
+  if (kq.status !== 'success') return kq;
+
+  /* Lưu ảnh SAU khi đã có mã, và ngoài khoá: tải ảnh lên Drive mất vài giây,
+     giữ khoá suốt lúc đó là lễ tân cơ sở khác phải xếp hàng chờ. Ảnh hỏng thì
+     hồ sơ vẫn còn, bổ sung ảnh sau được. */
+  var idAnh = hs_luuAnhVoSinh_(p.anhThe, kq.maHV);
+  if (idAnh) {
+    var dong = SHEETS_.findRow('VoSinh', 'maHV', kq.maHV);
+    if (dong) SHEETS_.updateRow('VoSinh', dong._row, { anhDaiDien: idAnh });
+  }
+
+  var vs = SHEETS_.findRow('VoSinh', 'maHV', kq.maHV);
+  return hs_ok_({
+    maHV: kq.maHV, coAnh: !!idAnh,
+    student: vs ? hs_mapVoSinh_(vs) : { maHV: kq.maHV, hoTen: hoTen, coSo: coSo }
+  });
+}
+
+function hsDanhSachVoSinh_(p) {
+  var pv = hs_phamVi_(p);
+  var loc = String(p.coSo || '').trim();
+  var tim = hs_chuan_(p.tim);
+  var trangThai = String(p.trangThai || '').trim();
+
+  var rows = SHEETS_.readAll('VoSinh', function (r) {
+    if (pv && String(r.coSo || '') !== pv) return false;
+    if (!pv && loc && String(r.coSo || '') !== loc) return false;
+    if (trangThai && String(r.trangThai || '') !== trangThai) return false;
+    if (tim) {
+      var kho = hs_chuan_(r.hoTen) + hs_chuan_(r.maHV) + hs_chuan_(r.maPH);
+      if (kho.indexOf(tim) === -1) return false;
+    }
+    return true;
+  });
+
+  rows.sort(function (a, b) {
+    return String(b.maHV || '').localeCompare(String(a.maHV || ''));
+  });
+
+  var tong = rows.length;
+  var catBot = tong > HS_VOSINH_TOI_DA;
+  if (catBot) rows = rows.slice(0, HS_VOSINH_TOI_DA);
+
+  var out = [];
+  for (var i = 0; i < rows.length; i++) {
+    var m = hs_mapVoSinh_(rows[i]);
+    m.coAnh = !!String(rows[i].anhDaiDien || '');
+    out.push(m);
+  }
+  return hs_ok_({ students: out, tong: tong, catBot: catBot });
+}
+
+/** Trả ảnh thẻ dưới dạng data URI. Đi qua đây thay vì link Drive công khai để
+    ảnh chỉ đến được tay người có quyền xem em đó. */
+function hsAnhVoSinh_(p) {
+  var maHV = String(p.maHV || '').trim();
+  if (!maHV) return hs_loi_('Thiếu mã học viên.');
+  if (!hs_duocXemHocVien_(p, maHV)) {
+    return hs_loi_('Bạn không xem được hồ sơ học viên này.', 'KHONG_DU_QUYEN');
+  }
+  var vs = SHEETS_.findRow('VoSinh', 'maHV', maHV);
+  var idAnh = vs ? String(vs.anhDaiDien || '') : '';
+  if (!idAnh) return hs_ok_({ anh: '' });
+  try {
+    var blob = DriveApp.getFileById(idAnh).getBlob();
+    return hs_ok_({ anh: 'data:' + blob.getContentType() + ';base64,' +
+                         Utilities.base64Encode(blob.getBytes()) });
+  } catch (err) {
+    console.error('Không đọc được ảnh thẻ ' + maHV + ': ' + err);
+    return hs_ok_({ anh: '' });
+  }
+}
+
+function hsSuaVoSinh_(p) {
+  if (!hs_laLeTan_(p) && !hs_laQuanLy_(p)) {
+    return hs_loi_('Chỉ lễ tân và quản lý mới sửa được hồ sơ võ sinh.', 'KHONG_DU_QUYEN');
+  }
+  var maHV = String(p.maHV || '').trim();
+  if (!maHV) return hs_loi_('Thiếu mã học viên.');
+  var vs = SHEETS_.findRow('VoSinh', 'maHV', maHV);
+  if (!vs) return hs_loi_('Không tìm thấy học viên với mã này.', 'KHONG_TIM_THAY');
+  if (!hs_trongPhamVi_(p, vs.coSo)) {
+    return hs_loi_('Không tìm thấy học viên với mã này.', 'KHONG_TIM_THAY');
+  }
+
+  /* Danh sách trắng các cột được sửa. maHV, coSo, ngayTao, nguoiTao KHÔNG nằm
+     ở đây: đổi mã là mất liên kết với học phí/điểm danh, đổi cơ sở là chuyển
+     em sang tầm nhìn của người khác — hai việc đó phải làm riêng, có chủ đích. */
+  var patch = {};
+  var choPhep = ['hoTen','ngaySinh','namSinh','gioiTinh','maPH','capDaiHienTai',
+                 'ngayNhapHoc','soBuoiTuan','dongYDungAnh','trangThai','ghiChu','maLienDoan'];
+  for (var i = 0; i < choPhep.length; i++) {
+    var c = choPhep[i];
+    if (p[c] === undefined) continue;
+    patch[c] = (c === 'soBuoiTuan' || c === 'namSinh')
+      ? (hs_soNguyen_(p[c], '') === '' ? '' : hs_soNguyen_(p[c], ''))
+      : String(p[c]).trim();
+  }
+  if (patch.hoTen !== undefined && patch.hoTen.length < 2) {
+    return hs_loi_('Họ tên không hợp lệ.');
+  }
+  if (p.anhThe) {
+    var idAnh = hs_luuAnhVoSinh_(p.anhThe, maHV);
+    if (idAnh) patch.anhDaiDien = idAnh;
+  }
+  if (!Object.keys(patch).length) return hs_loi_('Không có gì để sửa.');
+
+  SHEETS_.updateRow('VoSinh', vs._row, patch);
+  var moi = SHEETS_.findRow('VoSinh', 'maHV', maHV);
+  return hs_ok_({ student: hs_mapVoSinh_(moi) });
 }

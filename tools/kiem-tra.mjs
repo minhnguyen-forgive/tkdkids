@@ -175,5 +175,23 @@ console.log('\n[6] sitemap.xml và robots.txt');
   }
 }
 
+/* ---------- [7] Backend chạy trong bộ mô phỏng Apps Script ---------- */
+console.log('\n[7] Backend Apps Script (bộ mô phỏng)');
+{
+  try {
+    const ra = execFileSync('node', [path.join(ROOT, 'tools/thu-backend.mjs')],
+      { cwd: ROOT, encoding: 'utf8', stdio: 'pipe' });
+    const m = ra.match(/(\d+) đạt, (\d+) hỏng/);
+    OK(m ? `${m[1]}/${Number(m[1]) + Number(m[2])} phép thử backend đạt` : 'backend đạt');
+  } catch (e) {
+    for (const dong of String(e.stdout || '').split('\n')) {
+      if (/^\s*✗/.test(dong)) KO(`backend: ${dong.replace(/^\s*✗\s*/, '')}`);
+    }
+    if (!/✗/.test(String(e.stdout || ''))) {
+      KO(`không chạy được tools/thu-backend.mjs: ${String(e.stderr || e.message).split('\n')[0]}`);
+    }
+  }
+}
+
 console.log(`\n${loi ? `✗ ${loi} lỗi` : '✓ không có lỗi'}${canh ? `, ${canh} cảnh báo` : ''}\n`);
 process.exit(loi ? 1 : 0);

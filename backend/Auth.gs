@@ -56,15 +56,24 @@ var AUTH_ACTION_CAP_QUAN_LY = ['listPendingApprovals', 'decideLeaveRequest',
    một HLV... Với mấy action này cổng KHÔNG ghi đè maNV, nếu ghi đè thì admin
    tạo tài khoản nào cũng thành mã của chính admin.
 
+   taoVoSinh/suaVoSinh cũng nằm đây vì maPH trong tham số là mã phụ huynh của
+   VÕ SINH, không phải của lễ tân đang thao tác — ghi đè là gắn con cho nhầm
+   người, mà lễ tân không có maPH nên thực tế là xoá trắng liên kết cha–con.
+
    Danh tính người gọi vẫn luôn có ở p._maNV / p._vaiTro / p._coSo, và quyền
-   vẫn bị kiểm bằng AUTH_ACTION_CAP_QUAN_LY bên dưới. */
+   vẫn bị kiểm bằng AUTH_ACTION_CAP_QUAN_LY / AUTH_ACTION_CAP_LE_TAN bên dưới. */
 var AUTH_ACTION_MANV_LA_DOI_TUONG = ['taoTaiKhoan', 'datLaiMatKhau', 'doiVaiTro',
-  'khoaTaiKhoan', 'decidePayroll'];
+  'khoaTaiKhoan', 'decidePayroll', 'taoVoSinh', 'suaVoSinh'];
+
+/* Action lễ tân được gọi, ngoài admin và HLV trưởng. Tách riêng khỏi
+   AUTH_ACTION_CAP_QUAN_LY vì lễ tân không phải quản lý nhưng vẫn phải tạo
+   được hồ sơ võ sinh — đó là việc chính của họ. */
+var AUTH_ACTION_CAP_LE_TAN = ['taoVoSinh', 'suaVoSinh'];
 
 /* Tài khoản phụ huynh/học viên CHỈ được gọi mấy việc này — danh sách trắng,
    thêm action mới cũng không tự động mở cho họ. */
 var AUTH_ACTION_CHO_PHU_HUYNH = ['kiemTraPhien', 'dangXuat', 'doiMatKhau',
-  'listStudentReviews', 'updateProfile'];
+  'listStudentReviews', 'updateProfile', 'anhVoSinh'];
 
 /* ---------- Sheet ---------- */
 function auth_ss_() {
@@ -317,6 +326,12 @@ function xacThuc_(e) {
   }
   if (AUTH_ACTION_CAP_QUAN_LY.indexOf(action) !== -1 && !laQuanLy) {
     auth_nhatKy_(phien.sdt, action, 'tu_choi', 'Thiếu quyền quản lý');
+    return auth_fail_('Bạn không có quyền thực hiện việc này.', 'KHONG_DU_QUYEN');
+  }
+  var laLeTan = vaiTro.indexOf('le_tan') !== -1 || vaiTro.indexOf('lễ tân') !== -1 ||
+                vaiTro.indexOf('le tan') !== -1 || vaiTro.indexOf('letan') !== -1;
+  if (AUTH_ACTION_CAP_LE_TAN.indexOf(action) !== -1 && !laLeTan && !laQuanLy) {
+    auth_nhatKy_(phien.sdt, action, 'tu_choi', 'Không phải lễ tân hay quản lý');
     return auth_fail_('Bạn không có quyền thực hiện việc này.', 'KHONG_DU_QUYEN');
   }
 

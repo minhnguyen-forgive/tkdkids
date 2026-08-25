@@ -27,9 +27,9 @@ var CAU_TRUC = {
   },
 
   VoSinh: {
-    cols: ['maHV','maLienDoan','hoTen','ngaySinh','gioiTinh','maPH','coSo','capDaiHienTai',
-           'ngayNhapHoc','soBuoiTuan','anhDaiDien','dongYDungAnh','ngayDongY','trangThai',
-           'ghiChu','ngayTao','nguoiTao'],
+    cols: ['maHV','maLienDoan','hoTen','ngaySinh','namSinh','gioiTinh','maPH','coSo',
+           'capDaiHienTai','ngayNhapHoc','soBuoiTuan','anhDaiDien','dongYDungAnh',
+           'ngayDongY','trangThai','ghiChu','ngayTao','nguoiTao'],
     validate: {
       gioiTinh: ['Nam','Nữ'],
       coSo: ['Hapulico','GreenStars','NghiaDo','HaDong','LongBien','GiaHoa','HaLong'],

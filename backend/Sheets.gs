@@ -96,8 +96,25 @@ var SHEETS_ = (function () {
   }
 
   /** Đọc dòng tiêu đề -> { tênCột: chỉSốCột(0-based) } */
+  /* Số hiệu bản dữ liệu của mỗi sheet. Mọi khoá cache đều gắn số này, nên chỉ
+     cần tăng nó lên là toàn bộ chỉ mục cũ của sheet đó thành vô hiệu — kể cả
+     những chỉ mục dựng theo cột khoá mà chỗ ghi không hề biết tới.
+
+     Trước đây invalidate() chỉ xoá đúng một chỉ mục nếu người gọi nhớ truyền
+     tên cột khoá, mà appendRow lại không truyền. Hậu quả: ghi xong một dòng
+     mới thì findRow vẫn đọc chỉ mục cũ suốt 6 tiếng và bảo "không tìm thấy" —
+     tạo hồ sơ võ sinh xong tra mã ra không có, sửa cũng không được. */
+  function ban_(sheetName) {
+    var c = CacheService.getScriptCache();
+    var k = 'ver:' + ss().getId() + ':' + sheetName;
+    var v = c.get(k);
+    if (!v) { v = '1'; }
+    c.put(k, v, CACHE_TTL);
+    return v;
+  }
+
   function headerMap(sh) {
-    var key = 'hdr:' + ss().getId() + ':' + sh.getName();
+    var key = 'hdr:' + ss().getId() + ':' + sh.getName() + ':v' + ban_(sh.getName());
     var cached = CacheService.getScriptCache().get(key);
     if (cached) return JSON.parse(cached);
 
@@ -118,7 +135,8 @@ var SHEETS_ = (function () {
    * Chỉ đọc DUY NHẤT cột khoá, không đọc cả sheet.
    */
   function index(sh, keyColName) {
-    var key = 'idx:' + ss().getId() + ':' + sh.getName() + ':' + keyColName;
+    var key = 'idx:' + ss().getId() + ':' + sh.getName() + ':' + keyColName +
+              ':v' + ban_(sh.getName());
     var cached = CacheService.getScriptCache().get(key);
     if (cached) return JSON.parse(cached);
 
@@ -140,11 +158,14 @@ var SHEETS_ = (function () {
     return idx;
   }
 
-  /** Xoá chỉ mục sau khi ghi thêm/sửa để lần đọc sau dựng lại. */
+  /** Bỏ toàn bộ chỉ mục đã cache của một sheet sau khi ghi thêm/sửa.
+      Tham số keyColName giữ lại cho tương thích, không còn cần nữa: tăng số
+      hiệu bản là mọi chỉ mục của sheet đó đều hết hiệu lực cùng lúc. */
   function invalidate(sheetName, keyColName) {
     var c = CacheService.getScriptCache();
-    if (keyColName) c.remove('idx:' + ss().getId() + ':' + sheetName + ':' + keyColName);
-    c.remove('hdr:' + ss().getId() + ':' + sheetName);
+    var k = 'ver:' + ss().getId() + ':' + sheetName;
+    var v = parseInt(c.get(k) || '1', 10) + 1;
+    c.put(k, String(v), CACHE_TTL);
   }
 
   /** Đọc đúng MỘT dòng theo khoá. Trả object hoặc null. */
