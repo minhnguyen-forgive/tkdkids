@@ -3,15 +3,13 @@
    Sửa thông tin cơ sở, ca học, vai trò... chỉ ở file này.
    ============================================================= */
 
-/* CHÚ Ý — đây vẫn là URL Apps Script CŨ (của bên khác).
+/* URL Web app của backend trung tâm (Apps Script — project của trung tâm).
 
-   Backend mới của trung tâm đã viết xong trong thư mục backend/ nhưng chưa
-   deploy. Sau khi deploy (xem docs/TRIEN-KHAI.md phần D) phải dán URL /exec
-   mới vào đây, nếu không website vẫn nói chuyện với hệ thống của bên kia.
-
-   Đổi một dòng này là xong, không phải sửa chỗ nào khác. */
+   Đổi mỗi dòng này là toàn hệ thống trỏ sang backend khác, không phải sửa
+   chỗ nào nữa. Sau khi sửa code trong Apps Script nhớ Deploy → Manage
+   deployments → New version, URL giữ nguyên. */
 export const API_URL =
-  'https://script.google.com/macros/s/AKfycbz7YuEDaXJf5HSo996smVje3jsZyNeb_s1FKWWgJjwiiDmYA1hYrHNtH2biBIfSnzkQ/exec';
+  'https://script.google.com/macros/s/AKfycbwdAd9nhS0BiOVjwxP99zLyNMytBpVPM3AuLu_u2XVriqKCf-awH05tYLoAGwZS4iVitA/exec';
 
 export const SITE = {
   name: 'Taekwondo Kids Việt Nam',
