@@ -48,6 +48,11 @@ xoá dòng `ID_SHEET_DULIEU` → **Save script properties** → chạy lại
 mới) → mở Sheet tài khoản, xoá các tab nghiệp vụ vừa lỡ tạo, **chỉ giữ lại
 `TaiKhoan`, `Phien`, `NhatKyDangNhap`**.
 
+Trường hợp project Apps Script được tạo **từ trong** Sheet tài khoản
+(Extensions → Apps Script) thì nó gắn cứng vào file đó, xoá property không sửa
+được — script sẽ tự tạo file dữ liệu riêng và ghi id vào `ID_SHEET_DULIEU`,
+xem đường dẫn trong Execution log.
+
 ## C. Chạy hai hàm, mỗi hàm một lần
 
 Chọn hàm ở thanh trên → ▶ **Run**. Lần đầu Google hỏi cấp quyền: chọn tài
