@@ -146,6 +146,23 @@ goi({ action:'suaVoSinh', token:T_LT1, maHV:b.maHV, maLienDoan:'VTF77777' });
 t('võ sinh chưa gắn phụ huynh thì mã không đăng nhập được',
   dangNhap('VTF77777', phuHuynh.matKhauTam).status==='error');
 
+/* ---------- SHEETS NUỐT SỐ 0 ĐẦU ---------- */
+t('84xxx → 0xxx', globalThis.auth_chuanSdt_('84934641039') === '0934641039');
+t('934641039 (Sheets nuốt số 0) → 0934641039', globalThis.auth_chuanSdt_(934641039) === '0934641039');
+t('0934641039 giữ nguyên', globalThis.auth_chuanSdt_('0934641039') === '0934641039');
+t('có dấu chấm, khoảng trắng vẫn ra đúng', globalThis.auth_chuanSdt_('093.464.10 39') === '0934641039');
+t('rỗng vẫn là rỗng, không thành "0"', globalThis.auth_chuanSdt_('') === '');
+
+/* ghi số vào ô như Sheets vẫn làm rồi thử đăng nhập */
+(function () {
+  const sh = globalThis.auth_sheet_(globalThis.AUTH_SHEET_TK, globalThis.AUTH_COT_TK);
+  const m = globalThis.auth_map_(sh);
+  const dong = sh.rows.findIndex(r => String(r[m['soDienThoai']]).indexOf('0900000001') === 0);
+  sh.rows[dong][m['soDienThoai']] = 900000001;      // Sheets lưu thành số
+  const r = dangNhap('0900000001', leTanHP.matKhauTam);
+  t('ô lưu thành số vẫn đăng nhập được bằng số có 0 đầu', r.status === 'success', r);
+})();
+
 console.log(ghi.join('\n'));
 console.log(`\n${pass} đạt, ${fail} hỏng`);
 process.exit(fail?1:0);

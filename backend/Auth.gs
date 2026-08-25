@@ -82,6 +82,16 @@ function auth_ss_() {
   return SpreadsheetApp.openById(id);
 }
 
+/* Ép mấy cột hay bị Sheets hiểu nhầm sang định dạng văn bản thuần.
+   Số điện thoại và mã phụ huynh toàn chữ số nên dễ mất số 0 đầu. */
+function auth_epCotChu_(sh, cot) {
+  var canChu = ['soDienThoai', 'maPH', 'maNV'];
+  for (var i = 0; i < cot.length; i++) {
+    if (canChu.indexOf(cot[i]) === -1) continue;
+    try { sh.getRange(1, i + 1, sh.getMaxRows(), 1).setNumberFormat('@'); } catch (e) {}
+  }
+}
+
 function auth_sheet_(ten, cot) {
   var ss = auth_ss_();
   var sh = ss.getSheetByName(ten);
@@ -89,13 +99,16 @@ function auth_sheet_(ten, cot) {
     sh = ss.insertSheet(ten);
     sh.getRange(1, 1, 1, cot.length).setValues([cot]).setFontWeight('bold');
     sh.setFrozenRows(1);
+    auth_epCotChu_(sh, cot);
     return sh;
   }
   if (sh.getLastRow() === 0) {
     sh.getRange(1, 1, 1, cot.length).setValues([cot]).setFontWeight('bold');
     sh.setFrozenRows(1);
+    auth_epCotChu_(sh, cot);
     return sh;
   }
+  auth_epCotChu_(sh, cot);
   // Bổ sung cột còn thiếu, không đụng vào dữ liệu đã có
   var dangCo = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String);
   for (var i = 0; i < cot.length; i++) {
@@ -164,8 +177,18 @@ function auth_kiemChuoiBam_(matKhau, luuTru) {
 }
 
 /* ---------- Tài khoản ---------- */
+/* Chuẩn hoá số điện thoại về dạng 0xxxxxxxxx.
+
+   Phải xử lý chuyện Sheets tự nuốt số 0 đầu: ô chỉ toàn chữ số thì Sheets
+   coi là SỐ, '0934641039' lưu xuống thành 934641039. Đọc lên không khớp với
+   số người dùng gõ vào, thành ra tài khoản có thật mà báo sai mật khẩu —
+   và hàm tạo tài khoản cũng không thấy dòng cũ nên tạo thêm dòng trùng. */
 function auth_chuanSdt_(s) {
-  return String(s || '').replace(/\D/g, '').replace(/^84/, '0');
+  var d = String(s || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.length > 9 && d.indexOf('84') === 0) d = '0' + d.substring(2);
+  if (d.charAt(0) !== '0') d = '0' + d;
+  return d;
 }
 
 function auth_timTaiKhoan_(sdt) {
