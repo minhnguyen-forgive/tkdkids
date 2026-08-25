@@ -36,7 +36,17 @@ Tách hai file là có chủ ý: mật khẩu không nằm cùng chỗ với d�
 nên có mở Sheet dữ liệu cho nhân viên cũng không ai đọc được mật khẩu.
 
 Muốn dùng Sheet dữ liệu có sẵn thay vì để script tạo mới: đặt Script Property
-`ID_SHEET_DULIEU` bằng id của file đó trước khi chạy bước C.
+`ID_SHEET_DULIEU` bằng id của file đó trước khi chạy bước C. **Tuyệt đối không
+điền id của Sheet tài khoản vào đây** — làm vậy là 17 sheet nghiệp vụ nằm chung
+file với mật khẩu, sau này share cho lễ tân nhập liệu là họ đọc được chuỗi băm,
+token phiên và sửa được cột `vaiTro` của chính mình. `Sheets.gs` chặn sẵn: trỏ
+trùng thì script dừng và báo lỗi ngay chứ không lặng lẽ tạo sheet vào đó.
+
+Lỡ đặt trùng rồi thì sửa như sau: Project Settings → Script Properties → bấm ✕
+xoá dòng `ID_SHEET_DULIEU` → **Save script properties** → chạy lại
+`taoToanBoCauTruc` (script tạo file `TaekwondoKids-DuLieu` mới và tự ghi id
+mới) → mở Sheet tài khoản, xoá các tab nghiệp vụ vừa lỡ tạo, **chỉ giữ lại
+`TaiKhoan`, `Phien`, `NhatKyDangNhap`**.
 
 ## C. Chạy hai hàm, mỗi hàm một lần
 

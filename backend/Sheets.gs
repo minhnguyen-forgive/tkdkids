@@ -25,17 +25,41 @@ var SHEETS_ = (function () {
      Nhờ bước 3 mà project kiểu độc lập (tạo từ script.google.com, không gắn
      Sheet nào) cũng chạy được — trước đây getActiveSpreadsheet() trả rỗng là
      mọi thứ đổ. */
+  /* Dữ liệu nghiệp vụ KHÔNG được nằm chung file với bảng tài khoản. Sheet dữ
+     liệu sau này còn share cho lễ tân, HLV nhập liệu; để chung là họ đọc được
+     chuỗi băm mật khẩu và token phiên, sửa được cả cột vaiTro của chính mình.
+     Đặt nhầm id thì dừng ngay tại đây thay vì lặng lẽ tạo 17 sheet vào đó. */
+  function chanTrungSheetTaiKhoan_(id) {
+    var idTaiKhoan = '';
+    try {
+      idTaiKhoan = PropertiesService.getScriptProperties()
+                     .getProperty('ID_SHEET_TAIKHOAN') || '';
+    } catch (e) {}
+    if (!idTaiKhoan && typeof AUTH_ID_SHEET_MAC_DINH === 'string') {
+      idTaiKhoan = AUTH_ID_SHEET_MAC_DINH;
+    }
+    if (idTaiKhoan && String(id) === String(idTaiKhoan)) {
+      throw new Error(
+        'ID_SHEET_DULIEU đang trỏ vào Sheet TÀI KHOẢN. Hai thứ phải nằm ở hai ' +
+        'file khác nhau. Cách sửa: Project Settings > Script Properties > xoá ' +
+        'dòng ID_SHEET_DULIEU > Save, rồi chạy lại taoToanBoCauTruc để script ' +
+        'tự tạo file TaekwondoKids-DuLieu mới.');
+    }
+  }
+
   function ss() {
     if (_ssCache) return _ssCache;
     var props = PropertiesService.getScriptProperties();
     var id = props.getProperty('ID_SHEET_DULIEU');
     if (id) {
+      chanTrungSheetTaiKhoan_(id);
       _ssCache = SpreadsheetApp.openById(id);
       return _ssCache;
     }
     var dangGan = null;
     try { dangGan = SpreadsheetApp.getActiveSpreadsheet(); } catch (e) { dangGan = null; }
     if (dangGan) {
+      chanTrungSheetTaiKhoan_(dangGan.getId());
       props.setProperty('ID_SHEET_DULIEU', dangGan.getId());
       _ssCache = dangGan;
       return _ssCache;
