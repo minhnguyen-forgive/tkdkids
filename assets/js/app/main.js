@@ -6,7 +6,7 @@
    ============================================================= */
 
 import { $, $$, esc, setHTML } from '../core/dom.js';
-import { initModals, toast } from '../core/ui.js';
+import { initModals, initPasswordEyes, initEnterSubmit, toast } from '../core/ui.js';
 import { currentUser, clearSession } from '../core/store.js';
 import { ROLE_LABELS, findBranch } from '../core/config.js';
 import { renderStaffDashboard } from './staff.js';
@@ -69,6 +69,8 @@ function boot() {
   }
 
   initModals();
+  initPasswordEyes();
+  initEnterSubmit();
   initModalTabs();
   renderTopbar(user);
   $('#btnLogout').addEventListener('click', logout);

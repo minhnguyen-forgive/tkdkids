@@ -5,7 +5,7 @@
    về đúng nút đã mở nó (yêu cầu cơ bản về khả năng tiếp cận).
    ============================================================= */
 
-import { $, esc, el } from './dom.js';
+import { $, $$, esc, el } from './dom.js';
 
 /* ---------------- KHOÁ CUỘN NỀN ---------------- */
 let scrollLocks = 0;
@@ -201,3 +201,65 @@ export const emptyHTML = (text = 'Chưa có dữ liệu.', icon = 'fa-inbox') =>
 
 export const errorHTML = (text = 'Không tải được dữ liệu.') =>
   `<div class="empty-note" style="color:var(--red)"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> ${esc(text)}</div>`;
+
+/* ---------- HIỆN / ẨN MẬT KHẨU ----------
+   Gắn nút con mắt vào mọi ô mật khẩu bên trong `root`. Gọi lại bao nhiêu lần
+   cũng được: ô nào đã có nút thì bỏ qua, nên dùng được cả với modal dựng động.
+
+   Lý do cần: mật khẩu tạm do quản trị viên cấp là chuỗi ngẫu nhiên kiểu
+   K72md8fp — gõ mù rất dễ sai, mà sai 5 lần là khoá tài khoản 15 phút. */
+export function initPasswordEyes(root = document) {
+  $$('input[type="password"]', root).forEach(inp => {
+    if (inp.dataset.coMat === '1') return;
+    inp.dataset.coMat = '1';
+
+    const boc = document.createElement('div');
+    boc.className = 'pw-wrap';
+    inp.parentNode.insertBefore(boc, inp);
+    boc.appendChild(inp);
+
+    const nut = document.createElement('button');
+    nut.type = 'button';                 // không thì bấm vào là gửi luôn form
+    nut.className = 'pw-eye';
+    nut.tabIndex = -1;                   // Tab vẫn nhảy thẳng từ ô này sang ô kia
+    const ve = dangAn => {
+      nut.innerHTML = `<i class="fa-solid ${dangAn ? 'fa-eye' : 'fa-eye-slash'}" aria-hidden="true"></i>`;
+      nut.setAttribute('aria-label', dangAn ? 'Hiện mật khẩu' : 'Ẩn mật khẩu');
+      nut.setAttribute('aria-pressed', String(!dangAn));
+      nut.title = dangAn ? 'Hiện mật khẩu' : 'Ẩn mật khẩu';
+    };
+    ve(true);
+
+    nut.addEventListener('click', () => {
+      const dangAn = inp.type === 'password';
+      inp.type = dangAn ? 'text' : 'password';
+      ve(!dangAn);
+      inp.focus();
+      // Con trỏ về cuối chuỗi thay vì nhảy về đầu khi đổi type
+      const n = inp.value.length;
+      try { inp.setSelectionRange(n, n); } catch (e) {}
+    });
+
+    boc.appendChild(nut);
+  });
+}
+
+/* ---------- ENTER ĐỂ GỬI FORM ----------
+   Gõ xong bấm Enter là gửi, không bắt rê chuột xuống nút. Trình duyệt lẽ ra
+   tự làm, nhưng đo thực tế thì không phải ô nào cũng ăn, nên làm cho chắc.
+
+   Bỏ qua textarea (Enter ở đó là xuống dòng) và các ô nút/chọn tệp. */
+export function initEnterSubmit(root = document) {
+  root.addEventListener('keydown', ev => {
+    if (ev.key !== 'Enter' || ev.isComposing || ev.defaultPrevented) return;
+    if (ev.shiftKey || ev.altKey) return;
+    const o = ev.target;
+    if (!o || o.tagName !== 'INPUT') return;
+    const kieu = String(o.type || '').toLowerCase();
+    if (['submit', 'button', 'reset', 'checkbox', 'radio', 'file', 'image'].includes(kieu)) return;
+    const form = o.form || o.closest('form');
+    if (!form) return;
+    ev.preventDefault();
+    form.requestSubmit();
+  });
+}

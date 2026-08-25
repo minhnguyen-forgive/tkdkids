@@ -318,3 +318,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 @media (max-width: 600px) {
   .toast-host { top: auto; bottom: 88px; left: 16px; right: 16px; max-width: none; }
 }
+
+/* ---------- Ô mật khẩu có nút con mắt ---------- */
+.pw-wrap { position: relative; display: block; }
+.pw-wrap input { padding-right: 48px !important; }
+.pw-eye {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  border: 0; background: none; cursor: pointer; padding: 0;
+  color: var(--text-muted, #6b7280); font-size: 1rem; border-radius: 8px;
+  transition: color .18s ease, background .18s ease;
+}
+.pw-eye:hover { color: var(--primary-blue, #0047AB); background: rgba(0, 71, 171, .07); }
+.pw-eye:focus-visible { outline: 2px solid var(--primary-blue, #0047AB); outline-offset: 1px; }

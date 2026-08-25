@@ -12,7 +12,8 @@
 
 import { $, $$, esc } from '../core/dom.js';
 import { callApi } from '../core/api.js';
-import { openModal, closeModal, toastError, toastSuccess } from '../core/ui.js';
+import { openModal, closeModal, initPasswordEyes, initEnterSubmit,
+         toastError, toastSuccess } from '../core/ui.js';
 import { saveSession, isLoggedIn, currentUser } from '../core/store.js';
 import { normalizePhone } from '../core/format.js';
 
@@ -58,11 +59,15 @@ function buildModal() {
     </div>`;
 
   document.body.appendChild(wrap);
+  initPasswordEyes(wrap);
 
   $('#loginForm').addEventListener('submit', ev => {
     ev.preventDefault();
     doLogin(ev.currentTarget);
   });
+
+  // Enter ở ô nào cũng đăng nhập, khỏi phải rê chuột xuống nút
+  initEnterSubmit(wrap);
 }
 
 async function doLogin(form) {
