@@ -9,7 +9,7 @@
    chỗ nào nữa. Sau khi sửa code trong Apps Script nhớ Deploy → Manage
    deployments → New version, URL giữ nguyên. */
 export const API_URL =
-  'https://script.google.com/macros/s/AKfycby6iWE824ZjqfTVucugFII24ApS0pQ6FTUv-rHhctEqZz7n4xCqDIg6J-FX15UfLiyfcQ/exec';
+  'https://script.google.com/macros/s/AKfycbx6g6cvtsvjBsskTDdEh7OfbE5J_aVgx6sqOg230soORjb8FpqL0jO_leMyRU8TWLaWOA/exec';
 
 export const SITE = {
   name: 'Taekwondo Kids Việt Nam',
