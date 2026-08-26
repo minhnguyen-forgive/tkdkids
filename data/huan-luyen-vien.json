@@ -19,17 +19,17 @@
       ]
     },
     {
-      "id": "nguyen-quang-huy",
-      "name": "Nguyễn Quang Huy",
-      "title": "Huấn luyện viên phó",
+      "id": "le-trung-anh",
+      "name": "Lê Trung Anh",
+      "title": "Huấn luyện viên trưởng cơ sở",
       "honorific": "Thầy",
-      "dang": null,
+      "dang": 5,
       "dangNote": "",
       "branchId": "GreenStars",
       "photo": "",
       "bio": "Phụ trách chi nhánh GreenStars từ khi cơ sở thứ hai của hệ thống được khai trương năm 2018.",
       "highlights": [
-        "Phụ trách cơ sở GreenStars từ 2018"
+        "Phụ trách cơ sở GreenStars từ 2026"
       ]
     },
     {
@@ -37,7 +37,7 @@
       "name": "Vũ Thành Đạt",
       "title": "Huấn luyện viên phụ trách cơ sở",
       "honorific": "Thầy",
-      "dang": null,
+      "dang": 4,
       "dangNote": "",
       "branchId": "NghiaDo",
       "photo": "",
@@ -51,7 +51,7 @@
       "name": "Nguyễn Thị Ngân",
       "title": "Huấn luyện viên phụ trách cơ sở",
       "honorific": "Cô",
-      "dang": null,
+      "dang": 6,
       "dangNote": "",
       "branchId": "GiaHoa",
       "photo": "",
@@ -61,17 +61,17 @@
       ]
     },
     {
-      "id": "nguyen-quoc-viet",
-      "name": "Nguyễn Quốc Việt",
+      "id": "nguyen-ngoc-anh",
+      "name": "Nguyễn Ngọc Ánh",
       "title": "Huấn luyện viên phụ trách cơ sở",
-      "honorific": "Thầy",
-      "dang": null,
+      "honorific": "Cô",
+      "dang": 5,
       "dangNote": "",
-      "branchId": "HaLong",
+      "branchId": "HaDong",
       "photo": "",
-      "bio": "Phụ trách chi nhánh Hạ Long — cơ sở đầu tiên của Taekwondo Kids tại Quảng Ninh, thành lập năm 2021.",
+      "bio": "Phụ trách chi nhánh Hà Đông, thành lập năm 2025.",
       "highlights": [
-        "Phụ trách cơ sở đầu tiên tại Quảng Ninh"
+        "Phụ trách cơ sở Hà Đông"
       ]
     }
   ]
