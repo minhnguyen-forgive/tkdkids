@@ -159,11 +159,10 @@
           <div id="vsAnhPreview"></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label for="vsMaPH">Mã phụ huynh</label>
-            <input type="text" id="vsMaPH" placeholder="VD: PH001 — để trống nếu chưa có">
-            <p class="form-hint">Chưa gắn mã này thì phụ huynh đăng nhập sẽ không thấy hồ sơ con.</p></div>
           <div class="form-group"><label for="vsSoBuoi">Số buổi/tuần</label>
             <input type="number" id="vsSoBuoi" min="1" max="7" placeholder="VD: 2" inputmode="numeric"></div>
+          <div class="form-group"><label for="vsCapDai">Cấp đai hiện tại</label>
+            <input type="text" id="vsCapDai" placeholder="VD: Đai trắng"></div>
         </div>
         <div id="vsErr" class="validation-msg">Cần ít nhất họ tên và tuổi.</div>
         <div id="vsNewResult"></div>
@@ -327,11 +326,11 @@
           <div class="form-group"><label for="acEmail">Email</label>
             <input type="email" id="acEmail" placeholder="Không bắt buộc"></div>
         </div>
-        <div class="form-group" id="acMaPHGroup" style="display:none">
-          <label for="acMaPH">Mã phụ huynh *</label>
-          <input type="text" id="acMaPH" placeholder="VD: PH001 — dùng để gắn với hồ sơ võ sinh">
-          <p class="form-hint">Mã này phải trùng cột <strong>maPH</strong> trong sheet VoSinh của các con,
-             nếu không phụ huynh đăng nhập sẽ không thấy hồ sơ nào.</p>
+        <div class="form-group" id="acMaHVGroup" style="display:none">
+          <label for="acMaHV">Mã học viên *</label>
+          <input type="text" id="acMaHV" placeholder="VD: HP260001">
+          <p class="form-hint">Tài khoản này sẽ xem được hồ sơ của đúng em mang mã đó.
+             Mã lấy ở màn hình <strong>Hồ sơ võ sinh</strong>.</p>
         </div>
         <div id="acErr" class="validation-msg">Điền đủ họ tên và số điện thoại hợp lệ.</div>
         <div id="acNewResult"></div>

@@ -81,7 +81,8 @@ Mọi truy cập Sheets đi qua **một lớp `Sheets.gs`**. Khi cần đổi sa
 ### 3. `VoSinh` — Hồ sơ võ sinh (bảng trung tâm)
 | Cột | Kiểu | Ghi chú |
 |---|---|---|
-| maHV | text | **Khoá chính**. Quy tắc: `{code cơ sở}{năm 2 số}{số thứ tự 4 số}` — VD `HP260012` |
+| maHV | text | **Khoá chính**. Máy chủ sinh, không nhận từ trình duyệt. `{code cơ sở}{năm 2 số}{số thứ tự 4 số}` — VD `HP260012`. Số thứ tự đếm theo **cả trung tâm**, không theo từng cơ sở |
+| maLienDoan | text | Mã do Liên đoàn Taekwondo Việt Nam cấp sau kỳ thi thăng cấp đầu tiên. Dùng tra cứu khi đi thi, và đăng nhập được bằng mã này |
 | maLienDoan | text | Mã do Liên đoàn cấp, có thể trống |
 | hoTen | text | |
 | ngaySinh | date | |

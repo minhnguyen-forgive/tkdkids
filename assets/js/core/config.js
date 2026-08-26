@@ -163,7 +163,7 @@ export const ROLES = {
 };
 
 export const ROLE_LABELS = {
-  phu_huynh: 'Phụ huynh',
+  phu_huynh: 'Học viên / Phụ huynh',
   hlv: 'Huấn luyện viên',
   hlv_truong: 'HLV Trưởng',
   le_tan: 'Lễ tân',

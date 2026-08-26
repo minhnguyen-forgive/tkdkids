@@ -8,7 +8,7 @@ thấy gì, phần nào đã chạy được, phần nào còn phải làm và l
 | Nhóm | Mã vai trò trong `config.js` | Phạm vi dữ liệu |
 |---|---|---|
 | 1. Admin tổng | `admin` | Toàn hệ thống, mọi cơ sở |
-| 2. Học viên (tài khoản phụ huynh dùng cho con) | `phu_huynh` | Chỉ hồ sơ võ sinh gắn với tài khoản |
+| 2. Học viên | `phu_huynh` | Chỉ hồ sơ võ sinh có mã học viên trùng cột `maHV` của tài khoản |
 | 3. Nhân viên cơ sở — lễ tân | `le_tan` | **Chỉ học viên của cơ sở mình** |
 | 4. Nhân sự — HLV và HLV trưởng | `hlv`, `hlv_truong` | Hồ sơ cá nhân + học viên cơ sở mình |
 
@@ -94,12 +94,18 @@ project và Sheet của trung tâm — xem [TRIEN-KHAI.md](TRIEN-KHAI.md). Dữ 
 (lịch dạy, chấm công, lương của hệ thống bên kia) **không được chuyển sang**: hệ
 thống mới bắt đầu từ dữ liệu trắng, tài khoản nhân sự phải tạo lại.
 
-## Hai việc còn phải chốt
+## Còn phải chốt
 
-1. **Học viên đăng nhập bằng gì**: số điện thoại phụ huynh, hay mã học viên?
-   (Mã đăng nhập bằng mã HV đã có sẵn trong [`login.js`](../assets/js/landing/login.js)
-   — chỗ chuẩn hoá số điện thoại đã chấp nhận cả chuỗi không phải số.)
+1. ~~**Học viên đăng nhập bằng gì**~~ **Đã chốt (26/08/2026)**: một ô duy nhất,
+   nhận số điện thoại **hoặc** mã liên đoàn VTF **hoặc** mã học viên nội bộ.
+   Tài khoản gắn với hồ sơ bằng cột `maHV`, không còn mã phụ huynh.
 2. ~~**Ảnh thẻ và ảnh tập luyện**~~ **Đã chốt (25/08/2026)**: ảnh đi qua Apps
    Script, chỉ người có quyền xem hồ sơ em đó mới lấy được. Ảnh trẻ em không để
    link công khai. Đổi lại danh sách không hiện ảnh — mỗi ảnh là một lệnh gọi,
    ba mươi em là ba mươi lượt chờ; ảnh chỉ tải khi mở từng hồ sơ.
+
+**Mã học viên và mã liên đoàn** (26/08/2026): hai thứ khác nhau, đừng lẫn.
+`maHV` do hệ thống sinh lúc đăng ký học, đánh số theo thứ tự của cả trung tâm.
+`maLienDoan` do Liên đoàn Taekwondo Việt Nam cấp sau kỳ thi thăng cấp đầu tiên,
+chủ yếu để tra cứu khi đi thi — lúc tạo hồ sơ chưa có, điền sau bằng nút Sửa.
+Cột `maPH` đã bỏ: tài khoản gắn thẳng với một mã học viên.

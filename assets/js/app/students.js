@@ -3,8 +3,13 @@
 
    Nguyên tắc quan trọng nhất ở màn hình này: KHÔNG có ô nhập mã học viên.
    Mã do máy chủ sinh theo {code cơ sở}{2 số năm}{4 số thứ tự} — VD HP260012.
-   Mã gõ tay sớm muộn cũng trùng, mà trùng mã thì học phí, điểm danh, nhận xét
-   của hai em lẫn vào nhau, gỡ ra rất khổ.
+   Số thứ tự đếm theo cả trung tâm, nên hai em ở hai cơ sở không bao giờ mang
+   cùng một số. Mã gõ tay sớm muộn cũng trùng, mà trùng mã thì học phí, điểm
+   danh, nhận xét của hai em lẫn vào nhau, gỡ ra rất khổ.
+
+   Mã liên đoàn (VTF) là chuyện khác: liên đoàn Taekwondo Việt Nam cấp sau kỳ
+   thi thăng cấp đầu tiên, dùng để tra cứu khi đi thi. Lúc đăng ký học chưa có,
+   nên chỉ điền được ở màn hình sửa.
 
    Ảnh thẻ không để link Drive công khai: ảnh trẻ em, ai cầm được link là xem
    được. Ảnh đi qua action anhVoSinh, máy chủ kiểm quyền rồi mới trả về.
@@ -124,8 +129,7 @@ async function loadDanhSach() {
             · ${esc(tenCoSo(v.coSo))}
             ${v.capDai ? ' · ' + esc(v.capDai) : ''}
             ${v.coAnh ? ' · <span title="Đã có ảnh thẻ">📷</span>' : ''}
-            ${v.maPH ? '<br>Phụ huynh: ' + esc(v.maPH)
-                     : '<br><span style="color:var(--red)">Chưa gắn mã phụ huynh — phụ huynh chưa xem được hồ sơ này</span>'}
+            ${v.maLienDoan ? '<br>Mã liên đoàn: ' + esc(v.maLienDoan) : ''}
           </div>
         </div>
         <span class="status-badge ${nghi ? 'rejected' : baoLuu ? 'pending' : 'approved'}">${esc(v.trangThai || '—')}</span>
@@ -163,7 +167,7 @@ async function xemHoSo(maHV) {
             <dt>Cấp đai</dt><dd>${esc(v.capDai || 'chưa có')}</dd>
             <dt>Số buổi/tuần</dt><dd>${v.soBuoiTuan !== '' ? esc(String(v.soBuoiTuan)) : '—'}</dd>
             <dt>Nhập học</dt><dd>${esc(v.ngayNhapHoc || '—')}</dd>
-            <dt>Mã phụ huynh</dt><dd>${esc(v.maPH || 'chưa gắn')}</dd>
+            <dt>Mã liên đoàn</dt><dd>${esc(v.maLienDoan || 'chưa được cấp')}</dd>
             <dt>Trạng thái</dt><dd>${esc(v.trangThai || '—')}</dd>
           </dl>
         </div>
@@ -222,11 +226,6 @@ async function taoHoSo() {
   const coSo = $('#vsCoSo').value;
   if (user.role === 'admin' && !coSo) return toastError('Chọn cơ sở cho võ sinh này.');
 
-  const maPH = $('#vsMaPH').value.trim();
-  if (!maPH && !await confirmDialog(
-    'Chưa gắn mã phụ huynh. Hồ sơ vẫn tạo được, nhưng phụ huynh đăng nhập sẽ không thấy con mình '
-    + 'cho tới khi gắn mã. Vẫn tạo?', { title: 'Chưa có mã phụ huynh', okText: 'Vẫn tạo' })) return;
-
   const btn = $('#vsCreateBtn');
   const original = btn.innerHTML;
   btn.innerHTML = 'Đang tạo...'; btn.disabled = true;
@@ -235,7 +234,8 @@ async function taoHoSo() {
       hoTen, tuoi, ngaySinh, coSo,
       gioiTinh: $('#vsGioiTinh').value,
       soBuoiTuan: $('#vsSoBuoi').value.trim(),
-      maPH, anhThe: anhDangChon,
+      capDaiHienTai: $('#vsCapDai').value.trim(),
+      anhThe: anhDangChon,
     });
 
     setHTML('#vsNewResult', `<div class="note-box" style="margin-top:14px">
@@ -247,7 +247,7 @@ async function taoHoSo() {
     </div>`);
     toastSuccess(`Đã tạo hồ sơ ${res.maHV}.`);
 
-    ['#vsHoTen', '#vsTuoi', '#vsNgaySinh', '#vsMaPH', '#vsSoBuoi', '#vsAnh'].forEach(s => { $(s).value = ''; });
+    ['#vsHoTen', '#vsTuoi', '#vsNgaySinh', '#vsSoBuoi', '#vsCapDai', '#vsAnh'].forEach(s => { $(s).value = ''; });
     $('#vsGioiTinh').value = '';
     anhDangChon = '';
     setHTML('#vsAnhPreview', '');
@@ -289,8 +289,8 @@ async function suaHoSo(maHV) {
             <input type="number" id="svSoBuoi" min="1" max="7" value="${esc(String(v.soBuoiTuan ?? ''))}"></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label for="svMaPH">Mã phụ huynh</label>
-            <input type="text" id="svMaPH" value="${esc(v.maPH || '')}" placeholder="VD: PH001"></div>
+          <div class="form-group"><label for="svMaLienDoan">Mã liên đoàn (VTF)</label>
+            <input type="text" id="svMaLienDoan" value="${esc(v.maLienDoan || '')}" placeholder="Liên đoàn cấp sau kỳ thi đầu"></div>
           <div class="form-group"><label for="svTrangThai">Trạng thái</label>
             <select id="svTrangThai">
               ${['Đang học', 'Bảo lưu', 'Nghỉ'].map(t =>
@@ -331,7 +331,7 @@ async function suaHoSo(maHV) {
         gioiTinh: wrap.querySelector('#svGioiTinh').value,
         capDaiHienTai: wrap.querySelector('#svCapDai').value.trim(),
         soBuoiTuan: wrap.querySelector('#svSoBuoi').value.trim(),
-        maPH: wrap.querySelector('#svMaPH').value.trim(),
+        maLienDoan: wrap.querySelector('#svMaLienDoan').value.trim(),
         trangThai: wrap.querySelector('#svTrangThai').value,
         anhThe: anhMoi,
       });

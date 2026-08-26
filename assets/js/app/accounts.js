@@ -107,14 +107,16 @@ async function taoTaiKhoan() {
   const vaiTro = $('#acVaiTro').value;
   const coSo = $('#acCoSo').value;
   const email = $('#acEmail').value.trim();
-  const maPH = $('#acMaPH').value.trim();
+  const maHV = $('#acMaHV').value.trim().toUpperCase();
   const err = $('#acErr');
   err.classList.remove('visible');
 
   if (hoTen.length < 2 || !isValidPhone(soDienThoai)) { err.classList.add('visible'); return; }
   if (email && !isValidEmail(email)) return toastError('Email không hợp lệ.');
-  if (vaiTro === 'phu_huynh' && !maPH) return toastError('Tài khoản phụ huynh cần mã phụ huynh.');
-  if (vaiTro !== 'admin' && !coSo) {
+  if (vaiTro === 'phu_huynh' && !maHV) return toastError('Tài khoản học viên cần mã học viên.');
+  /* Tài khoản học viên không thuộc cơ sở nào — ô cơ sở còn đang bị ẩn, hỏi
+     "chưa chọn cơ sở" là chặn oan, mà bấm Huỷ thì không tạo được tài khoản. */
+  if (vaiTro !== 'admin' && vaiTro !== 'phu_huynh' && !coSo) {
     if (!await confirmDialog(
       'Tài khoản này không gắn cơ sở nào nên sẽ không thấy dữ liệu cơ sở nào. Vẫn tạo?',
       { title: 'Chưa chọn cơ sở' })) return;
@@ -126,11 +128,11 @@ async function taoTaiKhoan() {
   try {
     const res = await callApi('taoTaiKhoan', {
       hoTen, soDienThoai, vaiTro, coSo, email,
-      maNV: $('#acMaNV').value.trim(), maPH,
+      maNV: $('#acMaNV').value.trim(), maHV,
     });
     hienMatKhauTam(res.soDienThoai, res.matKhauTam, $('#acNewResult'));
     $('#acHoTen').value = ''; $('#acSdt').value = '';
-    $('#acMaNV').value = ''; $('#acEmail').value = ''; $('#acMaPH').value = '';
+    $('#acMaNV').value = ''; $('#acEmail').value = ''; $('#acMaHV').value = '';
     toastSuccess(`Đã tạo tài khoản cho ${hoTen}.`);
     loadDanhSach();
   } catch (e) { toastApiError(e); }
@@ -221,7 +223,7 @@ export function initAccounts(u) {
 
   // Ô mã phụ huynh chỉ hiện khi chọn vai trò phụ huynh
   $('#acVaiTro')?.addEventListener('change', ev => {
-    $('#acMaPHGroup').style.display = ev.target.value === 'phu_huynh' ? 'block' : 'none';
+    $('#acMaHVGroup').style.display = ev.target.value === 'phu_huynh' ? 'block' : 'none';
     $('#acCoSo').closest('.form-group').style.display = ev.target.value === 'phu_huynh' ? 'none' : 'block';
   });
 

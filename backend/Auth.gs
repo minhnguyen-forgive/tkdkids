@@ -11,7 +11,7 @@
    băm 1000 vòng để máy dò mật khẩu phải trả giá gấp 1000 lần.
 
    Đăng nhập xong máy chủ phát token, mọi lệnh sau đó phải kèm token. Cổng
-   xacThuc_ tra token ra chủ nhân thật rồi GHI ĐÈ maNV / maPH / vai trò
+   xacThuc_ tra token ra chủ nhân thật rồi GHI ĐÈ maNV / vai trò
    trong tham số, nên trình duyệt gửi mã của người khác cũng vô nghĩa. Token
    thô không lưu ở đâu cả — Sheet chỉ giữ bản băm, đăng xuất là thu hồi.
 
@@ -28,10 +28,10 @@ var AUTH_SHEET_TK     = 'TaiKhoan';
 var AUTH_SHEET_PHIEN  = 'Phien';
 var AUTH_SHEET_NHATKY = 'NhatKyDangNhap';
 
-var AUTH_COT_TK = ['id', 'maNV', 'maPH', 'hoTen', 'soDienThoai', 'email', 'ngaySinh',
+var AUTH_COT_TK = ['id', 'maNV', 'maHV', 'hoTen', 'soDienThoai', 'email', 'ngaySinh',
                    'vaiTro', 'coSo', 'capDai', 'chucVu', 'matKhau', 'phaiDoiMatKhau',
                    'trangThai', 'soLanSai', 'khoaDenLuc', 'ngayTao', 'lanDangNhapCuoi'];
-var AUTH_COT_PHIEN  = ['tokenHash', 'soDienThoai', 'maNV', 'maPH', 'vaiTro', 'coSo',
+var AUTH_COT_PHIEN  = ['tokenHash', 'soDienThoai', 'maNV', 'maHV', 'vaiTro', 'coSo',
                        'taoLuc', 'hetHan', 'thuHoiLuc'];
 var AUTH_COT_NHATKY = ['thoiGian', 'soDienThoai', 'action', 'ketQua', 'ghiChu'];
 
@@ -51,19 +51,15 @@ var AUTH_ACTION_CAP_QUAN_LY = ['listPendingApprovals', 'decideLeaveRequest',
   'doiVaiTro', 'khoaTaiKhoan', 'danhSachTaiKhoan', 'listDangKyTuVan',
   'capNhatTrangThaiDangKy'];
 
-/* Action mà maNV / maPH trong tham số là ĐỐI TƯỢNG được tác động, không phải
+/* Action mà maNV trong tham số là ĐỐI TƯỢNG được tác động, không phải
    người gọi: admin tạo tài khoản cho người khác, HLV trưởng duyệt lương của
    một HLV... Với mấy action này cổng KHÔNG ghi đè maNV, nếu ghi đè thì admin
    tạo tài khoản nào cũng thành mã của chính admin.
 
-   taoVoSinh/suaVoSinh cũng nằm đây vì maPH trong tham số là mã phụ huynh của
-   VÕ SINH, không phải của lễ tân đang thao tác — ghi đè là gắn con cho nhầm
-   người, mà lễ tân không có maPH nên thực tế là xoá trắng liên kết cha–con.
-
    Danh tính người gọi vẫn luôn có ở p._maNV / p._vaiTro / p._coSo, và quyền
    vẫn bị kiểm bằng AUTH_ACTION_CAP_QUAN_LY / AUTH_ACTION_CAP_LE_TAN bên dưới. */
 var AUTH_ACTION_MANV_LA_DOI_TUONG = ['taoTaiKhoan', 'datLaiMatKhau', 'doiVaiTro',
-  'khoaTaiKhoan', 'decidePayroll', 'taoVoSinh', 'suaVoSinh'];
+  'khoaTaiKhoan', 'decidePayroll'];
 
 /* Action lễ tân được gọi, ngoài admin và HLV trưởng. Tách riêng khỏi
    AUTH_ACTION_CAP_QUAN_LY vì lễ tân không phải quản lý nhưng vẫn phải tạo
@@ -85,7 +81,7 @@ function auth_ss_() {
 /* Ép mấy cột hay bị Sheets hiểu nhầm sang định dạng văn bản thuần.
    Số điện thoại và mã phụ huynh toàn chữ số nên dễ mất số 0 đầu. */
 function auth_epCotChu_(sh, cot) {
-  var canChu = ['soDienThoai', 'maPH', 'maNV'];
+  var canChu = ['soDienThoai', 'maHV', 'maNV'];
   for (var i = 0; i < cot.length; i++) {
     if (canChu.indexOf(cot[i]) === -1) continue;
     try { sh.getRange(1, i + 1, sh.getMaxRows(), 1).setNumberFormat('@'); } catch (e) {}
@@ -233,7 +229,7 @@ function auth_taoPhien_(tk) {
   var hetHan = new Date(Date.now() + AUTH_PHIEN_GIO * 3600 * 1000);
   var payload = {
     sdt: auth_chuanSdt_(tk.soDienThoai),
-    maNV: String(tk.maNV || ''), maPH: String(tk.maPH || ''),
+    maNV: String(tk.maNV || ''), maHV: String(tk.maHV || ''),
     vaiTro: String(tk.vaiTro || ''), coSo: String(tk.coSo || ''),
     hetHan: hetHan.getTime()
   };
@@ -241,7 +237,7 @@ function auth_taoPhien_(tk) {
   CacheService.getScriptCache().put('phien_' + tokenHash, JSON.stringify(payload),
                                     AUTH_PHIEN_GIO * 3600);
   auth_them_(AUTH_SHEET_PHIEN, AUTH_COT_PHIEN, {
-    tokenHash: tokenHash, soDienThoai: payload.sdt, maNV: payload.maNV, maPH: payload.maPH,
+    tokenHash: tokenHash, soDienThoai: payload.sdt, maNV: payload.maNV, maHV: payload.maHV,
     vaiTro: payload.vaiTro, coSo: payload.coSo, taoLuc: new Date(), hetHan: hetHan, thuHoiLuc: ''
   });
   return { token: token, hetHan: hetHan };
@@ -270,7 +266,7 @@ function auth_docPhien_(token) {
     if (!(hetHan > Date.now())) return null;
     var p2 = {
       sdt: String(vals[i][m['soDienThoai']]), maNV: String(vals[i][m['maNV']]),
-      maPH: String(vals[i][m['maPH']]), vaiTro: String(vals[i][m['vaiTro']]),
+      maHV: String(vals[i][m['maHV']]), vaiTro: String(vals[i][m['vaiTro']]),
       coSo: String(vals[i][m['coSo']]), hetHan: hetHan
     };
     cache.put('phien_' + tokenHash, JSON.stringify(p2),
@@ -362,10 +358,12 @@ function xacThuc_(e) {
      duyệt gửi lên. Đây là chỗ bịt lỗ tự phong vai trò. */
   if (AUTH_ACTION_MANV_LA_DOI_TUONG.indexOf(action) === -1) {
     p.maNV = phien.maNV;
-    p.maPH = phien.maPH;
   }
+  /* KHÔNG ghi đè p.maHV: ở gần như mọi action, maHV là mã võ sinh ĐANG ĐƯỢC
+     TRA, không phải mã của người gọi. Ghi đè là tra em nào cũng ra con mình.
+     Danh tính thật của người gọi nằm ở p._maHV. */
   p._maNV = phien.maNV;
-  p._maPH = phien.maPH;
+  p._maHV = phien.maHV;
   p._vaiTro = phien.vaiTro;
   p._coSo = phien.coSo;
   p._sdt = phien.sdt;
@@ -393,7 +391,7 @@ function routeAuthActions_(e) {
 
 function auth_hoSo_(tk) {
   var ho = {
-    maNV: String(tk.maNV || ''), maPH: String(tk.maPH || ''),
+    maNV: String(tk.maNV || ''), maHV: String(tk.maHV || ''),
     hoTen: String(tk.hoTen || ''), full_name: String(tk.hoTen || ''),
     soDienThoai: auth_chuanSdt_(tk.soDienThoai), phone: auth_chuanSdt_(tk.soDienThoai),
     email: String(tk.email || ''),
@@ -405,13 +403,13 @@ function auth_hoSo_(tk) {
     phaiDoiMatKhau: String(tk.phaiDoiMatKhau) === 'true' || tk.phaiDoiMatKhau === true
   };
 
-  /* Tài khoản phụ huynh cần kèm danh sách con, vì bảng điều khiển phụ huynh
-     dựng hồ sơ từng võ sinh ngay khi vào. Hàm đọc bảng VoSinh nằm ở
-     Api_HeThong.gs — kiểm tra typeof để Auth.gs vẫn chạy được một mình. */
+  /* Tài khoản học viên cần kèm hồ sơ võ sinh, vì bảng điều khiển dựng ngay
+     khi vào. Hàm đọc bảng VoSinh nằm ở Api_HeThong.gs — kiểm tra typeof để
+     Auth.gs vẫn chạy được một mình. */
   var v = String(tk.vaiTro || '').toLowerCase();
   if ((v.indexOf('phu_huynh') !== -1 || v.indexOf('phụ huynh') !== -1) &&
-      typeof hs_dsVoSinhTheoPhuHuynh_ === 'function') {
-    ho.students = hs_dsVoSinhTheoPhuHuynh_(String(tk.maPH || ''));
+      typeof hs_voSinhCuaTaiKhoan_ === 'function') {
+    ho.students = hs_voSinhCuaTaiKhoan_(String(tk.maHV || ''));
   }
   return ho;
 }
@@ -430,9 +428,9 @@ function authTaiKhoanTheoSdt_(sdt) {
 }
 
 /** Một tài khoản theo mã nhân viên. */
-/** Tài khoản của một phụ huynh theo mã phụ huynh. */
-function auth_timTaiKhoanTheoMaPH_(maPH) {
-  var can = String(maPH || '').trim();
+/** Tài khoản gắn với một mã học viên. */
+function auth_timTaiKhoanTheoMaHV_(maHV) {
+  var can = String(maHV || '').trim();
   if (!can) return null;
   var sh = auth_sheet_(AUTH_SHEET_TK, AUTH_COT_TK);
   var lastRow = sh.getLastRow();
@@ -440,7 +438,7 @@ function auth_timTaiKhoanTheoMaPH_(maPH) {
   var m = auth_map_(sh);
   var vals = sh.getRange(2, 1, lastRow - 1, sh.getLastColumn()).getValues();
   for (var i = 0; i < vals.length; i++) {
-    if (String(vals[i][m['maPH']]).trim() !== can) continue;
+    if (String(vals[i][m['maHV']]).trim() !== can) continue;
     var o = {};
     for (var k in m) o[k] = vals[i][m[k]];
     o._row = i + 2; o._map = m; o._sheet = sh;
@@ -449,16 +447,16 @@ function auth_timTaiKhoanTheoMaPH_(maPH) {
   return null;
 }
 
-/** Đăng nhập bằng mã VTF / mã học viên: tra ra em đó rồi lấy tài khoản của
-    phụ huynh gắn với em. Em chưa gắn phụ huynh thì không có đường vào — đúng
-    ý, vì tài khoản là của phụ huynh chứ không phải của mã học viên. */
+/** Đăng nhập bằng mã liên đoàn (VTF): tra ra em mang mã đó rồi lấy tài khoản
+    gắn với mã học viên của em. Em chưa được cấp tài khoản thì không có đường
+    vào — đúng ý, mã học viên tự nó không phải là tài khoản. */
 function auth_timTaiKhoanTheoMaVoSinh_(ma) {
   if (!String(ma || '').trim()) return null;
   if (typeof hs_voSinhTheoMa_ !== 'function') return null;
   var vs;
   try { vs = hs_voSinhTheoMa_(ma); } catch (e) { return null; }
   if (!vs) return null;
-  return auth_timTaiKhoanTheoMaPH_(vs.maPH);
+  return auth_timTaiKhoanTheoMaHV_(vs.maHV);
 }
 
 function authTaiKhoanTheoMaNV_(maNV) {
@@ -611,7 +609,7 @@ function authTaoTaiKhoan_(p) {
   var matKhauTam = String(p.matKhauTam || '').trim() || auth_matKhauTamNgauNhien_();
 
   auth_them_(AUTH_SHEET_TK, AUTH_COT_TK, {
-    id: Utilities.getUuid(), maNV: String(p.maNV || ''), maPH: String(p.maPH || ''),
+    id: Utilities.getUuid(), maNV: String(p.maNV || ''), maHV: String(p.maHV || ''),
     hoTen: hoTen, soDienThoai: sdt, email: String(p.email || ''),
     vaiTro: vaiTro, coSo: String(p.coSo || ''), capDai: String(p.capDai || ''),
     matKhau: auth_taoChuoiBam_(matKhauTam), phaiDoiMatKhau: true,
@@ -705,7 +703,7 @@ function khoiTaoBangTaiKhoan() {
     Logger.log('Admin tổng ' + SDT_ADMIN + ': đã có sẵn, đặt lại mật khẩu tạm "admin".');
   } else {
     auth_them_(AUTH_SHEET_TK, AUTH_COT_TK, {
-      id: Utilities.getUuid(), maNV: 'ADMIN', maPH: '', hoTen: 'Quản trị hệ thống',
+      id: Utilities.getUuid(), maNV: 'ADMIN', maHV: '', hoTen: 'Quản trị hệ thống',
       soDienThoai: SDT_ADMIN, email: '', ngaySinh: '', vaiTro: 'admin', coSo: '',
       capDai: '', chucVu: 'Quản trị hệ thống',
       matKhau: auth_taoChuoiBam_('admin'), phaiDoiMatKhau: true, trangThai: 'Hoạt động',

@@ -27,7 +27,7 @@ var CAU_TRUC = {
   },
 
   VoSinh: {
-    cols: ['maHV','maLienDoan','hoTen','ngaySinh','namSinh','gioiTinh','maPH','coSo',
+    cols: ['maHV','maLienDoan','hoTen','ngaySinh','namSinh','gioiTinh','coSo',
            'capDaiHienTai','ngayNhapHoc','soBuoiTuan','anhDaiDien','dongYDungAnh',
            'ngayDongY','trangThai','ghiChu','ngayTao','nguoiTao'],
     validate: {

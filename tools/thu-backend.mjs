@@ -20,9 +20,8 @@ function taoTK(o){ return goi({ action:'taoTaiKhoan', token:tkAdmin, ...o }); }
 const leTanHP = taoTK({ hoTen:'Lễ tân Hapulico', soDienThoai:'0900000001', vaiTro:'le_tan', coSo:'Hapulico', maNV:'NV001' });
 const leTanGS = taoTK({ hoTen:'Lễ tân GreenStars', soDienThoai:'0900000002', vaiTro:'le_tan', coSo:'GreenStars', maNV:'NV002' });
 const hlvHP   = taoTK({ hoTen:'HLV Hapulico', soDienThoai:'0900000003', vaiTro:'hlv', coSo:'Hapulico', maNV:'NV003' });
-const phuHuynh= taoTK({ hoTen:'Phụ huynh A', soDienThoai:'0900000004', vaiTro:'phu_huynh', maPH:'PH001' });
-t('tạo được 4 tài khoản', [leTanHP,leTanGS,hlvHP,phuHuynh].every(r=>r.status==='success'),
-  [leTanHP,leTanGS,hlvHP,phuHuynh]);
+t('tạo được 3 tài khoản nhân sự', [leTanHP,leTanGS,hlvHP].every(r=>r.status==='success'),
+  [leTanHP,leTanGS,hlvHP]);
 
 function dangNhap(sdt, mk){ return goi({ action:'dangNhap', phone:sdt, password:mk }); }
 /* tài khoản mới bị ép đổi mật khẩu — kiểm luôn là đăng nhập vẫn ra token */
@@ -31,7 +30,6 @@ t('lễ tân đăng nhập bằng mật khẩu tạm', pLT1.status==='success', 
 const T_LT1 = pLT1.token;
 const T_LT2 = dangNhap('0900000002', leTanGS.matKhauTam).token;
 const T_HLV = dangNhap('0900000003', hlvHP.matKhauTam).token;
-const T_PH  = dangNhap('0900000004', phuHuynh.matKhauTam).token;
 
 /* ---------- TẠO HỒ SƠ ---------- */
 const anh1x1 = 'data:image/jpeg;base64,/9j/4AAQSkZJRg==';
@@ -47,11 +45,14 @@ const b = goi({ action:'taoVoSinh', token:T_LT1, hoTen:'Trần Thị B', tuoi:'1
 t('mã thứ hai tăng lên 0002', b.maHV.endsWith('0002'), b.maHV);
 
 const c = goi({ action:'taoVoSinh', token:T_LT2, hoTen:'Lê Văn C', tuoi:'9' });
-t('cơ sở khác đếm số thứ tự riêng', c.maHV.startsWith('GS') && c.maHV.endsWith('0001'), c.maHV);
+t('cơ sở khác vẫn nối tiếp số của cả trung tâm, không quay về 0001',
+  c.maHV.startsWith('GS') && c.maHV.endsWith('0003'), c.maHV);
 
 /* ---------- MÃ KHÔNG NHẬN TỪ TRÌNH DUYỆT ---------- */
 const d = goi({ action:'taoVoSinh', token:T_LT1, hoTen:'Phạm D', tuoi:'7', maHV:'TUGO9999' });
-t('mã do trình duyệt gửi lên bị bỏ qua', d.maHV !== 'TUGO9999' && d.maHV.endsWith('0003'), d.maHV);
+t('mã do trình duyệt gửi lên bị bỏ qua', d.maHV !== 'TUGO9999' && d.maHV.endsWith('0004'), d.maHV);
+t('không có hai em nào trùng số thứ tự',
+  new Set([a,b,c,d].map(x=>x.maHV.slice(-4))).size === 4, [a,b,c,d].map(x=>x.maHV));
 
 /* ---------- ÉP CƠ SỞ ---------- */
 const e = goi({ action:'taoVoSinh', token:T_LT1, hoTen:'Hoàng E', tuoi:'7', coSo:'GreenStars' });
@@ -60,8 +61,6 @@ t('lễ tân không tạo hộ được cơ sở khác', e.status==='success' &&
 /* ---------- QUYỀN ---------- */
 const f = goi({ action:'taoVoSinh', token:T_HLV, hoTen:'HLV thử tạo', tuoi:'7' });
 t('HLV thường không tạo được hồ sơ', f.status==='error' && f.code==='KHONG_DU_QUYEN', f);
-const g = goi({ action:'taoVoSinh', token:T_PH, hoTen:'PH thử tạo', tuoi:'7' });
-t('phụ huynh không tạo được hồ sơ', g.status==='error' && g.code==='KHONG_DU_QUYEN', g);
 const h = goi({ action:'taoVoSinh', hoTen:'Không token', tuoi:'7' });
 t('không token thì không tạo được', h.status==='error' && h.code==='CHUA_DANG_NHAP', h);
 
@@ -99,11 +98,22 @@ t('không token thì không lấy được ảnh', anhKhongToken.status==='error
 const anhTrong = goi({ action:'anhVoSinh', token:T_LT1, maHV:b.maHV });
 t('em chưa có ảnh trả chuỗi rỗng, không lỗi', anhTrong.status==='success' && anhTrong.anh==='', anhTrong);
 
-/* phụ huynh: gắn con rồi mới xem được ảnh */
-const gan = goi({ action:'suaVoSinh', token:T_LT1, maHV:a.maHV, maPH:'PH001' });
-t('lễ tân gắn được mã phụ huynh', gan.status==='success' && gan.student.maPH==='PH001', gan);
+/* ---------- TÀI KHOẢN HỌC VIÊN GẮN BẰNG MÃ HỌC VIÊN ---------- */
+const phuHuynh = taoTK({ hoTen:'Phụ huynh của em A', soDienThoai:'0900000004',
+                         vaiTro:'phu_huynh', maHV:a.maHV });
+t('tạo được tài khoản học viên gắn mã HV', phuHuynh.status==='success', phuHuynh);
+const dnPH = dangNhap('0900000004', phuHuynh.matKhauTam);
+const T_PH = dnPH.token;
+t('đăng nhập xong thấy đúng hồ sơ của mình',
+  dnPH.user && (dnPH.user.students||[]).length===1 && dnPH.user.students[0].maHV===a.maHV, dnPH.user);
+
+const g = goi({ action:'taoVoSinh', token:T_PH, hoTen:'PH thử tạo', tuoi:'7' });
+t('phụ huynh không tạo được hồ sơ', g.status==='error' && g.code==='KHONG_DU_QUYEN', g);
+
 const anhPH = goi({ action:'anhVoSinh', token:T_PH, maHV:a.maHV });
 t('phụ huynh xem được ảnh con mình', anhPH.status==='success' && anhPH.anh.startsWith('data:image'), anhPH);
+t('phụ huynh gửi mã em khác lên cũng không lách được',
+  goi({action:'anhVoSinh', token:T_PH, maHV:c.maHV}).code==='KHONG_DU_QUYEN');
 const anhPHkhac = goi({ action:'anhVoSinh', token:T_PH, maHV:b.maHV });
 t('phụ huynh KHÔNG xem được ảnh con nhà khác', anhPHkhac.status==='error', anhPHkhac);
 t('phụ huynh không gọi được danh sách võ sinh',
@@ -128,8 +138,8 @@ t('tra mã của cơ sở khác vẫn báo không tìm thấy',
 goi({ action:'suaVoSinh', token:T_LT1, maHV:a.maHV, maLienDoan:'VTF12345' });
 
 const dnMa = dangNhap('VTF12345', phuHuynh.matKhauTam);
-t('đăng nhập bằng mã VTF ra đúng tài khoản phụ huynh',
-  dnMa.status==='success' && dnMa.user && dnMa.user.maPH==='PH001', dnMa);
+t('đăng nhập bằng mã VTF ra đúng tài khoản của em đó',
+  dnMa.status==='success' && dnMa.user && dnMa.user.maHV===a.maHV, dnMa);
 t('mã VTF viết thường / có gạch vẫn vào được',
   dangNhap('vtf-12345', phuHuynh.matKhauTam).status==='success');
 t('đăng nhập bằng mã học viên nội bộ cũng được',
@@ -141,9 +151,9 @@ t('mã không tồn tại → cùng một câu lỗi, không lộ mã nào có t
 t('số điện thoại vẫn đăng nhập bình thường',
   dangNhap('0900000001', leTanHP.matKhauTam).status==='success');
 
-/* em chưa gắn phụ huynh thì mã không mở được cửa nào */
+/* em chưa có tài khoản thì mã không mở được cửa nào */
 goi({ action:'suaVoSinh', token:T_LT1, maHV:b.maHV, maLienDoan:'VTF77777' });
-t('võ sinh chưa gắn phụ huynh thì mã không đăng nhập được',
+t('võ sinh chưa được cấp tài khoản thì mã không đăng nhập được',
   dangNhap('VTF77777', phuHuynh.matKhauTam).status==='error');
 
 /* ---------- SHEETS NUỐT SỐ 0 ĐẦU ---------- */

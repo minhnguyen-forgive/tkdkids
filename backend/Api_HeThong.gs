@@ -705,7 +705,7 @@ function hs_mapVoSinh_(r) {
     belt_level: String(r.capDaiHienTai || ''),
     soBuoiTuan: r.soBuoiTuan === '' ? '' : hs_soNguyen_(r.soBuoiTuan, ''),
     sessions_per_week: r.soBuoiTuan === '' ? '' : hs_soNguyen_(r.soBuoiTuan, ''),
-    maPH: String(r.maPH || ''), anhDaiDien: String(r.anhDaiDien || ''),
+    maLienDoan: String(r.maLienDoan || ''), anhDaiDien: String(r.anhDaiDien || ''),
     coAnh: !!String(r.anhDaiDien || ''),
     namSinh: hs_soNguyen_(r.namSinh, '') === '' ? '' : hs_soNguyen_(r.namSinh, ''),
     tuoi: hs_tuoi_(r),
@@ -726,10 +726,10 @@ function hs_voSinhTheoMa_(ma) {
   return rows.length ? rows[0] : null;
 }
 
-/** Danh sách con của một phụ huynh — Auth.gs gọi khi đăng nhập. */
-function hs_dsVoSinhTheoPhuHuynh_(maPH) {
-  if (!maPH) return [];
-  var rows = SHEETS_.readAll('VoSinh', function (r) { return String(r.maPH) === String(maPH); });
+/** Hồ sơ võ sinh gắn với một tài khoản — Auth.gs gọi khi đăng nhập. */
+function hs_voSinhCuaTaiKhoan_(maHV) {
+  if (!maHV) return [];
+  var rows = SHEETS_.readAll('VoSinh', function (r) { return String(r.maHV) === String(maHV); });
   return rows.map(hs_mapVoSinh_);
 }
 
@@ -750,7 +750,7 @@ function hs_duocXemHocVien_(p, maHV) {
   var vs = SHEETS_.findRow('VoSinh', 'maHV', String(maHV));
   if (!vs) return false;
   if (hs_laPhuHuynh_(p)) {
-    return !!p._maPH && String(vs.maPH || '') === String(p._maPH);
+    return !!p._maHV && String(vs.maHV || '') === String(p._maHV);
   }
   return hs_trongPhamVi_(p, vs.coSo);
 }
@@ -838,7 +838,7 @@ function hsUpdateProfile_(p) {
    Quy tắc mã: {code cơ sở}{2 số cuối của năm}{4 số thứ tự} — VD HP260012.
    Số thứ tự đếm riêng theo từng cơ sở và từng năm.                          */
 
-var HS_VOSINH = ['maHV','maLienDoan','hoTen','ngaySinh','namSinh','gioiTinh','maPH','coSo',
+var HS_VOSINH = ['maHV','maLienDoan','hoTen','ngaySinh','namSinh','gioiTinh','coSo',
                  'capDaiHienTai','ngayNhapHoc','soBuoiTuan','anhDaiDien','dongYDungAnh',
                  'ngayDongY','trangThai','ghiChu','ngayTao','nguoiTao'];
 
@@ -855,25 +855,28 @@ function hs_codeCoSo_(coSo) {
 }
 
 /** Sinh mã học viên kế tiếp. LUÔN gọi bên trong withLock, nếu không hai lễ
-    tân bấm cùng lúc sẽ nhận cùng một mã. */
+    tân bấm cùng lúc sẽ nhận cùng một mã.
+
+    Số thứ tự đếm theo CẢ TRUNG TÂM chứ không theo từng cơ sở: hai em ở hai
+    cơ sở khác nhau không bao giờ mang cùng một số. Phần đầu vẫn là mã cơ sở
+    để nhìn mã là biết em đăng ký ở đâu. */
 function hs_sinhMaHV_(coSo) {
   var code = hs_codeCoSo_(coSo);
   if (!code) return '';
-  var nam = new Date().getFullYear() % 100;
-  var tienTo = code + (nam < 10 ? '0' + nam : String(nam));
+  var n2 = new Date().getFullYear() % 100;
+  var yy = (n2 < 10 ? '0' + n2 : String(n2));
 
-  var rows = SHEETS_.readAll('VoSinh', function (r) {
-    return String(r.maHV || '').indexOf(tienTo) === 0;
-  });
+  var re = new RegExp('^[A-Za-z]+' + yy + '(\\d{4})$');
+  var rows = SHEETS_.readAll('VoSinh', function (r) { return re.test(String(r.maHV || '')); });
   var lonNhat = 0;
   for (var i = 0; i < rows.length; i++) {
-    var duoi = String(rows[i].maHV).substring(tienTo.length);
-    var n = parseInt(duoi, 10);
-    if (!isNaN(n) && n > lonNhat) lonNhat = n;
+    var khop = re.exec(String(rows[i].maHV));
+    var n = khop ? parseInt(khop[1], 10) : 0;
+    if (n > lonNhat) lonNhat = n;
   }
   var tt = String(lonNhat + 1);
   while (tt.length < 4) tt = '0' + tt;
-  return tienTo + tt;
+  return code + yy + tt;
 }
 
 /** Ảnh thẻ nằm trong thư mục Drive riêng tư. Lưu ID chứ không lưu link: link
@@ -934,7 +937,7 @@ function hsTaoVoSinh_(p) {
     }
     SHEETS_.appendRow('VoSinh', HS_VOSINH, {
       maHV: maHV, hoTen: hoTen, ngaySinh: ngaySinh, namSinh: namSinh || '',
-      gioiTinh: gioiTinh, maPH: String(p.maPH || '').trim(), coSo: coSo,
+      gioiTinh: gioiTinh, coSo: coSo,
       capDaiHienTai: String(p.capDaiHienTai || '').trim(),
       ngayNhapHoc: String(p.ngayNhapHoc || '').substring(0, 10) || SHEETS_.today(),
       soBuoiTuan: hs_soNguyen_(p.soBuoiTuan, '') === '' ? '' : hs_soNguyen_(p.soBuoiTuan, ''),
@@ -975,7 +978,7 @@ function hsDanhSachVoSinh_(p) {
     if (!pv && loc && String(r.coSo || '') !== loc) return false;
     if (trangThai && String(r.trangThai || '') !== trangThai) return false;
     if (tim) {
-      var kho = hs_chuan_(r.hoTen) + hs_chuan_(r.maHV) + hs_chuan_(r.maPH);
+      var kho = hs_chuan_(r.hoTen) + hs_chuan_(r.maHV) + hs_chuan_(r.maLienDoan);
       if (kho.indexOf(tim) === -1) return false;
     }
     return true;
@@ -1035,7 +1038,7 @@ function hsSuaVoSinh_(p) {
      ở đây: đổi mã là mất liên kết với học phí/điểm danh, đổi cơ sở là chuyển
      em sang tầm nhìn của người khác — hai việc đó phải làm riêng, có chủ đích. */
   var patch = {};
-  var choPhep = ['hoTen','ngaySinh','namSinh','gioiTinh','maPH','capDaiHienTai',
+  var choPhep = ['hoTen','ngaySinh','namSinh','gioiTinh','capDaiHienTai',
                  'ngayNhapHoc','soBuoiTuan','dongYDungAnh','trangThai','ghiChu','maLienDoan'];
   for (var i = 0; i < choPhep.length; i++) {
     var c = choPhep[i];
