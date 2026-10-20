@@ -1,51 +1,201 @@
 {
-  "updated": "2026-08-22",
-  "note": "Giáo trình do trung tâm cập nhật theo hướng dẫn của Liên đoàn Taekwondo Việt Nam.",
+  "updated": "2026-10-20",
+  "source": {
+    "name": "Quy định thi thăng cấp, đẳng của Liên đoàn Taekwondo Việt Nam",
+    "decision": "Quyết định số 152/2025/QĐ-VTF",
+    "date": "22/12/2025",
+    "basis": "Căn cứ Quy định thi thăng cấp, đẳng hiện hành của Kukkiwon"
+  },
+  "note": "Nội dung thi cấp 9 đến cấp 1 lấy từ Điều 4 và Điều 7.1 của Quy định. Trường text/items hiện nguyên văn trên trang, sửa ở đây rồi chạy: node tools/thi-len-dai.mjs",
+  "quarters": [
+    { "name": "Quý I",   "range": "15/1 – 31/3" },
+    { "name": "Quý II",  "range": "15/4 – 30/6" },
+    { "name": "Quý III", "range": "15/7 – 30/9" },
+    { "name": "Quý IV",  "range": "15/10 – 31/12" }
+  ],
+  "entry": {
+    "cap": 10,
+    "beltName": "Đai Trắng",
+    "text": "Võ sinh mới nhập môn từ 6 tuổi trở lên được đeo Đai trắng cấp 10. Dưới 6 tuổi chưa được dự thi lên cấp; tuổi tính theo năm tham gia tập luyện.",
+    "items": [
+      "Kiểm tra hằng tháng: tố chất thể lực (nhanh, mạnh, bền, mềm dẻo, khéo léo / phối hợp vận động), sự tập trung, chiều cao, cân nặng. Kết quả được huấn luyện viên phụ trách ký xác nhận và gửi cho phụ huynh.",
+      "Tập các kỹ thuật căn bản để chuẩn bị thi lên cấp 9."
+    ],
+    "terms": [
+      ["Taekwondo", "태권도", "Taekwondo"],
+      ["Dojang", "도장", "Võ đường (nơi tập luyện)"],
+      ["Dobok", "도복", "Võ phục"],
+      ["Sabeomnim", "사범님", "Võ sư / Huấn luyện viên"],
+      ["Charyeot", "차렷", "Nghiêm"],
+      ["Kyeong-rye", "경례", "Chào"],
+      ["Joonbi", "준비", "Chuẩn bị"],
+      ["Sijak", "시작", "Bắt đầu"],
+      ["Kallyeo", "갈려", "Tạm dừng"],
+      ["Kyesok", "계속", "Tiếp tục"],
+      ["Geuman", "그만", "Dừng lại"],
+      ["Baro", "바로", "Trở về vị trí ban đầu"],
+      ["Swieo", "쉬어", "Nghỉ ngơi"]
+    ]
+  },
   "levels": [
+    {
+      "cap": 9,
+      "id": "thi-len-dai-cap-9-dai-trang-1-vach",
+      "title": "Bài thi lên cấp 9 – Đai Trắng 1 vạch xanh dương",
+      "shortTitle": "Cấp 9 · Đai Trắng 1 vạch",
+      "beltName": "Đai Trắng 1 vạch xanh dương",
+      "beltBase": "#FFFFFF",
+      "stripeColor": "#0047AB",
+      "stripes": 1,
+      "beltColor": "#0047AB",
+      "fromBelt": "Đai Trắng (cấp 10)",
+      "poomsae": null,
+      "poomsaeVi": null,
+      "minTime": "3 tháng",
+      "minAge": "Từ 6 tuổi",
+      "ageNote": "Quý I của năm dự thi",
+      "sparring": null,
+      "youtube": null,
+      "image": null,
+      "blocks": [
+        {
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra các tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
+          "icon": "fa-hand-fist",
+          "text": "",
+          "items": [
+            "Kibon Joonbi (기본 준비) – Chuẩn bị căn bản",
+            "Seogi (서기) – Kỹ thuật tấn (6): Moaseogi (모아 서기), Narani Seogi (나란히 서기), Juchum Seogi (주춤 서기), Ap Seogi (앞 서기), Ap Kubi Seogi (앞 굽이 서기), Dwit Kubi Seogi (뒷 굽이 서기), Moa Seogi (모아 서기) – Đổi bên",
+            "Jireugi (지르기) – Trung bình tấn – Đấm trung 10 lần (kỹ thuật đấm)",
+            "Makki (막기): Arae Makki (아래 막기), Momtong Makki (몸통 막기), Olgul Makki (얼굴 막기) – đi bốn hướng theo hình vuông",
+            "Chagi (차기) – Kỹ thuật đá (1): Ap Chagi (앞 차기 – Front Kick)"
+          ]
+        },
+        {
+          "title": "Thuật ngữ",
+          "icon": "fa-language",
+          "text": "Thuộc tên các nhóm kỹ thuật bằng tiếng Hàn:",
+          "items": [
+            "Gibon Gisul (기본 기술) / Kibon Dongjak (기본 동작) – Kỹ thuật căn bản",
+            "Poomsae (품새) – Quyền",
+            "Gyeorugi (겨루기) – Đối kháng",
+            "Gyeokpa (격파) – Công phá",
+            "Hoshinsul (호신술) – Tự vệ",
+            "Sibeom (시범) – Biểu diễn",
+            "Seogi (서기) – Tấn",
+            "Jireugi (지르기) – Đấm",
+            "Makki (막기) – Đỡ",
+            "Chagi (차기) – Đá",
+            "Jjireugi (찌르기) – Đâm / Xỉa",
+            "Chigi (치기) – Tấn công"
+          ]
+        }
+      ]
+    },
+    {
+      "cap": 8,
+      "id": "thi-len-dai-cap-8-dai-trang-2-vach",
+      "title": "Bài thi lên cấp 8 – Đai Trắng 2 vạch xanh dương",
+      "shortTitle": "Cấp 8 · Đai Trắng 2 vạch",
+      "beltName": "Đai Trắng 2 vạch xanh dương",
+      "beltBase": "#FFFFFF",
+      "stripeColor": "#0047AB",
+      "stripes": 2,
+      "beltColor": "#0047AB",
+      "fromBelt": "Đai Trắng 1 vạch",
+      "poomsae": null,
+      "poomsaeVi": null,
+      "minTime": "3 tháng",
+      "minAge": "Từ 6 tuổi",
+      "ageNote": "Quý II của năm dự thi",
+      "sparring": null,
+      "youtube": null,
+      "image": null,
+      "blocks": [
+        {
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra các tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
+          "icon": "fa-hand-fist",
+          "text": "",
+          "items": [
+            "Kibon Joonbi (기본 준비) – Chuẩn bị căn bản",
+            "Seogi (서기) – Kỹ thuật tấn (5): Yeop Seogi (옆 서기) – Tấn ngang, còn gọi là Oreun/Wen Seogi (오른/왼 서기), Beom Seogi (범 서기) – Hổ tấn, Kkoa Seogi (꼬아 서기) – Tấn chéo chân, Hakdari Seogi (학다리 서기) – Hạc tấn, Moa Seogi (모아 서기) – Đổi bên",
+            "Jireugi (지르기) – Trung bình tấn – Đấm trung 10 lần (kỹ thuật đấm)",
+            "Makki (막기): Arae Makki (아래 막기), Momtong Makki (몸통 막기), Olgul Makki (얼굴 막기), Hansonnal Momtong Bakkat Makki (한손날 몸통 바깥막기)",
+            "Chigi (치기) – Tấn công: Hansonnal Mok Chigi (한손날 목 치기)",
+            "Chagi (차기) – Kỹ thuật đá (1): Dollyeo Chagi (돌려 차기 – Roundhouse Kick)"
+          ]
+        },
+        {
+          "title": "Thuật ngữ",
+          "icon": "fa-language",
+          "text": "Thuộc tên tiếng Hàn của tất cả các kỹ thuật trên.",
+          "items": []
+        }
+      ]
+    },
     {
       "cap": 7,
       "id": "thi-len-dai-cap-7-dai-vang",
       "title": "Bài thi lên cấp đai 7 – Đai Vàng",
       "shortTitle": "Cấp 7 · Đai Vàng",
       "beltName": "Đai Vàng",
+      "beltAlt": "hoặc Đai Trắng 3 vạch xanh dương",
+      "beltBase": "#FFD600",
       "beltColor": "#FFD600",
-      "beltColorDark": "#B29500",
-      "fromBelt": "Đai Trắng",
+      "fromBelt": "Đai Trắng 2 vạch",
       "poomsae": "Taegeuk Il-jang",
-      "poomsaeVi": "Bài quyền 1",
+      "poomsaeVi": "Taegeuk 1",
+      "minTime": "3 tháng",
+      "minAge": "Từ 6 tuổi",
+      "ageNote": "Quý III của năm dự thi",
+      "sparring": null,
       "youtube": "EQ3_peyBYwY",
+      "image": "assets/img/thi-len-dai/cap-7.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
-          "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
           "items": []
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
+          "title": "Kỹ thuật căn bản",
+          "icon": "fa-hand-fist",
+          "text": "",
           "items": [
-            "Đá trước (Ap-chagi) thực hiện 2 lượt"
+            "Bài kỹ thuật tấn (10): Ap Kubi Seogi (앞 굽이 서기)",
+            "Đấm trung 10 lần (Juchum Seogi, Momtong Jireugi), đấm thượng 3 lần, đấm hạ 3 lần",
+            "Bài kỹ thuật chân (2): Ap Chagi (앞 차기), Dollyeo Chagi (돌려 차기)"
           ]
         },
         {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 1 (Taegeuk Il-jang)",
-          "items": []
+          "text": "Taegeuk 1 (Taegeuk Il-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Arae Makki (아래 막기), Momtong Makki (몸통 막기), Olgul Makki (얼굴 막기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 20 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 10 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 1",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: không thi"
+          ]
         }
       ]
     },
@@ -55,46 +205,52 @@
       "title": "Bài thi lên cấp đai 6 – Đai Xanh Lá",
       "shortTitle": "Cấp 6 · Đai Xanh Lá",
       "beltName": "Đai Xanh Lá",
+      "beltAlt": "hoặc Đai Trắng 4 vạch xanh dương",
+      "beltBase": "#00B050",
       "beltColor": "#00B050",
-      "beltColorDark": "#00753A",
       "fromBelt": "Đai Vàng",
       "poomsae": "Taegeuk E-jang",
-      "poomsaeVi": "Bài quyền 2",
+      "poomsaeVi": "Taegeuk 2",
+      "minTime": "3 tháng",
+      "minAge": "Từ 6 tuổi",
+      "ageNote": "Quý IV của năm dự thi",
+      "sparring": null,
       "youtube": "QbAqyVU95iQ",
+      "image": "assets/img/thi-len-dai/cap-6.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
           "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "text": "",
           "items": [
-            "Nguyên tắc phát lực bình thường (Kang-yeok): 10 lần"
+            "Bài kỹ thuật tấn (10): Dwit Kubi Seogi (뒷 굽이 서기)",
+            "Đấm trung 10 lần (Juchum Seogi, Momtong Jireugi), đấm thượng 3 lần, đấm hạ 3 lần",
+            "Kỹ thuật chân (2): Ap Chagi (앞 차기), Dollyeo Chagi (돌려 차기)"
           ]
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
-          "items": [
-            "Đá trước (Ap-chagi) thực hiện 2 lượt"
-          ]
-        },
-        {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 2 (Taegeuk E-jang)",
-          "items": []
+          "text": "Taegeuk 2 (Taegeuk E-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Eolgul Jireugi (얼굴 지르기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 20 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 10 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 2",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: không thi"
+          ]
         }
       ]
     },
@@ -104,48 +260,51 @@
       "title": "Bài thi lên cấp đai 5 – Đai Xanh Dương",
       "shortTitle": "Cấp 5 · Đai Xanh Dương",
       "beltName": "Đai Xanh Dương",
+      "beltBase": "#0047AB",
       "beltColor": "#0047AB",
-      "beltColorDark": "#002E6E",
       "fromBelt": "Đai Xanh Lá",
       "poomsae": "Taegeuk Sam-jang",
-      "poomsaeVi": "Bài quyền 3",
+      "poomsaeVi": "Taegeuk 3",
+      "minTime": "3 tháng",
+      "minAge": "Từ 7 tuổi",
+      "ageNote": "Quý I của năm dự thi",
+      "sparring": null,
       "youtube": "LtQ7fGwganM",
+      "image": "assets/img/thi-len-dai/cap-5.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
           "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "text": "",
           "items": [
-            "Nguyên tắc phát lực bình thường (Kang-yeok): 7 lần",
-            "Nguyên tắc liên tục: 3 lần"
+            "Bài kỹ thuật tấn (10): Narani Seogi (나란히 서기), Juchum Seogi (주춤 서기), Yeop Seogi (옆 서기) – Tấn ngang, còn gọi là Oreun/Wen Seogi (오른/왼 서기), Ap Kubi Seogi (앞 굽이 서기), Dwit Kubi Seogi (뒷 굽이 서기)",
+            "Đấm trung 10 lần (Juchum Seogi, Momtong Jireugi), đấm thượng 3 lần, đấm hạ 3 lần",
+            "Kỹ thuật chân (2): Ap Chagi (앞 차기), Dollyeo Chagi (돌려 차기), Yeop Chagi (옆 차기)"
           ]
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
-          "items": [
-            "Đá trước (Ap-chagi) thực hiện 2 lượt",
-            "Đá ngang (Yop-chagi) thực hiện 2 lượt"
-          ]
-        },
-        {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 3 (Taegeuk Sam-jang)",
-          "items": []
+          "text": "Taegeuk 3 (Taegeuk Sam-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Hansonnal Momtong Bakkat Makki (한손날 몸통 바깥막기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 20 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 15 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 3",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: không thi"
+          ]
         }
       ]
     },
@@ -155,207 +314,219 @@
       "title": "Bài thi lên cấp đai 4 – Đai Đỏ",
       "shortTitle": "Cấp 4 · Đai Đỏ",
       "beltName": "Đai Đỏ",
+      "beltBase": "#E8232A",
       "beltColor": "#E8232A",
-      "beltColorDark": "#9C1219",
       "fromBelt": "Đai Xanh Dương",
       "poomsae": "Taegeuk Sa-jang",
-      "poomsaeVi": "Bài quyền 4",
+      "poomsaeVi": "Taegeuk 4",
+      "minTime": "3 tháng",
+      "minAge": "Từ 7 tuổi",
+      "ageNote": "Quý II của năm dự thi",
+      "sparring": "2 hiệp × 30 giây",
       "youtube": "T06_Bv_KK7Y",
+      "image": "assets/img/thi-len-dai/cap-4.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
           "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "text": "",
           "items": [
-            "Nguyên tắc phát lực bình thường (Kang-yeok): 7 lần",
-            "Nguyên tắc liên tục: 3 lần"
+            "Bài kỹ thuật tấn (10)",
+            "Ba nguyên tắc phát lực (bình thường, liên tục, nhanh)",
+            "Kỹ thuật chân (3): Ap Chagi (앞 차기), Dollyeo Chagi (돌려 차기), Yeop Chagi (옆 차기)"
           ]
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
-          "items": [
-            "Đá trước (Ap-chagi) thực hiện 2 lượt",
-            "Đá ngang (Yop-chagi) thực hiện 2 lượt"
-          ]
-        },
-        {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 4 (Taegeuk Sa-jang)",
-          "items": []
+          "text": "Taegeuk 4 (Taegeuk Sa-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Momtong Sonnal Keodeureo Bakkat Makki (몸통 손날 거들어 바깥막기), Pyeonsonkkeut Seweo Jireugi (편손끝 세워찌르기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 20 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 15 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 4",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: 2 hiệp, mỗi hiệp 30 giây"
+          ]
         }
       ]
     },
     {
       "cap": 3,
       "id": "thi-len-dai-cap-3-dai-do",
-      "title": "Bài thi lên cấp đai 3 – Đai Đỏ",
-      "shortTitle": "Cấp 3 · Đai Đỏ",
-      "beltName": "Đai Đỏ",
+      "title": "Bài thi lên cấp đai 3 – Đai Đỏ 1 vạch đen",
+      "shortTitle": "Cấp 3 · Đai Đỏ 1 vạch đen",
+      "beltName": "Đai Đỏ 1 vạch đen",
+      "beltBase": "#E8232A",
+      "stripeColor": "#111111",
+      "stripes": 1,
       "beltColor": "#E8232A",
-      "beltColorDark": "#9C1219",
       "fromBelt": "Đai Đỏ",
       "poomsae": "Taegeuk Oh-jang",
-      "poomsaeVi": "Bài quyền 5",
+      "poomsaeVi": "Taegeuk 5",
+      "minTime": "3 tháng",
+      "minAge": "Từ 7 tuổi",
+      "ageNote": "Quý III của năm dự thi",
+      "sparring": "2 hiệp × 45 giây",
       "youtube": "RB4e1ed3Cng",
+      "image": "assets/img/thi-len-dai/cap-3.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
           "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "text": "",
           "items": [
-            "Nguyên tắc phát lực bình thường (Kang-yeok): 4 lần",
-            "Nguyên tắc liên tục: 3 lần",
-            "Nguyên tắc phát lực nhanh: thực hiện 2 đấm nhanh - 3 đấm nhanh - 4 đấm nhanh (hét cuối mỗi lần)"
+            "Bài kỹ thuật tấn (10): Kkoa Seogi (꼬아 서기)",
+            "Ba nguyên tắc phát lực",
+            "Kỹ thuật chân (4): Dwi Chagi (뒤 차기 – Back Kick)"
           ]
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
-          "items": [
-            "Đá trước (Ap-chagi)",
-            "Đá ngang (Yop-chagi)",
-            "Đá vòng cầu (Dollyo-chagi)"
-          ]
-        },
-        {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 5 (Taegeuk Oh-jang)",
-          "items": []
+          "text": "Taegeuk 5 (Taegeuk Oh-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Mejumeok Naeryeo Chigi (메주먹 내려치기), Deungjumeok Ap Chigi (등주먹 앞치기), Palgup Pyojeok Chigi (팔굽 표적치기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 30 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 20 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 5",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: 2 hiệp, mỗi hiệp 45 giây"
+          ]
         }
       ]
     },
     {
       "cap": 2,
       "id": "thi-len-dai-cap-2-dai-do",
-      "title": "Bài thi lên cấp đai 2 – Đai Đỏ",
-      "shortTitle": "Cấp 2 · Đai Đỏ",
-      "beltName": "Đai Đỏ",
+      "title": "Bài thi lên cấp đai 2 – Đai Đỏ 2 vạch đen",
+      "shortTitle": "Cấp 2 · Đai Đỏ 2 vạch đen",
+      "beltName": "Đai Đỏ 2 vạch đen",
+      "beltBase": "#E8232A",
+      "stripeColor": "#111111",
+      "stripes": 2,
       "beltColor": "#E8232A",
-      "beltColorDark": "#9C1219",
-      "fromBelt": "Đai Đỏ",
+      "fromBelt": "Đai Đỏ 1 vạch đen",
       "poomsae": "Taegeuk Yook-jang",
-      "poomsaeVi": "Bài quyền 6",
+      "poomsaeVi": "Taegeuk 6",
+      "minTime": "3 tháng",
+      "minAge": "Từ 7 tuổi",
+      "ageNote": "Quý IV của năm dự thi",
+      "sparring": "2 hiệp × 1 phút",
       "youtube": "FZiFIoPA0-8",
+      "image": "assets/img/thi-len-dai/cap-2.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
           "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "text": "",
           "items": [
-            "Nguyên tắc phát lực bình thường (Kang-yeok): 4 lần",
-            "Nguyên tắc liên tục: 3 lần",
-            "Nguyên tắc phát lực nhanh: thực hiện 2 đấm nhanh - 3 đấm nhanh - 4 đấm nhanh (hét cuối mỗi lần)"
+            "Bài kỹ thuật tấn (10): Beom Seogi (범 서기) – Hổ tấn",
+            "Ba nguyên tắc phát lực (bình thường, liên tục, nhanh)",
+            "Kỹ thuật chân (4): Dwi Chagi (뒤 차기 – Back Kick)"
           ]
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
-          "items": [
-            "Đá trước (Ap-chagi)",
-            "Đá ngang (Yop-chagi)",
-            "Đá vòng cầu (Dollyo-chagi)"
-          ]
-        },
-        {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 6 (Taegeuk Yook-jang)",
-          "items": []
+          "text": "Taegeuk 6 (Taegeuk Yook-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Sonnal Bitureo Makki (손날 비틀어막기), Batangson Momtong Makki (바탕손 몸통막기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 30 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 20 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 6",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: 2 hiệp, mỗi hiệp 1 phút"
+          ]
         }
       ]
     },
     {
       "cap": 1,
       "id": "thi-len-dai-cap-1-dai-do",
-      "title": "Bài thi lên cấp đai 1 – Đai Đỏ",
-      "shortTitle": "Cấp 1 · Đai Đỏ",
-      "beltName": "Đai Đỏ",
+      "title": "Bài thi lên cấp đai 1 – Đai Đỏ 3 vạch đen",
+      "shortTitle": "Cấp 1 · Đai Đỏ 3 vạch đen",
+      "beltName": "Đai Đỏ 3 vạch đen",
+      "beltBase": "#E8232A",
+      "stripeColor": "#111111",
+      "stripes": 3,
       "beltColor": "#E8232A",
-      "beltColorDark": "#9C1219",
-      "fromBelt": "Đai Đỏ",
+      "fromBelt": "Đai Đỏ 2 vạch đen",
       "poomsae": "Taegeuk Chil-jang",
-      "poomsaeVi": "Bài quyền 7",
+      "poomsaeVi": "Taegeuk 7",
+      "minTime": "3 tháng",
+      "minAge": "Từ 8 tuổi",
+      "ageNote": "Quý I của năm dự thi",
+      "sparring": "2 hiệp × 1 phút",
       "youtube": "32CVJ25YRus",
+      "image": "assets/img/thi-len-dai/cap-1.jpg",
       "blocks": [
         {
-          "title": "Nguyên tắc phát lực",
+          "title": "Tố chất & thể hình",
+          "icon": "fa-heart-pulse",
+          "text": "Kiểm tra tố chất thể lực, sự tập trung, chiều cao, cân nặng.",
+          "items": []
+        },
+        {
+          "title": "Kỹ thuật căn bản",
           "icon": "fa-hand-fist",
-          "text": "Chuyển chân trái sang trái lập tấn trung bình (Juchum-seogi junbi), đồng thời thực hiện đòn đấm (tính là đòn số 1) hét lớn",
+          "text": "",
           "items": [
-            "Nguyên tắc phát lực bình thường (Kang-yeok): 4 lần",
-            "Nguyên tắc liên tục: 3 lần",
-            "Nguyên tắc phát lực nhanh: thực hiện 2 đấm nhanh - 3 đấm nhanh - 4 đấm nhanh (hét cuối mỗi lần)"
+            "Bài kỹ thuật tấn (10): Hakdari Seogi (학다리 서기) – Hạc tấn",
+            "Ba nguyên tắc phát lực",
+            "Kỹ thuật chân (4): Dwi Chagi (뒤 차기 – Back Kick)"
           ]
         },
         {
-          "title": "Kỹ thuật chân",
-          "icon": "fa-shoe-prints",
-          "text": "Lùi chân phải sang phải lập tấn thủ chiến đấu (Pal-chagi Junbi), thực hiện các kĩ thuật bằng chân sau 2 lần tiến, quay sau, sau đó thực hiện các kĩ thuật bằng chân sau 2 lần liên tiếp, lặp lại quay sau (Lưu ý: đá rõ từng nhịp, phối hợp tay - chân chính xác)",
-          "items": [
-            "Đá trước (Ap-chagi)",
-            "Đá ngang (Yop-chagi)",
-            "Đá vòng cầu (Dollyo-chagi)"
-          ]
-        },
-        {
-          "title": "Quyền",
+          "title": "Bài quyền",
           "icon": "fa-scroll",
-          "text": "Bài quyền 7 (Taegeuk Chil-jang)",
-          "items": []
+          "text": "Taegeuk 7 (Taegeuk Chil-jang)",
+          "items": [
+            "Kỹ thuật trọng tâm: Kawi Makki (가위막기), Mureup Chigi (무릎 치기)"
+          ]
         },
         {
-          "title": "Đá nhanh",
-          "icon": "fa-bolt",
-          "text": "Đá tự do liên tục trong 30 giây",
-          "items": []
-        },
-        {
-          "title": "Thể lực",
-          "icon": "fa-dumbbell",
-          "text": "Chống đẩy 20 lần",
-          "items": []
+          "title": "Đối luyện",
+          "icon": "fa-people-arrows",
+          "text": "",
+          "items": [
+            "Phân thế: phân thế bài quyền Taegeuk 7",
+            "Tự vệ: nâng cao tính ứng dụng của phân thế bài quyền theo hướng đối kháng và các kỹ thuật tự vệ cơ bản",
+            "Song đấu: 2 hiệp, mỗi hiệp 1 phút"
+          ]
         }
       ]
     }

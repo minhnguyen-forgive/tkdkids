@@ -9,7 +9,7 @@
    chạy lại, khỏi phải nhớ sửa thêm một tệp XML nữa.
 
    Gồm ba nhóm địa chỉ:
-     1. Trang tĩnh — trang chủ, kiến thức, 7 trang cấp đai, thuật ngữ,
+     1. Trang tĩnh — trang chủ, kiến thức, 9 trang cấp đai, thuật ngữ,
         tin tức, thư viện
      2. Bài viết   — bai-viet.html?id=... cho từng bài trong data/tin-tuc.json
      3. Album ảnh  — album.html?id=...   cho từng album trong data/album.json
@@ -42,6 +42,8 @@ const TRANG_TINH = [
   { tep: 'index.html',                            loc: '' },
   { tep: 'kien-thuc.html' },
   { tep: 'thi-len-dai.html' },
+  { tep: 'thi-len-dai-cap-9-dai-trang-1-vach.html' },
+  { tep: 'thi-len-dai-cap-8-dai-trang-2-vach.html' },
   { tep: 'thi-len-dai-cap-7-dai-vang.html' },
   { tep: 'thi-len-dai-cap-6-dai-xanh-la.html' },
   { tep: 'thi-len-dai-cap-5-dai-xanh-duong.html' },

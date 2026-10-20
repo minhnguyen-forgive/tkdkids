@@ -87,8 +87,9 @@ Hosting hiện tại: cPanel/FTP → tải file thủ công.
 
 Phần Kiến thức Taekwondo:
 - [x] `kien-thuc.html` — trang tổng của chuyên mục
-- [x] `thi-len-dai.html` + **7 trang HTML tĩnh** cho 7 cấp đai (mỗi cấp một địa chỉ riêng,
-      có video, giáo trình 5 phần, JSON-LD `Course`) — chuyển từ khối tab của web cũ
+- [x] `thi-len-dai.html` + **9 trang HTML tĩnh** cho cấp 9 → cấp 1 (mỗi cấp một địa chỉ riêng,
+      JSON-LD `Course`), nội dung theo Quy định thi thăng cấp, đẳng VTF (QĐ 152/2025/QĐ-VTF).
+      Sinh từ `data/thi-len-dai.json` bằng `node tools/thi-len-dai.mjs`
 - [x] `thuat-ngu-taekwondo.html` — bảng tra 48 thuật ngữ, tìm được cả khi gõ không dấu
 - [x] Khung video chỉ nạp YouTube khi người xem bấm (nhanh hơn, không đặt cookie sớm)
 - [x] Thanh điều hướng có menu con; khu vực Kiến thức trên trang chủ
