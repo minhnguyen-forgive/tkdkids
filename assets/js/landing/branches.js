@@ -5,7 +5,7 @@
    - Popup cho phép 1 phụ huynh đăng ký NHIỀU võ sinh (nút +)
    ============================================================= */
 
-import { BRANCHES, directionsUrl, embedMapUrl } from '../core/config.js';
+import { PUBLIC_BRANCHES, directionsUrl, embedMapUrl } from '../core/config.js';
 import { $, esc, setHTML, el } from '../core/dom.js';
 import { openModal, closeModal, toastSuccess, toastError } from '../core/ui.js';
 import { callApi } from '../core/api.js';
@@ -22,7 +22,7 @@ export function renderBranchList(containerSel = '#locationsBody') {
 
   // Nhóm theo khu vực, giữ nguyên thứ tự xuất hiện trong config
   const regions = [];
-  for (const b of BRANCHES) {
+  for (const b of PUBLIC_BRANCHES) {
     let g = regions.find(r => r.name === b.region);
     if (!g) regions.push((g = { name: b.region, items: [] }));
     g.items.push(b);
@@ -258,7 +258,7 @@ function refreshStudentUI() {
 let activeBranch = null;
 
 export function openBranchModal(branchId) {
-  const branch = BRANCHES.find(b => b.id === branchId);
+  const branch = PUBLIC_BRANCHES.find(b => b.id === branchId);
   if (!branch) return;
   activeBranch = branch;
 

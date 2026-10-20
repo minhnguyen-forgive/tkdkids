@@ -69,7 +69,7 @@ Chi tiết ở [docs/KE-HOACH.md](docs/KE-HOACH.md).
 Các tệp ảnh không nằm trong repo (thuộc về hosting). Cần có ở thư mục gốc:
 
 `favicon.png` `embe1.png` `og-image.jpg`
-`hapu.jpg` `green.JPG` `nghiado.jpg` `hadong.jpg` `longbien.jpg` `giahoa.jpg` `halong.jpg`
+`hapu.jpg` `green.JPG` `nghiado.jpg` `hadong.jpg` `longbien.jpg` `halong.jpg`
 `tirak.png` `blackbelt.png` `canada.png` `jaeil.png`
 
 Thiếu ảnh nào thì hệ thống tự hiện ảnh thay thế, giao diện không vỡ.

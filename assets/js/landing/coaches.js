@@ -11,7 +11,7 @@
    ============================================================= */
 
 import { $, esc } from '../core/dom.js';
-import { BRANCHES } from '../core/config.js';
+import { BRANCHES, PUBLIC_BRANCHES } from '../core/config.js';
 
 const DELAY = 5000;
 
@@ -117,7 +117,9 @@ export async function initCoaches() {
   try {
     const r = await fetch('data/huan-luyen-vien.json', { cache: 'no-cache' });
     if (!r.ok) throw new Error(String(r.status));
-    COACHES = (await r.json()).coaches || [];
+    // Không hiện HLV phụ trách cơ sở đã ẩn khỏi website (hidden trong config.js)
+    const an = new Set(BRANCHES.filter(b => !PUBLIC_BRANCHES.includes(b)).map(b => b.id));
+    COACHES = ((await r.json()).coaches || []).filter(c => !an.has(c.branchId));
   } catch {
     document.getElementById('coaches')?.remove();   // không tải được thì ẩn hẳn section
     return;

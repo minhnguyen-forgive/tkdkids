@@ -209,7 +209,7 @@ ${khoi}
     ${thangDai(l.cap, '    ')}
     <div class="article-cta" style="margin-top:48px">
       <h3>Chưa học Taekwondo? Bắt đầu từ buổi học thử miễn phí</h3>
-      <p>7 cơ sở tại Hà Nội, TP.HCM và Quảng Ninh — huấn luyện viên quốc tế, giáo án riêng theo từng độ tuổi.</p>
+      <p>6 cơ sở tại Hà Nội và Quảng Ninh — huấn luyện viên quốc tế, giáo án riêng theo từng độ tuổi.</p>
       <div class="cta-row">
         <a href="index.html#locations" class="btn-register" style="width:auto;padding:14px 30px">Đăng ký học thử</a>
         <a href="tel:0978931747" class="share-btn" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff">

@@ -66,7 +66,7 @@ và phần *Cột mốc phát triển*). Không có chỗ nào do tôi tự đ�
 | Hapulico | Thầy Nguyễn Đình Toàn — HLV trưởng | **6 đẳng** (nguồn: web cũ, 2021) |
 | GreenStars | Thầy Nguyễn Quang Huy — HLV phó | *chưa có* |
 | Nghĩa Đô | Thầy Vũ Thành Đạt | *chưa có* |
-| Gia Hoà | Cô Nguyễn Thị Ngân | *chưa có* |
+| Gia Hoà | *(đã gỡ khỏi website)* | — |
 | Hạ Long | Thầy Nguyễn Quốc Việt | *chưa có* |
 | **Hà Đông** | **chưa có dữ liệu** | — |
 | **Long Biên** | **chưa có dữ liệu** | — |

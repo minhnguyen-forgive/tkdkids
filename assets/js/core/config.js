@@ -29,6 +29,8 @@ export const SITE = {
    region  : nhóm hiển thị trên trang chủ
    address : địa chỉ đầy đủ, dùng luôn cho Google Maps
    image   : ảnh trong thư mục gốc website
+   hidden  : true = không hiện trên website công khai (danh sách cơ sở, HLV),
+             vẫn giữ để khu quản trị tra được dữ liệu cũ của cơ sở này
 */
 export const BRANCHES = [
   {
@@ -71,7 +73,7 @@ export const BRANCHES = [
     address: 'Phòng B3.01.09, Chung cư Gia Hoà, 523A Đỗ Xuân Hợp, TP. Thủ Đức, TP. Hồ Chí Minh',
     shortAddress: 'Phòng B3.01.09 · Chung cư Gia Hoà, 523A Đỗ Xuân Hợp, Thủ Đức',
     mapLink: 'https://maps.google.com/?q=Chung+cu+Gia+Hoa+523A+Do+Xuan+Hop+Thu+Duc',
-    image: 'giahoa.jpg', since: 2019,
+    image: 'giahoa.jpg', since: 2019, hidden: true,
   },
   {
     id: 'HaLong', code: 'HL', name: 'Cơ sở Hạ Long', region: 'Quảng Ninh',
@@ -81,6 +83,9 @@ export const BRANCHES = [
     image: 'halong.jpg', since: 2021,
   },
 ];
+
+/** Các cơ sở hiện trên website công khai. */
+export const PUBLIC_BRANCHES = BRANCHES.filter(b => !b.hidden);
 
 /** Tra cứu cơ sở theo id. Chấp nhận cả tên đầy đủ để tương thích dữ liệu cũ. */
 export function findBranch(idOrName) {

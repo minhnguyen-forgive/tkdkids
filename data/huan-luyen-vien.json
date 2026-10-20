@@ -13,7 +13,7 @@
       "photo": "",
       "bio": "Người sáng lập và dẫn dắt chuyên môn của toàn hệ thống Taekwondo Kids Việt Nam từ cơ sở đầu tiên năm 2015. Trực tiếp phụ trách trụ sở chính Hapulico.",
       "highlights": [
-        "Dẫn dắt hệ thống từ 1 lên 7 cơ sở",
+        "Dẫn dắt hệ thống từ 1 lên 6 cơ sở",
         "Trọng tài điều hành giải quốc gia",
         "Phụ trách chuyên môn toàn hệ thống"
       ]
@@ -41,23 +41,9 @@
       "dangNote": "",
       "branchId": "NghiaDo",
       "photo": "",
-      "bio": "Phụ trách chi nhánh Nghĩa Đô từ khi cơ sở thứ tư của hệ thống được thành lập năm 2020.",
+      "bio": "Phụ trách chi nhánh Nghĩa Đô từ khi cơ sở thứ ba của hệ thống được thành lập năm 2020.",
       "highlights": [
         "Phụ trách cơ sở Nghĩa Đô từ 2020"
-      ]
-    },
-    {
-      "id": "nguyen-thi-ngan",
-      "name": "Nguyễn Thị Ngân",
-      "title": "Huấn luyện viên phụ trách cơ sở",
-      "honorific": "Cô",
-      "dang": 6,
-      "dangNote": "",
-      "branchId": "GiaHoa",
-      "photo": "",
-      "bio": "Phụ trách chi nhánh Gia Hoà — cơ sở đầu tiên của Taekwondo Kids tại Thành phố Hồ Chí Minh, thành lập năm 2019.",
-      "highlights": [
-        "Phụ trách cơ sở đầu tiên tại TP.HCM"
       ]
     },
     {
