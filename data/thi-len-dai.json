@@ -6,6 +6,7 @@
     "date": "22/12/2025",
     "basis": "Căn cứ Quy định thi thăng cấp, đẳng hiện hành của Kukkiwon"
   },
+  "showVideos": false,
   "note": "Nội dung thi cấp 9 đến cấp 1 lấy từ Điều 4 và Điều 7.1 của Quy định. Trường text/items hiện nguyên văn trên trang, sửa ở đây rồi chạy: node tools/thi-len-dai.mjs",
   "quarters": [
     { "name": "Quý I",   "range": "15/1 – 31/3" },

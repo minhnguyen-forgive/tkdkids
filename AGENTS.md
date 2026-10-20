@@ -13,7 +13,8 @@ Nội dung 9 trang `thi-len-dai-cap-*.html`, phần chính của `thi-len-dai.ht
 1. Chỉ sửa `data/thi-len-dai.json` (trường `blocks[].text`, `blocks[].items`, `youtube`, `minAge`…).
    Không sửa tay các tệp HTML kể trên — lần chạy sau sẽ ghi đè.
 2. Chạy `node tools/thi-len-dai.mjs`, rồi `node tools/kiem-tra.mjs`.
-3. Thêm video cho cấp chưa có (cấp 9, 8): điền `youtube` (mã video) và `image`
-   (ảnh 16:9 ở `assets/img/thi-len-dai/cap-N.jpg`), rồi chạy lại bước 2.
+3. Video đang tạm ẩn hết (`"showVideos": false` ở đầu JSON) vì video cũ quay theo giáo trình trước.
+   Có video mới: điền `youtube` (mã video) và `image` (ảnh 16:9 ở `assets/img/thi-len-dai/cap-N.jpg`)
+   cho từng cấp, đổi `showVideos` thành `true`, rồi chạy lại bước 2.
 4. Thêm/bớt cả một cấp (đổi `id`) là việc của Claude: phải sửa thêm `tools/sitemap.mjs`
    rồi chạy `node tools/sitemap.mjs`.

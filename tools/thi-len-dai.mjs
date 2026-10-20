@@ -30,7 +30,8 @@ const doc = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const ghi = (f, s) => fs.writeFileSync(path.join(ROOT, f), s);
 
 const D = JSON.parse(doc('data/thi-len-dai.json'));
-const L = D.levels;
+// showVideos: false — tạm ẩn mọi video (và ảnh bìa video ở thẻ cấp) nhưng vẫn giữ mã trong JSON
+const L = D.showVideos === false ? D.levels.map(l => ({ ...l, youtube: null, image: null })) : D.levels;
 const SRC = D.source;
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
