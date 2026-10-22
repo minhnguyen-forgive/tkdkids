@@ -29,8 +29,10 @@ function initials(name) {
 }
 
 function cardHTML(c) {
-  const dan = c.dang
-    ? `<span class="coach-dan" title="${esc(c.dangNote || '')}"><b>${esc(c.dang)}</b><small>Đẳng</small></span>`
+  // Ảnh chân dung là poster đã có chữ ở góc trên, huy hiệu sẽ đè lên tên;
+  // cấp đẳng vẫn hiện ở ô "N đẳng" bên phần chữ.
+  const dan = c.dang && !c.photo
+    ?`<span class="coach-dan" title="${esc(c.dangNote || '')}"><b>${esc(c.dang)}</b><small>Đẳng</small></span>`
     : '';
   const inner = c.photo
     ? `<img src="${esc(c.photo)}" alt="${esc(c.honorific)} ${esc(c.name)}" loading="lazy" decoding="async">`
