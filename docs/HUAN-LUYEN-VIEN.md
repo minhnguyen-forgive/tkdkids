@@ -69,14 +69,14 @@ và phần *Cột mốc phát triển*). Không có chỗ nào do tôi tự đ�
 | Gia Hoà | *(đã gỡ khỏi website)* | — |
 | Hạ Long | Thầy Nguyễn Quốc Việt | *chưa có* |
 | **Hà Đông** | **chưa có dữ liệu** | — |
-| **Long Biên** | **chưa có dữ liệu** | — |
+| Long Biên | Thầy Hoàng Văn Hiếu — HLV trưởng cơ sở | *chưa có* |
 
 **Cần bạn bổ sung:**
 
 1. **Cấp đẳng của 4 thầy cô còn lại.** Tôi cố ý để trống chứ không suy đoán —
    ghi sai cấp đẳng của một người có thật là chuyện không sửa lại được bằng lời xin lỗi.
 2. **Huấn luyện viên của Hà Đông và Long Biên** — hai cơ sở này mở sau bản web cũ.
-3. **Ảnh chân dung** cho cả 5–7 thầy cô.
+3. ~~Ảnh chân dung~~ — đã có ở `assets/img/hlv/` (render từ SVG Canva trong `images/`, nén 800×1000).
 4. Kiểm tra lại xem thầy Toàn hiện đã lên cao hơn 6 đẳng chưa (số trên web cũ là của năm 2021).
 
 > Đây cũng chính là bước đầu tiên trong kế hoạch 90 ngày ở
