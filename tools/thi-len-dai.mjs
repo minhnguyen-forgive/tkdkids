@@ -10,7 +10,7 @@
    Script ghi:
      1. thi-len-dai-cap-*.html — một trang cho mỗi cấp trong levels[]
      2. thi-len-dai.html       — phần <main> và thẻ meta của trang tổng
-     3. kien-thuc.html         — thanh lộ trình cấp đai
+     3. kien-thuc.html, index.html — thanh lộ trình cấp đai (index: mục Kiến thức)
      4. Mọi trang .html        — danh sách "Thi lên đai theo cấp" ở sơ đồ
                                  chân trang, dòng mô tả ở menu con
 
@@ -433,6 +433,14 @@ let kt = doc('kien-thuc.html');
 kt = kt.replace(/<div class="belt-ladder">[\s\S]*?\n    <\/div>/, () => thangDai(null, '      '))
        .replace(/(Lộ trình <span class="accent">)[^<]*/, `$1${L.length} cấp thi`);
 ghi('kien-thuc.html', kt);
+
+let ix = doc('index.html');
+ix = ix.replace(/<div class="belt-ladder" style="margin-bottom:32px">[\s\S]*?\n    <\/div>/,
+       () => thangDai(null, '      ').replace('<div class="belt-ladder">', '<div class="belt-ladder" style="margin-bottom:32px">'))
+       .replace(/(<p class="sec-desc">)Chương trình thi thăng đai công khai[\s\S]*?(<\/p>)/,
+       (_, a, b) => `${a}Chương trình thi lên đai từ cấp ${L[0].cap} đến cấp ${L[L.length - 1].cap} theo quy định mới của Liên đoàn Taekwondo Việt Nam,
+         kèm điều kiện dự thi và lịch thi. Võ sinh và phụ huynh xem trước ở nhà để chuẩn bị cho kỳ thi.${b}`);
+ghi('index.html', ix);
 
 const khac = fs.readdirSync(ROOT).filter(f => f.endsWith('.html') && f !== 'thi-len-dai.html'
   && !L.some(l => `${l.id}.html` === f) && !f.startsWith('index.original'));
