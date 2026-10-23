@@ -10,7 +10,7 @@
       "dang": 6,
       "dangNote": "Thi đỗ 6 đẳng tại kỳ thi thăng cao đẳng quốc gia năm 2021",
       "branchId": "Hapulico",
-      "photo": "assets/img/hlv/nguyen-dinh-toan.jpg",
+      "photo": "assets/img/hlv/nguyen-dinh-toan.jpg?v=20261023",
       "bio": "Người sáng lập và dẫn dắt chuyên môn của toàn hệ thống Taekwondo Kids Việt Nam từ cơ sở đầu tiên năm 2015. Trực tiếp phụ trách trụ sở chính Hapulico.",
       "highlights": [
         "Dẫn dắt hệ thống từ 1 lên 6 cơ sở",
@@ -26,7 +26,7 @@
       "dang": 5,
       "dangNote": "",
       "branchId": "GreenStars",
-      "photo": "assets/img/hlv/le-trung-anh.jpg",
+      "photo": "assets/img/hlv/le-trung-anh.jpg?v=20261023",
       "bio": "Phụ trách chi nhánh GreenStars từ khi cơ sở thứ hai của hệ thống được khai trương năm 2018.",
       "highlights": [
         "Phụ trách cơ sở GreenStars từ 2026"
@@ -40,7 +40,7 @@
       "dang": 4,
       "dangNote": "",
       "branchId": "NghiaDo",
-      "photo": "assets/img/hlv/vu-thanh-dat.jpg",
+      "photo": "assets/img/hlv/vu-thanh-dat.jpg?v=20261023",
       "bio": "Phụ trách chi nhánh Nghĩa Đô từ khi cơ sở thứ ba của hệ thống được thành lập năm 2020.",
       "highlights": [
         "Phụ trách cơ sở Nghĩa Đô từ 2020"
@@ -54,7 +54,7 @@
       "dang": 5,
       "dangNote": "",
       "branchId": "HaDong",
-      "photo": "assets/img/hlv/nguyen-ngoc-anh.jpg",
+      "photo": "assets/img/hlv/nguyen-ngoc-anh.jpg?v=20261023",
       "bio": "Phụ trách chi nhánh Hà Đông, thành lập năm 2025.",
       "highlights": [
         "Phụ trách cơ sở Hà Đông"
@@ -68,7 +68,7 @@
       "dang": 4,
       "dangNote": "",
       "branchId": "LongBien",
-      "photo": "assets/img/hlv/hoang-van-hieu.jpg",
+      "photo": "assets/img/hlv/hoang-van-hieu.jpg?v=20261023",
       "bio": "Phụ trách chi nhánh Long Biên.",
       "highlights": [
         "Phụ trách cơ sở Long Biên"
