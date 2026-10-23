@@ -69,7 +69,7 @@ và phần *Cột mốc phát triển*). Không có chỗ nào do tôi tự đ�
 | Gia Hoà | *(đã gỡ khỏi website)* | — |
 | Hạ Long | Thầy Nguyễn Quốc Việt | *chưa có* |
 | **Hà Đông** | **chưa có dữ liệu** | — |
-| Long Biên | Thầy Hoàng Văn Hiếu — HLV trưởng cơ sở | *chưa có* |
+| Long Biên | Thầy Hoàng Văn Hiếu — HLV trưởng cơ sở | **4 đẳng** (trung tâm cung cấp, 10/2026) |
 
 **Cần bạn bổ sung:**
 

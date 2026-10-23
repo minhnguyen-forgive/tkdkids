@@ -65,7 +65,7 @@
       "name": "Hoàng Văn Hiếu",
       "title": "Huấn luyện viên trưởng cơ sở",
       "honorific": "Thầy",
-      "dang": null,
+      "dang": 4,
       "dangNote": "",
       "branchId": "LongBien",
       "photo": "assets/img/hlv/hoang-van-hieu.jpg",
