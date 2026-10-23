@@ -58,26 +58,26 @@ không cần vội, nhưng ảnh thật luôn thuyết phục hơn nhiều.
 
 ## Nguồn dữ liệu hiện tại và những chỗ còn thiếu
 
-Tên và chức danh lấy **nguyên từ website cũ** của trung tâm (mục *Lịch học & học phí*
-và phần *Cột mốc phát triển*). Không có chỗ nào do tôi tự đặt ra.
+Bảng dưới khớp với `data/huan-luyen-vien.json` (nguồn thật của website). Sửa dữ liệu
+thì sửa tệp JSON trước, rồi cập nhật bảng này cho khớp.
 
 | Cơ sở | Huấn luyện viên | Cấp đẳng |
 |---|---|---|
 | Hapulico | Thầy Nguyễn Đình Toàn — HLV trưởng | **6 đẳng** (nguồn: web cũ, 2021) |
-| GreenStars | Thầy Nguyễn Quang Huy — HLV phó | *chưa có* |
-| Nghĩa Đô | Thầy Vũ Thành Đạt | *chưa có* |
-| Gia Hoà | *(đã gỡ khỏi website)* | — |
-| Hạ Long | Thầy Nguyễn Quốc Việt | *chưa có* |
-| **Hà Đông** | **chưa có dữ liệu** | — |
+| GreenStars | Thầy Lê Trung Anh — HLV trưởng cơ sở | **5 đẳng** |
+| Nghĩa Đô | Thầy Vũ Thành Đạt — HLV phụ trách cơ sở | **4 đẳng** |
+| Hà Đông | Cô Nguyễn Ngọc Ánh — HLV phụ trách cơ sở | **5 đẳng** |
 | Long Biên | Thầy Hoàng Văn Hiếu — HLV trưởng cơ sở | **4 đẳng** (trung tâm cung cấp, 10/2026) |
+| Hạ Long | *chưa có trên website* | — |
+| Gia Hoà | *(đã gỡ khỏi website)* | — |
 
-**Cần bạn bổ sung:**
+Thầy Nguyễn Quang Huy (GreenStars) và thầy Nguyễn Quốc Việt (Hạ Long) từng có trên
+web cũ, đã bỏ khỏi hệ thống theo yêu cầu của trung tâm (10/2026).
 
-1. **Cấp đẳng của 4 thầy cô còn lại.** Tôi cố ý để trống chứ không suy đoán —
-   ghi sai cấp đẳng của một người có thật là chuyện không sửa lại được bằng lời xin lỗi.
-2. **Huấn luyện viên của Hà Đông và Long Biên** — hai cơ sở này mở sau bản web cũ.
-3. ~~Ảnh chân dung~~ — đã có ở `assets/img/hlv/` (render từ SVG Canva trong `images/`, nén 800×1000).
-4. Kiểm tra lại xem thầy Toàn hiện đã lên cao hơn 6 đẳng chưa (số trên web cũ là của năm 2021).
+**Còn thiếu:**
+
+1. Huấn luyện viên của cơ sở Hạ Long.
+2. Kiểm tra lại xem thầy Toàn hiện đã lên cao hơn 6 đẳng chưa (số trên web cũ là của năm 2021).
 
 > Đây cũng chính là bước đầu tiên trong kế hoạch 90 ngày ở
 > `NOI-DUNG-CHUYEN-MON.md` — mục 3 nói vì sao hồ sơ huấn luyện viên có tên,
